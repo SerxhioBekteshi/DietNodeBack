@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Nodemon: Attach Express.js + TypeScript",
+      "type": "node",
+      "request": "attach",
+      "port": 1234,
+      //re-attach the debugger every time you save
+      "restart": true
+    }
+  ]
+}
