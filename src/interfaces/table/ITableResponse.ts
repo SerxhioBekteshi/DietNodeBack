@@ -1,4 +1,4 @@
-import IColumn from './IColumn';
+import IColumn from "./IColumn";
 
 export default interface ITableResponse<T> {
   columns: IColumn<T>[];
@@ -9,6 +9,5 @@ export default interface ITableResponse<T> {
   totalCount: number;
   hasPrevious: boolean;
   hasNext: boolean;
-  canDelete: boolean;
   key: any;
 }

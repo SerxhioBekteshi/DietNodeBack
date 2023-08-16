@@ -1,9 +1,9 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import validator from "validator";
 import { IUser, IMenu } from "../interfaces/database";
 import bcrypt from "bcryptjs";
-import { ePositions, eRoles, eStatus } from "../enums";
 import authController from "../controllers/authController";
+import AutoIncrement from "mongoose-auto-increment";
 
 const userSchema = new Schema<IUser>(
   {
@@ -28,7 +28,7 @@ const userSchema = new Schema<IUser>(
     },
     lastName: {
       type: String,
-      required: [true, "A user must have a name."],
+      required: [true, "A user must have a last name."],
       unique: false,
       trim: true, // removes spaces at the begining and at the end of the string
       maxlength: [15, "A user name must have less or equal then 40 characters"],
@@ -61,7 +61,7 @@ const userSchema = new Schema<IUser>(
     },
     accountSubmitted: {
       type: Boolean,
-      default: "",
+      default: false,
     },
     nipt: {
       type: String,
@@ -69,7 +69,7 @@ const userSchema = new Schema<IUser>(
     },
     termsAgreed: {
       type: Boolean,
-      required: true,
+      default: true,
     },
     password: {
       type: String,
@@ -117,33 +117,17 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   // encrypt password before saving
   this.password = await bcrypt.hash(this.password, 12);
-
   this.passwordConfirm = undefined;
   next();
 });
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password") || this.isNew) return next();
-
-  // we do that 1 second decrease because it can cause problems in comparing with iat JWT
   this.passwordChangedAt = (Date.now() - 1000) as any;
   next();
 });
 
-// TODO: fix why populate is not working
-// userSchema.pre(/^find/, function (next) {
-//     // vetem nqs osh menaxher
-//     // in query middleware this points to the query
-//     this.populate({
-//         path: "Customer",
-//         select: "name positions",
-//     });
-
-//     next();
-// });
-
 // Instance methods
-
 userSchema.methods.correctPassword = async function (
   candidatePassword: string,
   userPassword: string
@@ -175,6 +159,15 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordResetToken = resetToken;
   return resetToken;
 };
+
+AutoIncrement.initialize(mongoose.connection);
+
+userSchema.plugin(AutoIncrement.plugin, {
+  model: "User",
+  field: "id",
+  startAt: 1,
+  incrementBy: 1,
+});
 
 const User = model<IUser>("User", userSchema);
 

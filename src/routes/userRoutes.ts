@@ -9,6 +9,7 @@ import { assignTo } from "../middlewares/assignTo";
 const router = express.Router();
 
 router.post("/register", authController.register);
+router.post("/registerProvider", authController.registerProvider);
 router.post("/login", authController.login);
 router.post("/forgotpassword", authController.forgotPassowrd);
 router.post("/resetpassword", authController.resetPassowrd);

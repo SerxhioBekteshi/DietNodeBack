@@ -3,6 +3,11 @@ import http from "http";
 import express from "./src/app";
 import socket from "./socket";
 import database from "./database";
+// import {
+//   initializeAdmin,
+//   initializeMenuItems,
+//   initializeRoles,
+// } from "./src/utils";
 
 const main = async () => {
   dotenv.config({
@@ -27,6 +32,9 @@ const main = async () => {
 
   server.listen(port, () => {
     console.log(`App running on port ${port} ....`);
+    // initializeRoles();
+    // initializeAdmin();
+    // initializeMenuItems();
   });
   process.on("unhandledRejection", (err: any) => {
     console.log(err.name, err.message);

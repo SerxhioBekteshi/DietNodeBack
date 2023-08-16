@@ -1,17 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import {
   IFilter,
   ISort,
   ITableRequest,
   ITableResponse,
-} from '../../interfaces/table';
-import IColumn from '../../interfaces/table/IColumn';
-import { eRoles, eSortType } from '../../enums';
-import { IUser } from '../../interfaces/database';
-import { buildOperation } from '../../utils';
+} from "../../interfaces/table";
+import IColumn from "../../interfaces/table/IColumn";
+import { eSortType } from "../../enums";
+import { buildOperation } from "../../utils";
 
 export default class BaseTable<T> {
-  constructor(model: mongoose.Model<T>, request: ITableRequest, user: IUser) {
+  constructor(model: mongoose.Model<T>, request: ITableRequest) {
     this.model = model;
     this.page = request.page;
     this.pageSize = request.limit;
@@ -19,11 +18,9 @@ export default class BaseTable<T> {
     this.sorting = request.sorting || [];
     this.filters = request.filters || [];
     this.search = request.search;
-    this.user = user;
   }
-  user: IUser = null;
 
-  key: string = '_id';
+  key: string = "_id";
 
   model: mongoose.Model<T>;
 
@@ -51,9 +48,7 @@ export default class BaseTable<T> {
   total: number;
 
   data: ITableResponse<T>;
-  canDelete(): boolean {
-    return [eRoles.Admin, eRoles.Manager].includes(this.user.role);
-  }
+
   async initialize(): Promise<ITableResponse<T>> {
     this.columns = this.buildColumns();
     this.rows = await this.buildRows();
@@ -69,7 +64,6 @@ export default class BaseTable<T> {
       key: this.key,
       hasNext: this.page < totalPages,
       hasPrevious: this.page > 1,
-      canDelete: this.canDelete(),
     };
     return this.data;
   }
@@ -131,20 +125,20 @@ export default class BaseTable<T> {
   }
   buildSearch(search: string) {
     const pattern = new RegExp(`.*${search}.*`);
-    const columnsToSearch = this.buildColumnsToSearch()
+    const columnsToSearch = this.buildColumnsToSearch();
     if (search && columnsToSearch && columnsToSearch.length > 0) {
       const filter = columnsToSearch.map((column) => {
-        return { [column]: { $regex: pattern, $options: 'i' } };
+        return { [column]: { $regex: pattern, $options: "i" } };
       });
       return { $or: filter };
     }
-    return {}
+    return {};
   }
 
   async selectAll() {
     try {
       const ids = (
-        await this.model.find(this.buildFilters(this.filters)).distinct('_id')
+        await this.model.find(this.buildFilters(this.filters)).distinct("_id")
       ).map((id) => id.toString());
       return ids;
     } catch (error) {

@@ -1,15 +1,12 @@
 import { Schema } from "mongoose";
-import { eCategory, eRoles } from "../../enums";
+import { eRoles } from "../../enums";
 
 export interface IMenu {
-  _id: Schema.Types.ObjectId
-  caption?: string;
-  children?: any; // Array<IMenu>;
+  id: Number;
+  label?: string;
   icon: string;
-  title: string;
-  route: string;
-  // TODO: discuss for name of var below
-  menuType: eRoles;
-  category: eCategory;
+  to: string;
+  roleId: Number;
   collapisble: boolean;
+  children?: Array<IMenu>;
 }

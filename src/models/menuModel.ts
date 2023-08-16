@@ -1,13 +1,13 @@
 import mongoose, { Schema, model } from "mongoose";
-import { eCategory, eRoles } from "../enums";
+import { eRoles } from "../enums";
 import { IMenu } from "../interfaces/database/IMenu";
 import AutoIncrement from "mongoose-auto-increment";
 
 const menuSchema = new Schema<IMenu>({
   id: { type: Number, required: true, unique: true },
-  label: { type: String },
-  icon: { type: String },
-  to: { type: String },
+  label: { type: String, required: true },
+  icon: { type: String, required: true },
+  to: { type: String, required: true },
   roleId: {
     type: Number,
     required: true,

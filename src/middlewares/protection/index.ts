@@ -60,6 +60,7 @@ const protect = catchAsync(async (req: any, res: any, next: any) => {
 
   req.user = freshUser;
   res.locals.user = freshUser;
+  req.roleId = freshUser.roleId;
 
   next();
 });

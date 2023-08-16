@@ -1,4 +1,5 @@
 import { connect } from "mongoose";
+
 const initialize = async () => {
   const DB =
     "mongodb+srv://serxhio:Serxhio12345.@cluster0.tkqmazt.mongodb.net/dietRepo?retryWrites=true&w=majority";
