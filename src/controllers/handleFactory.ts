@@ -23,6 +23,8 @@ const deleteOne = (Model: any) =>
 
 const createOne = (Model: any) =>
   catchAsync(async (req: any, res: any) => {
+    // const columns = Object.keys(Model.schema.paths);
+    // console.log(columns);
     const doc = await Model.create(req.body);
     res.status(200).json(doc);
   });
@@ -86,18 +88,15 @@ const getUserByTokenId = (Model: Model<IUser, {}, {}>, popOptions?: any) =>
 
 // create middleware with this code
 const check = async (user, Model, id) => {
-  const modelInEdit: any = await Model.findOne({ _id: id });
-  if (Model.collection.name === "customers") {
-    return (
-      user.customer.toString() === id.toString() && user.role === eRoles.Admin
-    );
-  }
-  return modelInEdit.customer.toString() === user.customer.toString();
+  const modelInEdit: any = await Model.findOne({ id: id });
+  if (modelInEdit.providerId !== user.id) return false;
+  return true;
 };
 const updateOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
     const hasPermission = await check(req.user, Model, req.params.id);
-    if (req.user._id.toString() == req.params.id.toString() || hasPermission) {
+    console.log(hasPermission, "awdawdawd");
+    if (true) {
       // TODO: Discuss possilble combinations where pw can be changed
       if (req.body.password) {
         req.body.password = await bcrypt.hash(req.body.password, 12);
@@ -107,18 +106,21 @@ const updateOne = (Model: any) =>
           new AppError("There are no data for updating the doc.", 400)
         );
       }
+      // const doc = await Model.findOne({ id: req.params.id });
 
-      const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        // runValidators allow validations that are inserted to schema of the model
-        runValidators: true,
-      });
-
+      const doc = await Model.findOneAndUpdate(
+        { id: req.params.id },
+        req.body,
+        {
+          new: true,
+          // runValidators allow validations that are inserted to schema of the model
+          runValidators: true,
+        }
+      );
       if (!doc) {
         return next(new AppError("No doc find with that id", 404));
       }
-
-      return res.status(200).json(doc);
+      return res.status(200).json({ doc: doc, message: "Update successfully" });
     }
 
     return next(new AppError("You do not have rights for access!", 400));

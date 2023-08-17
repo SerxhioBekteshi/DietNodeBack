@@ -37,6 +37,7 @@ const MealSchema = new Schema<IMeal>(
     },
     image: {
       type: String,
+      default: "images/meals/default.jpeg",
     },
     providerId: {
       type: Number,

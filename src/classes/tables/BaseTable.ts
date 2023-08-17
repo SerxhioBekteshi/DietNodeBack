@@ -13,8 +13,7 @@ export default class BaseTable<T> {
   constructor(model: mongoose.Model<T>, request: ITableRequest) {
     this.model = model;
     this.page = request.page;
-    this.pageSize = request.limit;
-    this.customParameters = request.customParameters;
+    this.pageSize = request.pageSize;
     this.sorting = request.sorting || [];
     this.filters = request.filters || [];
     this.search = request.search;
@@ -27,8 +26,6 @@ export default class BaseTable<T> {
   page: number = 0;
 
   pageSize: number = 10;
-
-  customParameters: any;
 
   search: string;
 

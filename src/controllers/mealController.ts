@@ -9,7 +9,7 @@ import {
 } from "./handleFactory";
 import { AppError } from "../utils/appError";
 
-const createMeal = createOne(Meal);
+// const createMeal = createOne(Meal);
 
 const getMeal = getOne(Meal);
 
@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 
   filename: function (req: any, file: any, cb: any) {
     req.fileType = file.mimetype.split("/")[1]; // jpg/jpeg or png
-    cb(null, `meal-pic-${req.user._id}-${Date.now()}.${req.fileType}`);
+    cb(null, `meal-${Date.now()}.${req.fileType}`);
   },
 });
 
@@ -37,7 +37,26 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new AppError("Image uploaded is not of type jpg/jpeg or png"), false);
   }
 };
+
 const uploadImage = multer({ storage: storage, fileFilter: fileFilter });
+
+const uploadMealImage = async (req, res, next) => {
+  const meal = await Meal.findOne({ id: req.params.id });
+  if (!meal) return next(new AppError("No doc find with that id", 404));
+
+  const image = req.file.path;
+  meal.image = image.replace(/ /g, "");
+
+  const result = meal.save();
+
+  if (result) return res.status(200).json({ message: "Update successfully" });
+};
+
+const createMeal = async (req: any, res: any) => {
+  req.body.providerId = req.user.id;
+  const doc = await Meal.create(req.body);
+  res.status(200).json({ doc: doc, message: "Created successfully" });
+};
 
 export default {
   createMeal,
@@ -46,4 +65,5 @@ export default {
   getAllMeals,
   deleteMeal,
   uploadImage,
+  uploadMealImage,
 };

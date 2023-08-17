@@ -8,17 +8,17 @@ const router = express.Router();
 
 router.use(protect);
 router.get("/get-all", mealController.getAllMeals);
-
+router.post("", mealController.createMeal);
 router
   .route("/:id")
   .get(mealController.getMeal)
   .put(mealController.updateMeal)
   .delete(mealController.deleteMeal);
 
-router.post(
-  "/image",
-  mealController.uploadImage.single("image")
-  //   userController.updateProfileImage
+router.put(
+  "/image/:id",
+  mealController.uploadImage.single("image"),
+  mealController.uploadMealImage
 );
 
 // all route handlers below can be accessed from Admin and Manager Roles

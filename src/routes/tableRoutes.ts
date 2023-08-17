@@ -6,14 +6,16 @@ import {
 } from "../controllers/tableController";
 import { protect } from "../middlewares/protection";
 import { getAll } from "../controllers/tableController";
-import { IUser } from "../interfaces/database";
+import { IMeal, IUser } from "../interfaces/database";
 import UserTable from "../classes/tables/UserTable";
 import { capitalize } from "../utils";
+import MealTable from "../classes/tables/MealTable";
 
 const router = express.Router();
 router.use(protect);
 
 createTableRoutes<IUser>("users", UserTable);
+createTableRoutes<IMeal>("meals", MealTable);
 
 function createTableRoutes<T>(route: string, table: TableConstructor<T>) {
   router.post(`/${route}`, getAll<T>(table));

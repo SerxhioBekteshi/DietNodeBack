@@ -8,15 +8,33 @@ export default class MealTable extends BaseTable<IMeal> {
     super(Meal, request);
   }
 
-  override async buildRows(): Promise<any> {
-    const rows = await super.buildRows();
-    const res = rows.map((row) => {
-      const newRow = row;
-      return {
-        ...newRow,
-        name: { value: newRow.name, image: `images/users/${row.image}` },
-      };
-    });
-    return res;
+  override buildColumnsToSearch(): (keyof IMeal)[] {
+    return ["name"];
   }
+  // override buildColumns(): IColumn<IUser>[] {
+  //   const columns: IColumn<IMeal>[] = [
+  //     {
+  //       title: "Name", // TODO: Translation
+  //       propertyName: "name",
+  //       propertyType: eColumnType.String,
+  //       filtrable: true,
+  //       hasExtraData: true,
+  //       style: { fontWeight: 500 },
+  //     },
+  //     {
+  //       title: "Last Name", // TODO: Translation
+  //       propertyName: "lastName",
+  //       propertyType: eColumnType.String,
+  //       filtrable: true,
+  //     },
+  //     {
+  //       title: "Email", // TODO: Translation
+  //       propertyName: "email",
+  //       propertyType: eColumnType.String,
+  //       filtrable: true,
+  //     },
+  //   ];
+
+  //   return columns;
+  // }
 }

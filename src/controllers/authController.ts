@@ -218,7 +218,6 @@ const register = catchAsync(async (req: any, res: any, next: any) => {
 
 const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
   const session = await mongoose.connection.startSession();
-  console.log("hereeeeee");
 
   await session.withTransaction(async () => {
     if (await checkIfUserExist(req.body.email)) {
