@@ -5,7 +5,4 @@ node_modules
 .vscode/*
 !.vscode/launch.json
 
-public/images/*
-!public/images/users/default.jpg
-!public/images/customers/default.png
 .env.development

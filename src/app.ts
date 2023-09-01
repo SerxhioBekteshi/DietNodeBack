@@ -10,9 +10,10 @@ const App = express();
 App.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
 App.use(cors());
+// App.use(express.static(__dirname + "/../public"));
 
 App.use("/public", express.static(path.join(__dirname, "../public")));
-
+// App.set("view engine", "html"); //maybe should not be here, it is added extra
 App.use(
   express.json({
     limit: "10kb",

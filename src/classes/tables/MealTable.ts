@@ -1,5 +1,7 @@
+import { eColumnType } from "../../enums";
 import { IMeal } from "../../interfaces/database";
 import { ITableRequest } from "../../interfaces/table";
+import IColumn from "../../interfaces/table/IColumn";
 import Meal from "../../models/mealModel";
 import BaseTable from "./BaseTable";
 
@@ -9,32 +11,52 @@ export default class MealTable extends BaseTable<IMeal> {
   }
 
   override buildColumnsToSearch(): (keyof IMeal)[] {
-    return ["name"];
+    return ["name", "dietCategory"];
+    // const columnNames = Object.keys(Meal.schema.paths);
+    // return columnNames
   }
-  // override buildColumns(): IColumn<IUser>[] {
-  //   const columns: IColumn<IMeal>[] = [
-  //     {
-  //       title: "Name", // TODO: Translation
-  //       propertyName: "name",
-  //       propertyType: eColumnType.String,
-  //       filtrable: true,
-  //       hasExtraData: true,
-  //       style: { fontWeight: 500 },
-  //     },
-  //     {
-  //       title: "Last Name", // TODO: Translation
-  //       propertyName: "lastName",
-  //       propertyType: eColumnType.String,
-  //       filtrable: true,
-  //     },
-  //     {
-  //       title: "Email", // TODO: Translation
-  //       propertyName: "email",
-  //       propertyType: eColumnType.String,
-  //       filtrable: true,
-  //     },
-  //   ];
+  override buildColumns(): IColumn<IMeal>[] {
+    const columns: IColumn<IMeal>[] = [
+      {
+        title: "Name", // TODO: Translation
+        propertyName: "name",
+        propertyType: eColumnType.String,
+        filtrable: true,
+        hasExtraData: true,
+        style: { fontWeight: 500 },
+      },
+      {
+        title: "Cousine", // TODO: Translation
+        propertyName: "cousine",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Carbon Footprint", // TODO: Translation
+        propertyName: "carbonFootprint",
+        propertyType: eColumnType.Number,
+        filtrable: true,
+      },
+      {
+        title: "Category", // TODO: Translation
+        propertyName: "dietCategory",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Calories", // TODO: Translation
+        propertyName: "calories",
+        propertyType: eColumnType.Number,
+        filtrable: true,
+      },
+      {
+        title: "Intolerance", // TODO: Translation
+        propertyName: "intolerance",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+    ];
 
-  //   return columns;
-  // }
+    return columns;
+  }
 }

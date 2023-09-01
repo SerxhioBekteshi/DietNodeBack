@@ -84,7 +84,9 @@ export default class BaseTable<T> {
       if (sort) {
         query.sort(sort);
       }
+
       const rows = await query.lean().exec();
+      const appliedFilter = query.getFilter();
       return rows;
     } catch (error) {
       throw error;
@@ -109,6 +111,7 @@ export default class BaseTable<T> {
 
   buildFilters(filters: IFilter[]) {
     let filterObj: any = this.buildSearch(this.search);
+    if (filters.length === 0 && filterObj) return filterObj;
     if (filters.length === 0) return null;
     filters.map((filter) => {
       const operation = buildOperation(filter.operation, filter.value);
