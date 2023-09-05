@@ -55,6 +55,24 @@ export default class MealTable extends BaseTable<IMeal> {
         propertyType: eColumnType.String,
         filtrable: true,
       },
+      {
+        title: "Actions",
+        propertyName: "actions",
+        propertyType: eColumnType.Actions,
+      },
+      {
+        title: "Icons",
+        propertyName: "Icons",
+        propertyType: eColumnType.Icons,
+        icons: [
+          {
+            icon: "edit",
+            color: "primary",
+            name: "pi pi-file-edit",
+          },
+          { icon: "delete", color: "danger", name: "pi pi-trash" },
+        ],
+      },
     ];
 
     return columns;
