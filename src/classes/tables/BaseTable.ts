@@ -86,7 +86,7 @@ export default class BaseTable<T> {
       }
 
       const rows = await query.lean().exec();
-      const appliedFilter = query.getFilter();
+
       return rows;
     } catch (error) {
       throw error;

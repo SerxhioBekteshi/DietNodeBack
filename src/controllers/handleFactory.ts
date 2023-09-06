@@ -10,15 +10,23 @@ import { IUser } from "../interfaces/database";
 // TODO: fix any types
 const deleteOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
-    const doc = await Model.findByIdAndDelete(req.params.id);
+    console.log(req.params.id);
+    const doc = await Model.findOne({ id: req.params.id });
 
-    if (!doc) {
+    if (doc) {
+      // Use the remove() method to delete the document
+      doc.remove((err: any) => {
+        if (err) {
+          return next(new AppError("Error deleting document", 404));
+        } else {
+          res.status(200).json({
+            message: `Record succesfully deleted.`,
+          });
+        }
+      });
+    } else {
       return next(new AppError("No document found with that id", 404));
     }
-
-    res.status(200).json({
-      message: `Record succesfully deleted.`,
-    });
   });
 
 const createOne = (Model: any) =>

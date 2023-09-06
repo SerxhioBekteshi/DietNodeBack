@@ -9,7 +9,7 @@ const router = express.Router();
 router.use("/authentication", authRouter);
 router.use("/user", userRouter);
 router.use("/menu", menuRoutes);
-router.use("/meal", mealRoutes);
+router.use("/meals", mealRoutes);
 router.use("/table", tableRoutes);
 
 export default router;

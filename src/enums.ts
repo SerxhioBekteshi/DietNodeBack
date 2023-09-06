@@ -10,6 +10,7 @@ export enum eColumnType {
   Actions,
   Select,
   Tags,
+  Image,
 }
 
 export enum eFilterOperator {

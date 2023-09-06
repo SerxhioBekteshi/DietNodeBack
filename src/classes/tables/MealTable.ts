@@ -32,6 +32,12 @@ export default class MealTable extends BaseTable<IMeal> {
         filtrable: true,
       },
       {
+        title: "Image", // TODO: Translation
+        propertyName: "image",
+        propertyType: eColumnType.Image,
+        filtrable: true,
+      },
+      {
         title: "Carbon Footprint", // TODO: Translation
         propertyName: "carbonFootprint",
         propertyType: eColumnType.Number,
@@ -56,9 +62,10 @@ export default class MealTable extends BaseTable<IMeal> {
         filtrable: true,
       },
       {
-        title: "Actions",
-        propertyName: "actions",
-        propertyType: eColumnType.Actions,
+        title: "Ingredients", // TODO: Translation
+        propertyName: "ingredients",
+        propertyType: eColumnType.Tags,
+        filtrable: true,
       },
       {
         title: "Icons",
