@@ -111,10 +111,12 @@ export default class BaseTable<T> {
 
   buildFilters(filters: IFilter[]) {
     let filterObj: any = this.buildSearch(this.search);
+
     if (filters.length === 0 && filterObj) return filterObj;
     if (filters.length === 0) return null;
     filters.map((filter) => {
       const operation = buildOperation(filter.operation, filter.value);
+
       filterObj[filter.columnName] = operation;
     });
     return filterObj;
@@ -126,9 +128,29 @@ export default class BaseTable<T> {
   buildSearch(search: string) {
     const pattern = new RegExp(`.*${search}.*`);
     const columnsToSearch = this.buildColumnsToSearch();
+
+    const myModel = mongoose.model(`${this.model}`, this.model.schema);
+
+    // Get all field names and their types that are of the "Number" type
+    const numberFields = Object.entries(myModel.schema.paths)
+      .filter(
+        ([fieldName, field]) => field instanceof mongoose.SchemaTypes.Number
+      )
+      .map(([fieldName]) => fieldName);
+
     if (search && columnsToSearch && columnsToSearch.length > 0) {
-      const filter = columnsToSearch.map((column) => {
-        return { [column]: { $regex: pattern, $options: "i" } };
+      const filter = columnsToSearch.map((column: any) => {
+        let filtersOnNumberColumns = {};
+        if (numberFields.includes(column)) {
+          Object.assign(filtersOnNumberColumns, {
+            [column]: parseFloat(search),
+          });
+        } else
+          Object.assign(filtersOnNumberColumns, {
+            [column]: { $regex: pattern, $options: "i" },
+          });
+
+        return filtersOnNumberColumns;
       });
       return { $or: filter };
     }

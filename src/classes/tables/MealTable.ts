@@ -11,7 +11,14 @@ export default class MealTable extends BaseTable<IMeal> {
   }
 
   override buildColumnsToSearch(): (keyof IMeal)[] {
-    return ["name", "dietCategory"];
+    return [
+      "name",
+      "dietCategory",
+      "cousine",
+      "intolerance",
+      "calories",
+      "carbonFootprint",
+    ];
     // const columnNames = Object.keys(Meal.schema.paths);
     // return columnNames
   }
