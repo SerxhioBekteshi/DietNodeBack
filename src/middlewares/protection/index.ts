@@ -35,10 +35,8 @@ const decodedToken = async (req: any, res: any, next: any) => {
 
 const protect = catchAsync(async (req: any, res: any, next: any) => {
   const decoded: any = await decodedToken(req, res, next);
-
   // Check if user still exists
   const freshUser = await User.findById(decoded.user._id);
-
   if (!freshUser) {
     return next(
       new AppError(
@@ -61,7 +59,7 @@ const protect = catchAsync(async (req: any, res: any, next: any) => {
   req.user = freshUser;
   res.locals.user = freshUser;
   req.roleId = freshUser.roleId;
-
+  req.role = freshUser.role;
   next();
 });
 

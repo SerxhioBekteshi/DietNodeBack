@@ -99,6 +99,12 @@ const check = async (user, Model, id) => {
   const modelInEdit: any = await Model.findOne({ id: id });
   if (modelInEdit.providerId !== user.id) return false;
   return true;
+
+  // const modelInEdit: any = await Model.findOne({ _id: id });
+  // if (Model.collection.name === "customers") {
+  // return (user.customer.toString() === id.toString() && user.role === eRoles.Admin);
+  // }
+  // return modelInEdit.customer.toString() === user.customer.toString();
 };
 const updateOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {

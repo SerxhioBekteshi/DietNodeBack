@@ -12,9 +12,15 @@ const menuSchema = new Schema<IMenu>({
     type: Number,
     required: true,
     default: 1,
+    ref: "Role",
   },
   collapisble: { type: Boolean },
   children: { type: Array<IMenu> },
+  menuType: {
+    type: String,
+    enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
+    default: eRoles.User,
+  },
 });
 
 AutoIncrement.initialize(mongoose.connection);

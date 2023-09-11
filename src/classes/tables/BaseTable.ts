@@ -6,7 +6,7 @@ import {
   ITableResponse,
 } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
-import { eSortType } from "../../enums";
+import { eRoles, eSortType } from "../../enums";
 import { buildOperation } from "../../utils";
 
 export default class BaseTable<T> {
@@ -45,6 +45,10 @@ export default class BaseTable<T> {
   total: number;
 
   data: ITableResponse<T>;
+
+  // canDelete(): boolean {
+  //   return [eRoles.Admin, eRoles.Manager].includes(this.user.role);
+  // }
 
   async initialize(): Promise<ITableResponse<T>> {
     this.columns = this.buildColumns();

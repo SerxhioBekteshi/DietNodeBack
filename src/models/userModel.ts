@@ -4,6 +4,7 @@ import { IUser, IMenu } from "../interfaces/database";
 import bcrypt from "bcryptjs";
 import authController from "../controllers/authController";
 import AutoIncrement from "mongoose-auto-increment";
+import { eRoles } from "../enums";
 
 const userSchema = new Schema<IUser>(
   {
@@ -55,6 +56,18 @@ const userSchema = new Schema<IUser>(
       required: true,
       ref: "Role",
     },
+    address: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
+      default: eRoles.User,
+    },
+    phoneNumber: String,
     quizFulfilled: {
       type: Boolean,
       default: false,

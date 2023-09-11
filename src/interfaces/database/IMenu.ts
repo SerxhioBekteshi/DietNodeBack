@@ -9,4 +9,5 @@ export interface IMenu {
   roleId: Number;
   collapisble: boolean;
   children?: Array<IMenu>;
+  menuType: eRoles;
 }

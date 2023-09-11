@@ -30,9 +30,9 @@ export enum eSortType {
 }
 
 export enum eRoles {
-  User = "User",
-  Manager = "Manager",
   Admin = "Admin",
+  Provider = "Provider",
+  User = "User",
 }
 
 export enum eSocketEvent {

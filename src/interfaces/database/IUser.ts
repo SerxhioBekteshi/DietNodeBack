@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { eRoles, eStatus } from "../../enums";
+import { eRoles } from "../../enums";
 import { IMenu } from "./IMenu";
 export interface IVacationAllocation {
   allocationDate: Date;
@@ -11,10 +11,13 @@ export interface IUser {
   _id: Schema.Types.ObjectId;
   name: string;
   roleId: Number;
+  role: eRoles;
   quizFulfilled: Boolean;
   accountSubmitted: Boolean;
   nipt: String;
   termsAgreed: String;
+  address: String;
+  state: String;
   photo: string;
   email: string;
   createdAt: Date;
