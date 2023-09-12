@@ -19,10 +19,7 @@ router.get("/", userController.getAllUsers);
 router.get("/me", userController.getUserDetail);
 router.get("/activeUsers", userController.activeUsers);
 router.put("/updatePassword", authController.updatePassword);
-// TODO:
 
-// 1. allow user to deactivate his user or not
-// 2. block user to update his position and other policies
 router
   .route("/:id")
   .get(userController.getUser)
@@ -36,10 +33,10 @@ router.post(
   userController.updateProfileImage
 );
 
-router.post("/language", userController.updateLanguage);
+// router.post("/language", userController.updateLanguage);
 
 // all route handlers below can be accessed from Admin and Manager Roles
-router.use(restrictTo(eRoles.Admin));
+router.use(restrictTo(eRoles.Admin, eRoles.Provider));
 
 router.post("/", assignTo, userController.createUserController);
 

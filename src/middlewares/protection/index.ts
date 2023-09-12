@@ -45,7 +45,6 @@ const protect = catchAsync(async (req: any, res: any, next: any) => {
       )
     );
   }
-
   // Check if user changed password after the token was issued
   if (freshUser.changePasswordAfter(decoded.iat)) {
     return next(

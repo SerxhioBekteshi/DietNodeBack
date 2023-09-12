@@ -41,6 +41,8 @@ const fileFilter = (req: any, file: any, cb: any) => {
 const uploadImage = multer({ storage: storage, fileFilter: fileFilter });
 
 const uploadMealImage = async (req, res, next) => {
+  if (!req.file) return next(new AppError("No file", 404));
+
   const meal = await Meal.findOne({ id: req.params.id });
   if (!meal) return next(new AppError("No doc find with that id", 404));
 

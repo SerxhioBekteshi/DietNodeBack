@@ -65,11 +65,15 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
 const updateProfileImage = async (req, res, next) => {
   if (!req.file) return next();
 
-  await User.findByIdAndUpdate(
+  const ss = await User.findByIdAndUpdate(
     { _id: req.user._id },
     { photo: req.file.filename }
   );
-  await deleteFile(`public/images/users/${req.user.photo}`);
+
+  console.log(ss);
+
+  if (req.user.photo !== "default.jpg")
+    await deleteFile(`public/images/users/${req.user.photo}`);
 
   res.status(200).json({ fileName: req.file.filename });
 };
@@ -79,13 +83,13 @@ const createUserController = catchAsync(async (req, res, next) => {
   res.status(200).json(newUser);
 });
 
-const updateLanguage = catchAsync(async (req, res, next) => {
-  const filter = { _id: req.user._id };
-  const updateStatus = await User.updateOne(filter, {
-    language: req.body.language,
-  });
-  res.json(updateStatus.ok);
-});
+// const updateLanguage = catchAsync(async (req, res, next) => {
+//   const filter = { _id: req.user._id };
+//   const updateStatus = await User.updateOne(filter, {
+//     language: req.body.language,
+//   });
+//   res.json(updateStatus.ok);
+// });
 
 export default {
   createUser,
@@ -99,5 +103,5 @@ export default {
   updateProfileImage,
   createUserController,
   resizeUserPhoto,
-  updateLanguage,
+  // updateLanguage,
 };
