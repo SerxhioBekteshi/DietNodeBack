@@ -20,6 +20,7 @@ router.get("/me", userController.getUserDetail);
 router.get("/activeUsers", userController.activeUsers);
 router.put("/updatePassword", authController.updatePassword);
 
+router.put("/update", userController.updateLoggedUser);
 router
   .route("/:id")
   .get(userController.getUser)

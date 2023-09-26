@@ -120,7 +120,6 @@ const updateOne = (Model: any) =>
           new AppError("There are no data for updating the doc.", 400)
         );
       }
-      // const doc = await Model.findOne({ id: req.params.id });
 
       const doc = await Model.findOneAndUpdate(
         { id: req.params.id },
@@ -136,8 +135,7 @@ const updateOne = (Model: any) =>
       }
       return res.status(200).json({ doc: doc, message: "Update successfully" });
     }
-
-    return next(new AppError("You do not have rights for access!", 400));
+    // return next(new AppError("You do not have rights for access!", 400));
   });
 
 export { deleteOne, createOne, getAll, getOne, updateOne, getUserByTokenId };

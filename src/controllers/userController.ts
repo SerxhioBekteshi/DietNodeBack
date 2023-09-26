@@ -11,6 +11,7 @@ import { catchAsync } from "../utils/catchAsync";
 import multer from "multer";
 import { AppError } from "../utils/appError";
 import deleteFile from "../utils/deleteFile";
+import { isObjEmpty } from "../utils";
 // import HolidayConfig from "../models/holidayConfig";
 
 const createUser = createOne(User);
@@ -83,13 +84,23 @@ const createUserController = catchAsync(async (req, res, next) => {
   res.status(200).json(newUser);
 });
 
-// const updateLanguage = catchAsync(async (req, res, next) => {
-//   const filter = { _id: req.user._id };
-//   const updateStatus = await User.updateOne(filter, {
-//     language: req.body.language,
-//   });
-//   res.json(updateStatus.ok);
-// });
+const updateLoggedUser = async (req: any, res: any, next: any) => {
+  if (isObjEmpty(req.body)) {
+    return next(new AppError("There are no data for updating the user.", 400));
+  } else {
+    const user = await User.findOneAndUpdate({ id: req.user.id }, req.body, {
+      new: true,
+    });
+    if (!user) {
+      return next(
+        new AppError("Could not update your data, something went wrong", 500)
+      );
+    }
+    res
+      .status(200)
+      .json({ user: user, message: "Your data were updated succesfully" });
+  }
+};
 
 export default {
   createUser,
@@ -103,5 +114,5 @@ export default {
   updateProfileImage,
   createUserController,
   resizeUserPhoto,
-  // updateLanguage,
+  updateLoggedUser,
 };
