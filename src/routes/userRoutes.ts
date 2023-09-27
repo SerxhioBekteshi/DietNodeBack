@@ -17,7 +17,13 @@ router.post("/resetpassword", authController.resetPassowrd);
 router.use(protect);
 router.get("/", userController.getAllUsers);
 router.get("/me", userController.getUserDetail);
-router.get("/activeUsers", userController.activeUsers);
+
+router.get("/providers/get-all", userController.getProviders);
+router.put(
+  "/provider/controlSubmission/:id",
+  userController.submitUnsubmitProvider
+);
+
 router.put("/updatePassword", authController.updatePassword);
 
 router.put("/update", userController.updateLoggedUser);

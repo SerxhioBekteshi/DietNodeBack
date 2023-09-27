@@ -46,7 +46,6 @@ const createSendSession = (
   // Remove the password from output
   user.password = undefined;
   const session: ISession = createSession(user);
-  console.log(session, "", user, "akdkshjs");
 
   const accessToken = signAccessToken(session);
   const refreshToken = signRefreshToken(session.sessionId, user._id);
@@ -252,7 +251,6 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
       phoneNumber,
       password,
       passwordConfirm,
-
       nipt,
       termsAgreed,
       roleId: 2,
@@ -355,7 +353,7 @@ const forgotPassowrd = catchAsync(async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    console.log(err);
+
     return next(
       new AppError(
         "There was an error sending the email. Try again later!",

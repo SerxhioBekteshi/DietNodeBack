@@ -12,6 +12,8 @@ import multer from "multer";
 import { AppError } from "../utils/appError";
 import deleteFile from "../utils/deleteFile";
 import { isObjEmpty } from "../utils";
+import { eRoles } from "../enums";
+import { APIFeatures } from "../utils/apiFeatures";
 // import HolidayConfig from "../models/holidayConfig";
 
 const createUser = createOne(User);
@@ -26,12 +28,47 @@ const getAllUsers = getAll(User);
 
 const deleteUser = deleteOne(User);
 
-const activeUsers = async (req: any, res: any, next: any) => {
-  const usersCount = await User.countDocuments({ customer: req.user.customer });
-  res.json(usersCount);
+const getProviders = async (req: any, res: any, next: any) => {
+  const features = new APIFeatures(
+    User.find({ role: eRoles.Provider }),
+    req.query
+  )
+    .filter()
+    .sort()
+    .limitFiels()
+    .pagination();
+
+  const doc = await features.query;
+
+  const notSubmittedAccounts = doc.filter(
+    (account: any) => account.accountSubmitted === false
+  );
+  const submittedAccounts = doc.filter(
+    (account: any) => account.accountSubmitted === true
+  );
+
+  res.status(200).json({ notSubmittedAccounts, submittedAccounts });
+};
+
+const submitUnsubmitProvider = async (req: any, res: any, next: any) => {
+  const provider = await User.findOne({ id: req.params.id });
+  if (!provider) {
+    return next(new AppError("No provider found with that id", 404));
+  } else {
+    if (req.body.submit) provider.accountSubmitted = true;
+    else {
+      provider.accountSubmitted = false;
+    }
+    await provider.save();
+    res
+      .status(200)
+      .json({
+        message: `Account ${req.body.submit ? "submitted" : "unsubmitted"}`,
+        account: provider,
+      });
+  }
 };
 // TODO: refactor image upload for
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/images/users");
@@ -65,7 +102,7 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
 
 const updateProfileImage = async (req, res, next) => {
   if (!req.file) return next();
-
+  console.log(req.user.photo, "photo");
   const ss = await User.findByIdAndUpdate(
     { _id: req.user._id },
     { photo: req.file.filename }
@@ -109,7 +146,8 @@ export default {
   updateUser,
   deleteUser,
   getUserDetail,
-  activeUsers,
+  getProviders,
+  submitUnsubmitProvider,
   uploadImage,
   updateProfileImage,
   createUserController,

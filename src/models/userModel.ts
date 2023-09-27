@@ -44,7 +44,7 @@ const userSchema = new Schema<IUser>(
     },
     gender: {
       type: String,
-      enum: ["Male", "Female"],
+      enum: ["male", "female"],
       // required: [true, "A user must have a gender."],
     },
     birthDate: {

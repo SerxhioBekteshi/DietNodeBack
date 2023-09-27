@@ -10,7 +10,6 @@ import { IUser } from "../interfaces/database";
 // TODO: fix any types
 const deleteOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
-    console.log(req.params.id);
     const doc = await Model.findOne({ id: req.params.id });
 
     if (doc) {
