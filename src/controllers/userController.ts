@@ -60,12 +60,10 @@ const submitUnsubmitProvider = async (req: any, res: any, next: any) => {
       provider.accountSubmitted = false;
     }
     await provider.save();
-    res
-      .status(200)
-      .json({
-        message: `Account ${req.body.submit ? "submitted" : "unsubmitted"}`,
-        account: provider,
-      });
+    res.status(200).json({
+      message: `Account ${req.body.submit ? "submitted" : "unsubmitted"}`,
+      account: provider,
+    });
   }
 };
 // TODO: refactor image upload for
@@ -116,11 +114,6 @@ const updateProfileImage = async (req, res, next) => {
   res.status(200).json({ fileName: req.file.filename });
 };
 
-const createUserController = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
-  res.status(200).json(newUser);
-});
-
 const updateLoggedUser = async (req: any, res: any, next: any) => {
   if (isObjEmpty(req.body)) {
     return next(new AppError("There are no data for updating the user.", 400));
@@ -150,7 +143,6 @@ export default {
   submitUnsubmitProvider,
   uploadImage,
   updateProfileImage,
-  createUserController,
   resizeUserPhoto,
   updateLoggedUser,
 };
