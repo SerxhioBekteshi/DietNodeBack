@@ -4,12 +4,14 @@ import tableRoutes from "./tableRoutes";
 import menuRoutes from "./menuRoutes";
 import authRouter from "./authRoutes";
 import mealRoutes from "./mealRoutes";
+import quizRoutes from "./quizRoutes";
 const router = express.Router();
 
 router.use("/authentication", authRouter);
 router.use("/user", userRouter);
 router.use("/menu", menuRoutes);
 router.use("/meals", mealRoutes);
+router.use("/quiz", quizRoutes);
 router.use("/table", tableRoutes);
 
 export default router;
