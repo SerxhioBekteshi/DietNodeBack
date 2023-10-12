@@ -108,7 +108,6 @@ const check = async (user, Model, id) => {
 const updateOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
     const hasPermission = await check(req.user, Model, req.params.id);
-    console.log(hasPermission, "awdawdawd");
     if (true) {
       // TODO: Discuss possilble combinations where pw can be changed
       if (req.body.password) {
