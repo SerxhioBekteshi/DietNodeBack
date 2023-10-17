@@ -16,20 +16,26 @@ const MealSchema = new Schema<IMeal>(
     },
     ingredients: { type: Array<IIngredients>, required: false, default: [] },
     cousine: {
+      //
       type: String,
       required: true,
     },
     carbonFootprint: {
       type: Number,
-      required: true,
+      required: false,
     },
     dietCategory: {
+      //
       type: String,
       required: true,
     },
     calories: {
       type: Number,
       required: true,
+    },
+    achievement: {
+      type: String,
+      required: false,
     },
     intolerance: {
       type: String,
