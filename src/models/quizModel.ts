@@ -17,6 +17,7 @@ const quizSchema = new Schema<IQuiz>({
   },
   questionOptions: { type: Array<IFieldAnswers>, required: true },
   order: { type: Number, required: true },
+  fieldName: { type: String, required: true },
 });
 
 AutoIncrement.initialize(mongoose.connection);
