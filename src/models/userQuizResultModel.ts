@@ -24,7 +24,7 @@ const userQuizResult = new Schema<IUserQuizResult>(
 AutoIncrement.initialize(mongoose.connection);
 
 userQuizResult.plugin(AutoIncrement.plugin, {
-  model: "Role",
+  model: "UserQuizResult",
   field: "id",
   startAt: 1,
   incrementBy: 1,
