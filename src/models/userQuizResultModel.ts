@@ -15,7 +15,7 @@ const userQuizResult = new Schema<IUserQuizResult>(
       ref: "User",
     },
     quizResult: {
-      type: String,
+      type: Object,
       required: true,
     },
   },
