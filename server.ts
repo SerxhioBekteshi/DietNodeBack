@@ -5,7 +5,7 @@ import socket from "./socket";
 import database from "./database";
 // import {
 //   initializeAdmin,
-//   initializeMenuItems,
+// initializeMenuItems,
 //   initializeRoles,
 // } from "./src/utils";
 

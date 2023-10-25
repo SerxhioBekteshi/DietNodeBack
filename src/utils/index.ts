@@ -91,49 +91,63 @@ export const initializeAdmin = async function () {
 
 export const initializeMenuItems = async function () {
   const menuItems = [
-    { id: 1, label: "Admin Main Page", icon: "pi pi-user", to: "/", roleId: 1 },
-    {
-      id: 2,
-      label: "Provider accounts",
-      icon: "pi pi-question",
-      to: "/providers/registration",
-      roleId: 1,
-    },
-    {
-      id: 3,
-      label: "Quiz configuration",
-      icon: "pi pi-question",
-      to: "/quiz",
-      roleId: 1,
-    },
-    {
-      id: 4,
-      label: "Orders",
-      icon: "pi pi-calculator",
-      to: "/orders",
-      roleId: 1,
-    },
-    {
-      id: 5,
-      label: "Provider Main Page",
-      icon: "pi pi-user",
-      to: "/",
-      roleId: 2,
-    },
-    {
-      id: 6,
-      label: "Meals",
-      icon: "pi pi-box",
-      to: "/meals",
-      roleId: 2,
-    },
-    {
-      id: 7,
-      label: "Orders",
-      icon: "pi pi-calculator",
-      to: "/orders",
-      roleId: 2,
-    },
+    // { id: 1, label: "Admin Main Page", icon: "pi pi-user", to: "/", roleId: 1 },
+    // {
+    //   id: 2,
+    //   label: "Provider accounts",
+    //   icon: "pi pi-question",
+    //   to: "/providers/registration",
+    //   roleId: 1,
+    // },
+    // {
+    //   id: 3,
+    //   label: "Quiz configuration",
+    //   icon: "pi pi-question",
+    //   to: "/quiz",
+    //   roleId: 1,
+    // },
+    // {
+    //   id: 4,
+    //   label: "Orders",
+    //   icon: "pi pi-calculator",
+    //   to: "/orders",
+    //   roleId: 1,
+    // },
+    // {
+    //   id: 5,
+    //   label: "Provider Main Page",
+    //   icon: "pi pi-user",
+    //   to: "/",
+    //   roleId: 2,
+    // },
+    // {
+    //   id: 6,
+    //   label: "Meals",
+    //   icon: "pi pi-box",
+    //   to: "/meals",
+    //   roleId: 2,
+    // },
+    // {
+    //   id: 7,
+    //   label: "Orders",
+    //   icon: "pi pi-calculator",
+    //   to: "/orders",
+    //   roleId: 2,
+    // },
+    // {
+    //   id: 8,
+    //   label: "Meals",
+    //   icon: "pi pi-box",
+    //   to: "/meals",
+    //   roleId: 3,
+    // },
+    // {
+    //   id: 9,
+    //   label: "Orders",
+    //   icon: "pi pi-calculator",
+    //   to: "/orders",
+    //   roleId: 3,
+    // },
   ];
 
   return Menu.insertMany(menuItems);
