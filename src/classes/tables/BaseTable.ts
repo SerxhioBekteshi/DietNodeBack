@@ -8,15 +8,17 @@ import {
 import IColumn from "../../interfaces/table/IColumn";
 import { eRoles, eSortType } from "../../enums";
 import { buildOperation } from "../../utils";
+import { IUser } from "../../interfaces/database";
 
 export default class BaseTable<T> {
-  constructor(model: mongoose.Model<T>, request: ITableRequest) {
+  constructor(model: mongoose.Model<T>, request: ITableRequest, user: IUser) {
     this.model = model;
     this.page = request.page;
     this.pageSize = request.pageSize;
     this.sorting = request.sorting || [];
     this.filters = request.filters || [];
     this.search = request.search;
+    this.user = user;
   }
 
   key: string = "_id";
@@ -34,6 +36,9 @@ export default class BaseTable<T> {
   sorting: ISort[] = [];
 
   rows: any[];
+
+  user: IUser = null;
+
   // rows: mongoose.IfAny<
   //   T,
   //   any,

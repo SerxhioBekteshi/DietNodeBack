@@ -6,8 +6,8 @@ import IColumn from "../../interfaces/table/IColumn";
 import { eColumnType } from "../../enums";
 
 export default class UserTable extends BaseTable<IUser> {
-  constructor(request: ITableRequest) {
-    super(User, request);
+  constructor(request: ITableRequest, user: any) {
+    super(User, request, user);
   }
   override async buildRows(): Promise<any> {
     const rows = await super.buildRows();

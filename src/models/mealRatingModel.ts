@@ -19,6 +19,10 @@ const MealRatingSchema = new Schema<IMealRating>(
       ref: "Meal",
       required: true,
     },
+    rating: {
+      type: Number,
+      required: true,
+    },
   }
   // { timestamps: true }
 );

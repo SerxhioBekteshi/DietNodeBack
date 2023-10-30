@@ -65,13 +65,24 @@ const createMeal = catchAsync(async (req: any, res: any) => {
 const rateMeal = catchAsync(async (req: any, res: any, next: any) => {
   const meal = await Meal.findOne({ id: req.params.id });
   if (!meal) {
-    return next(new AppError("No doc find with that id", 404));
+    return next(new AppError("No meal found with that id", 404));
   }
 
-  const mealRatingDoc = await MealRating.create({
+  const mealRating = await MealRating.findOne({
     mealId: req.params.id,
     userId: req.user.id,
   });
+  if (!mealRating) {
+    await MealRating.create({
+      mealId: req.params.id,
+      userId: req.user.id,
+      rating: req.body.rating,
+    });
+  } else {
+    mealRating.rating = req.body.rating;
+    await mealRating.save();
+  }
+
   res.status(200).json({
     message: "Meal rated",
   });
