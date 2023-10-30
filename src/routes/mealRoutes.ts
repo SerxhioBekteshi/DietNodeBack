@@ -20,7 +20,7 @@ router.put(
   mealController.uploadImage.single("image"),
   mealController.uploadMealImage
 );
-
+router.put("/rate/:id", mealController.rateMeal);
 // all route handlers below can be accessed from Admin and Manager Roles
 // router.use(restrictTo(eRoles.Admin));
 

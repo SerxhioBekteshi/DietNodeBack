@@ -5,6 +5,15 @@ import IQuiz from "./IQuiz";
 import { IRole } from "./IRole";
 import { IUser } from "./IUser";
 import { IUserQuizResult } from "./IUserQuizResult";
+import IMealRating from "./IMealRating";
 
-// TODO: Discuss in: In my opinion this file is not needed
-export { IUser, IMeal, IMenu, IQuiz, IUserQuizResult, IRole, IFieldAnswers };
+export {
+  IUser,
+  IMeal,
+  IMenu,
+  IQuiz,
+  IUserQuizResult,
+  IRole,
+  IFieldAnswers,
+  IMealRating,
+};

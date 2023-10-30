@@ -11,4 +11,5 @@ export default interface IMeal {
   intolerance: string;
   image: string;
   providerId: number;
+  rating: number;
 }

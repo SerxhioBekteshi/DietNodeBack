@@ -8,6 +8,8 @@ import {
   updateOne,
 } from "./handleFactory";
 import { AppError } from "../utils/appError";
+import { catchAsync } from "../utils/catchAsync";
+import MealRating from "../models/mealRatingModel";
 
 // const createMeal = createOne(Meal);
 
@@ -54,11 +56,26 @@ const uploadMealImage = async (req, res, next) => {
   if (result) return res.status(200).json({ message: "Update successfully" });
 };
 
-const createMeal = async (req: any, res: any) => {
+const createMeal = catchAsync(async (req: any, res: any) => {
   req.body.providerId = req.user.id;
   const doc = await Meal.create(req.body);
   res.status(200).json({ doc: doc, message: "Created successfully" });
-};
+});
+
+const rateMeal = catchAsync(async (req: any, res: any, next: any) => {
+  const meal = await Meal.findOne({ id: req.params.id });
+  if (!meal) {
+    return next(new AppError("No doc find with that id", 404));
+  }
+
+  const mealRatingDoc = await MealRating.create({
+    mealId: req.params.id,
+    userId: req.user.id,
+  });
+  res.status(200).json({
+    message: "Meal rated",
+  });
+});
 
 export default {
   createMeal,
@@ -68,4 +85,5 @@ export default {
   deleteMeal,
   uploadImage,
   uploadMealImage,
+  rateMeal,
 };

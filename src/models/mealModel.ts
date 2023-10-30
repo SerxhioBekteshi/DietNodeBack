@@ -41,6 +41,9 @@ const MealSchema = new Schema<IMeal>(
       type: String,
       required: true,
     },
+    rating: {
+      type: Number,
+    },
     image: {
       type: String,
       default: "public/images/meals/default.jpeg",
