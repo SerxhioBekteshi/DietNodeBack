@@ -148,6 +148,13 @@ export const initializeMenuItems = async function () {
     //   to: "/orders",
     //   roleId: 3,
     // },
+    {
+      id: 10,
+      label: "Meals Configurations",
+      icon: "pi pi-calculator",
+      to: "/mealsConfigurations",
+      roleId: 1,
+    },
   ];
 
   return Menu.insertMany(menuItems);

@@ -8,5 +8,6 @@ const router = express.Router();
 router.use(protect);
 router.use(restrictTo(eRoles.Admin, eRoles.User));
 router.post("", userQuizController.createQuizResultRow);
+router.get("/get-all", userQuizController.getQuizResultsForLoggedUser);
 
 export default router;

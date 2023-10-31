@@ -19,7 +19,6 @@ export default class MealTable extends BaseTable<IMeal> {
   override async buildRows(): Promise<IMeal[]> {
     try {
       const matchFilters = this.buildFilters(this.filters);
-
       let ratings = null;
       let ratingsMap = null;
       // if (this.user.role === eRoles.Provider) {
