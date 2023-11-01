@@ -19,9 +19,9 @@ export default class MealTable extends BaseTable<IMeal> {
   override async buildRows(): Promise<IMeal[]> {
     try {
       const matchFilters = this.buildFilters(this.filters);
+
       let ratings = null;
       let ratingsMap = null;
-      // if (this.user.role === eRoles.Provider) {
       ratings = await MealRating.aggregate([
         {
           $group: {
@@ -34,8 +34,6 @@ export default class MealTable extends BaseTable<IMeal> {
       ratingsMap = new Map(
         ratings.map((rating: any) => [rating._id, rating.avgRating])
       );
-      // } else {
-      // }
 
       const pipeline = [
         {
@@ -61,7 +59,6 @@ export default class MealTable extends BaseTable<IMeal> {
             ratings: 0,
           },
         },
-
         {
           $skip: (this.page - 1) * this.pageSize,
         },

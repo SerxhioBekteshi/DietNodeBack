@@ -126,9 +126,18 @@ export default class BaseTable<T> {
     filters.map((filter) => {
       const operation = buildOperation(filter.operation, filter.value);
 
-      filterObj[filter.columnName] = operation;
+      if (filterObj[filter.columnName]) {
+        filterObj[filter.columnName] = this.mergeFilters(
+          filterObj[filter.columnName],
+          operation
+        );
+      } else filterObj[filter.columnName] = operation;
     });
     return filterObj;
+  }
+
+  mergeFilters(existingFilter: any, newFilter: any) {
+    return { ...existingFilter, ...newFilter };
   }
 
   buildColumnsToSearch(): (keyof T)[] {

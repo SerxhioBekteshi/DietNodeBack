@@ -30,6 +30,13 @@ export const buildOperation = (operation: eFilterOperator, value: any) => {
       return { $lt: value };
     case eFilterOperator.LessThan:
       return { $lte: value };
+    // case eFilterOperator.Between:
+    //   const splitValue = value.split("-");
+    //   return {
+    //     $regex: new RegExp(
+    //       `^(${Number(splitValue[0])}-${Number(splitValue[1])})$`
+    //     ),
+    //   };
   }
 };
 

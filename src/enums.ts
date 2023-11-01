@@ -23,6 +23,7 @@ export enum eFilterOperator {
   LessOrEqual,
   GreaterThan,
   GreaterOrEqual,
+  Between,
 }
 export enum eSortType {
   Asc,
