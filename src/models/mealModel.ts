@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, SchemaTypes, model } from "mongoose";
 import { IMeal } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
 import { IIngredients } from "../interfaces/database/IIngredients";
@@ -47,6 +47,11 @@ const MealSchema = new Schema<IMeal>(
     image: {
       type: String,
       default: "public/images/meals/default.jpeg",
+    },
+    price: {
+      type: Number,
+      default: 0,
+      required: true,
     },
     providerId: {
       type: Number,

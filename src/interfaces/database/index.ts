@@ -6,6 +6,7 @@ import { IRole } from "./IRole";
 import { IUser } from "./IUser";
 import { IUserQuizResult } from "./IUserQuizResult";
 import IMealRating from "./IMealRating";
+import IOrder from "./IOrder";
 
 export {
   IUser,
@@ -16,4 +17,5 @@ export {
   IRole,
   IFieldAnswers,
   IMealRating,
+  IOrder,
 };
