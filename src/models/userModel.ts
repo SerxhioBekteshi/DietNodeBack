@@ -4,7 +4,7 @@ import { IUser, IMenu } from "../interfaces/database";
 import bcrypt from "bcryptjs";
 import authController from "../controllers/authController";
 import AutoIncrement from "mongoose-auto-increment";
-import { eRoles } from "../enums";
+import { ePaymentMethod, eRoles } from "../enums";
 
 const userSchema = new Schema<IUser>(
   {
@@ -58,6 +58,10 @@ const userSchema = new Schema<IUser>(
     },
     address: {
       type: String,
+    },
+    paymentMethod: {
+      type: String,
+      enum: [ePaymentMethod.Stripe, ePaymentMethod.Paypal],
     },
     state: {
       type: String,

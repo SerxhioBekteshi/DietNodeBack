@@ -45,3 +45,8 @@ export enum eSocketEvent {
   JoinRoom = "join-room",
   Disconnect = "disconnect",
 }
+
+export enum ePaymentMethod {
+  Stripe = "Stripe",
+  Paypal = "Paypal",
+}
