@@ -50,3 +50,9 @@ export enum ePaymentMethod {
   Stripe = "Stripe",
   Paypal = "Paypal",
 }
+
+export enum eOrderStatus {
+  Completed = "Completed",
+  Rejected = "Rejected",
+  Pending = "Pending",
+}

@@ -1,15 +1,19 @@
 import { getAll } from "./handleFactory";
 // import { AppError } from "../utils/appError";
 import Order from "../models/OrderModel";
+import { catchAsync } from "../utils/catchAsync";
 
 const getOrders = getAll(Order);
 
-// const createQuizRow = async (req: any, res: any) => {
-//   const doc = await Quiz.create(req.body);
-//   res.status(200).json({ doc: doc, message: "Quiz done successfully" });
-// };
+const createOrder = catchAsync((req: any, res: any) => {
+  req.body.orderIdGenerated = req.body.id;
+  delete req.body.id;
+
+  req.body.paypalAccount = req.body.payer;
+  delete req.body.payer;
+});
 
 export default {
-  //   createQuizRow,
+  createOrder,
   getOrders,
 };

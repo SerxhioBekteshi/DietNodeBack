@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IOrder } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
+import { eOrderStatus } from "../enums";
 
 const OrderSchema = new Schema<IOrder>(
   {
@@ -9,22 +10,36 @@ const OrderSchema = new Schema<IOrder>(
       required: true,
       unique: true,
     },
-    userId: {
+    orderIdGenerated: {
+      type: String,
+    },
+    userAccountId: {
       type: Number,
       ref: "User",
       required: true,
     },
-    mealId: {
-      type: Number,
-      ref: "Meal",
-      required: true,
+    userPaypal: {
+      type: Object,
     },
-    quantity: {
-      type: Number,
-      required: true,
+    create_time: {
+      type: Date,
     },
-    totalPaid: {
-      type: Number,
+    intent: {
+      type: String,
+    },
+    links: {
+      type: Array,
+    },
+    purchase_units: {
+      type: Array,
+    },
+    status: {
+      type: String,
+      enum: [
+        eOrderStatus.Completed,
+        eOrderStatus.Rejected,
+        eOrderStatus.Pending,
+      ],
     },
   },
   { timestamps: true }

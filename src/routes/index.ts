@@ -5,7 +5,8 @@ import menuRoutes from "./menuRoutes";
 import authRouter from "./authRoutes";
 import mealRoutes from "./mealRoutes";
 import quizRoutes from "./quizRoutes";
-import QuizResultRoutes from "./userQuizResultRoutes";
+import paymentRoutes from "./paymentRoutes";
+import quizResultRoutes from "./userQuizResultRoutes";
 const router = express.Router();
 
 router.use("/authentication", authRouter);
@@ -14,6 +15,7 @@ router.use("/menu", menuRoutes);
 router.use("/meals", mealRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/table", tableRoutes);
-router.use("/quizResult", QuizResultRoutes);
+router.use("/quizResult", quizResultRoutes);
+router.use("/payment", paymentRoutes);
 
 export default router;
