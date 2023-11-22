@@ -11,6 +11,7 @@ export enum eColumnType {
   Select,
   Tags,
   Image,
+  Status,
 }
 
 export enum eFilterOperator {
@@ -52,7 +53,7 @@ export enum ePaymentMethod {
 }
 
 export enum eOrderStatus {
-  Completed = "Completed",
-  Rejected = "Rejected",
-  Pending = "Pending",
+  Completed = "COMPLETED",
+  Rejected = "REJECTED",
+  Pending = "PENDING",
 }

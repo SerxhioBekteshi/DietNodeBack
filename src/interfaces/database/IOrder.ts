@@ -1,6 +1,7 @@
-export default interface IQuiz {
+import { eOrderStatus } from "../../enums";
+
+export default interface IOrder {
   id: number;
   userId: number;
-  mealId: number;
-  quantity: number;
+  status: eOrderStatus;
 }

@@ -10,28 +10,10 @@ const OrderSchema = new Schema<IOrder>(
       required: true,
       unique: true,
     },
-    orderIdGenerated: {
-      type: String,
-    },
-    userAccountId: {
+    userId: {
       type: Number,
       ref: "User",
       required: true,
-    },
-    userPaypal: {
-      type: Object,
-    },
-    create_time: {
-      type: Date,
-    },
-    intent: {
-      type: String,
-    },
-    links: {
-      type: Array,
-    },
-    purchase_units: {
-      type: Array,
     },
     status: {
       type: String,

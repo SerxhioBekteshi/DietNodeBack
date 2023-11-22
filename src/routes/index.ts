@@ -6,6 +6,7 @@ import authRouter from "./authRoutes";
 import mealRoutes from "./mealRoutes";
 import quizRoutes from "./quizRoutes";
 import paymentRoutes from "./paymentRoutes";
+import orderRoutes from "./OrderRoutes";
 import quizResultRoutes from "./userQuizResultRoutes";
 const router = express.Router();
 
@@ -17,5 +18,6 @@ router.use("/quiz", quizRoutes);
 router.use("/table", tableRoutes);
 router.use("/quizResult", quizResultRoutes);
 router.use("/payment", paymentRoutes);
+router.use("/order", orderRoutes);
 
 export default router;
