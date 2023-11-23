@@ -12,6 +12,8 @@ export enum eColumnType {
   Tags,
   Image,
   Status,
+  Array,
+  Object,
 }
 
 export enum eFilterOperator {

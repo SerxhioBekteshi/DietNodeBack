@@ -16,10 +16,18 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
   //     // return columnNames
   //   }
 
-  override async buildRows(): Promise<IOrderDetails[]> {
-    const rows = this.buildRows();
-    return rows;
+  override async buildRows(): Promise<any> {
+    const rows = await super.buildRows();
+    const res = rows.map((row: any) => {
+      const newRow = row;
+      return {
+        ...newRow,
+        valuePaid: `${newRow.valuePaid}` + ` ${newRow.currency}`,
+      };
+    });
+    return res;
   }
+
   override buildColumns(): IColumn<IOrderDetails>[] {
     const columns: IColumn<IOrderDetails>[] = [
       {
@@ -31,19 +39,13 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
       {
         title: "Order ID payal",
         propertyName: "orderIdGenerated",
-        propertyType: eColumnType.Status,
+        propertyType: eColumnType.String,
         filtrable: true,
       },
       {
-        title: "payer",
-        propertyName: "createdAt",
-        propertyType: eColumnType.DateTime,
-        filtrable: true,
-      },
-      {
-        title: "Time created",
-        propertyName: "create_time",
-        propertyType: eColumnType.DateTime,
+        title: "Payer",
+        propertyName: "payer",
+        propertyType: eColumnType.Object,
         filtrable: true,
       },
       {
@@ -53,15 +55,39 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
         filtrable: true,
       },
       {
-        title: "Links",
-        propertyName: "links",
-        propertyType: eColumnType.Select,
+        title: "Description",
+        propertyName: "description",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Value Paid",
+        propertyName: "valuePaid",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Address",
+        propertyName: "address",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Link",
+        propertyName: "link",
+        propertyType: eColumnType.Link,
         filtrable: true,
       },
       {
         title: "Items",
-        propertyName: "Purchase Units",
-        propertyType: eColumnType.Select,
+        propertyName: "purchase_units",
+        propertyType: eColumnType.Array,
+        filtrable: true,
+      },
+      {
+        title: "Time created",
+        propertyName: "create_time",
+        propertyType: eColumnType.DateTime,
         filtrable: true,
       },
     ];

@@ -29,12 +29,27 @@ const OrderDetailsSchema = new Schema<IOrderDetails>({
     type: String,
     required: true,
   },
-  links: {
+  link: {
+    type: String,
+    required: true,
+  },
+  items: {
     type: Array,
     required: true,
   },
-  purchase_units: {
-    type: Array,
+  currency: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  valuePaid: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
     required: true,
   },
 });

@@ -5,6 +5,10 @@ export default interface IOrderDetails {
   payer: object;
   create_time: Date;
   intent: string;
-  links: any[];
-  purchase_units: any[];
+  link: string;
+  items: any[];
+  description: string;
+  currency: string;
+  valuePaid: string;
+  address: string;
 }
