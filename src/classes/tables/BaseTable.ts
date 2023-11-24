@@ -9,6 +9,7 @@ import IColumn from "../../interfaces/table/IColumn";
 import { eRoles, eSortType } from "../../enums";
 import { buildOperation } from "../../utils";
 import { IUser } from "../../interfaces/database";
+import User from "../../models/userModel";
 
 export default class BaseTable<T> {
   constructor(model: mongoose.Model<T>, request: ITableRequest, user: IUser) {
@@ -147,10 +148,8 @@ export default class BaseTable<T> {
     const pattern = new RegExp(`.*${search}.*`);
     const columnsToSearch = this.buildColumnsToSearch();
 
-    const myModel = mongoose.model(`${this.model}`, this.model.schema);
-
     // Get all field names and their types that are of the "Number" type
-    const numberFields = Object.entries(myModel.schema.paths)
+    const numberFields = Object.entries(this.model.schema.paths)
       .filter(
         ([fieldName, field]) => field instanceof mongoose.SchemaTypes.Number
       )
