@@ -41,8 +41,8 @@ export default class OrderTable extends BaseTable<IOrder> {
           id: 1,
           status: 1,
           createdAt: 1,
-          updated: 1,
-          Icons: 1,
+          updatedAt: 1,
+          icons: 1,
           userName: "$user.name",
         },
       },
@@ -80,13 +80,13 @@ export default class OrderTable extends BaseTable<IOrder> {
       },
       {
         title: "Date Updated",
-        propertyName: "UpdatedAt",
+        propertyName: "updatedAt",
         propertyType: eColumnType.DateTime,
         filtrable: true,
       },
       {
         title: "Icons",
-        propertyName: "Icons",
+        propertyName: "icons",
         propertyType: eColumnType.Icons,
         icons: [
           {

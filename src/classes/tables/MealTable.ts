@@ -80,7 +80,7 @@ export default class MealTable extends BaseTable<IMeal> {
   override buildColumns(): IColumn<IMeal>[] {
     const columns: IColumn<IMeal>[] = [
       {
-        title: "Name", // TODO: Translation
+        title: "Name",
         propertyName: "name",
         propertyType: eColumnType.String,
         filtrable: true,
@@ -88,50 +88,50 @@ export default class MealTable extends BaseTable<IMeal> {
         style: { fontWeight: 500 },
       },
       {
-        title: "Cousine", // TODO: Translation
+        title: "Cousine",
         propertyName: "cousine",
         propertyType: eColumnType.String,
         filtrable: true,
       },
       {
-        title: "Image", // TODO: Translation
+        title: "Image",
         propertyName: "image",
         propertyType: eColumnType.Image,
         filtrable: true,
       },
       {
-        title: "Carbon Footprint", // TODO: Translation
+        title: "Carbon Footprint",
         propertyName: "carbonFootprint",
         propertyType: eColumnType.Number,
         filtrable: true,
       },
       {
-        title: "Category", // TODO: Translation
+        title: "Category",
         propertyName: "dietCategory",
         propertyType: eColumnType.String,
         filtrable: true,
       },
       {
-        title: "Calories", // TODO: Translation
+        title: "Calories",
         propertyName: "calories",
         propertyType: eColumnType.Number,
         filtrable: true,
       },
       {
-        title: "Intolerance", // TODO: Translation
+        title: "Intolerance",
         propertyName: "intolerance",
         propertyType: eColumnType.String,
         filtrable: true,
       },
       {
-        title: "Ingredients", // TODO: Translation
+        title: "Ingredients",
         propertyName: "ingredients",
-        propertyType: eColumnType.Tags,
+        propertyType: eColumnType.Array,
         filtrable: true,
       },
       {
         title: "Icons",
-        propertyName: "Icons",
+        propertyName: "icons",
         propertyType: eColumnType.Icons,
         icons: [
           {

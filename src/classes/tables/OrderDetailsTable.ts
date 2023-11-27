@@ -16,7 +16,7 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
   //     // return columnNames
   //   }
 
-  override async buildRows(): Promise<any> {
+  override async buildRows(): Promise<IOrderDetails[]> {
     const rows = await super.buildRows();
     const res = rows.map((row: any) => {
       const newRow = row;
@@ -89,6 +89,12 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
         propertyName: "create_time",
         propertyType: eColumnType.DateTime,
         filtrable: true,
+      },
+      {
+        title: "Icons",
+        propertyName: "icons",
+        propertyType: eColumnType.Icons,
+        icons: [],
       },
     ];
 
