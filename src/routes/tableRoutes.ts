@@ -24,7 +24,7 @@ createTableRoutes<IOrderDetails>("orderDetails", OrderDetailsTable);
 function createTableRoutes<T>(route: string, table: TableConstructor<T>) {
   router.post(`/${route}`, getAll<T>(table));
   router.post(`/selectAll${capitalize(route)}`, selectAll<T>(table));
-  router.post(`/delete${capitalize(route)}`, deleteSelected<T>(table));
+  router.post(`/delete/${capitalize(route)}`, deleteSelected<T>(table));
 }
 
 export default router;

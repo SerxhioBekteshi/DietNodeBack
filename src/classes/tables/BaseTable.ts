@@ -186,7 +186,7 @@ export default class BaseTable<T> {
   }
 
   async delete(ids: any[]) {
-    const res = await this.model.deleteMany({ _id: { $in: ids } });
+    const res = await this.model.deleteMany({ id: { $in: ids } });
     return res.deletedCount;
   }
 }
