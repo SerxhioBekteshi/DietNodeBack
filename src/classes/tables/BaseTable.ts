@@ -56,9 +56,9 @@ export default class BaseTable<T> {
   //   return [eRoles.Admin, eRoles.Manager].includes(this.user.role);
   // }
 
-  async initialize(): Promise<ITableResponse<T>> {
-    this.columns = this.buildColumns();
-    this.rows = await this.buildRows();
+  async initialize(requestUser?: any): Promise<ITableResponse<T>> {
+    this.columns = this.buildColumns(requestUser);
+    this.rows = await this.buildRows(requestUser);
     this.total = await this.countDocuments();
     const totalPages = Math.ceil(this.total / this.pageSize);
     this.data = {
@@ -78,11 +78,11 @@ export default class BaseTable<T> {
     return await this.model.countDocuments(this.buildFilters(this.filters));
   }
 
-  buildColumns(): IColumn<T>[] {
+  buildColumns(requestUser?: any): IColumn<T>[] {
     return [];
   }
 
-  async buildRows() {
+  async buildRows(requestUser?: any) {
     try {
       const query = this.model
         .find(this.buildFilters(this.filters))

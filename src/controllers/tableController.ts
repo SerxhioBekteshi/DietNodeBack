@@ -6,7 +6,7 @@ const getAll =
   <T>(TableClass: TableConstructor<T>) =>
   async (req: any, res: any, next: any) => {
     const table = new TableClass(req.body, req.user);
-    const data = await table.initialize();
+    const data = await table.initialize(req.user);
     res.json(data);
   };
 const selectAll =

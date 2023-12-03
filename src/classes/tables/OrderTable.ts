@@ -1,4 +1,4 @@
-import { eColumnType } from "../../enums";
+import { eColumnType, eRoles } from "../../enums";
 import { IOrder } from "../../interfaces/database";
 import { ITableRequest } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
@@ -17,7 +17,7 @@ export default class OrderTable extends BaseTable<IOrder> {
   //     // return columnNames
   //   }
 
-  override async buildRows(): Promise<IOrder[]> {
+  override async buildRows(requestUser: any): Promise<IOrder[]> {
     const matchFilters = this.buildFilters(this.filters);
     const pipeline = [
       {
@@ -43,7 +43,19 @@ export default class OrderTable extends BaseTable<IOrder> {
           createdAt: 1,
           updatedAt: 1,
           icons: 1,
-          userName: "$user.name",
+          // userName: "$user.name",
+          userName: {
+            $cond: {
+              if: {
+                $or: [
+                  { $eq: [requestUser.role, eRoles.Provider] },
+                  { $eq: [requestUser.role, eRoles.Admin] },
+                ],
+              },
+              then: "$user.name",
+              else: null,
+            },
+          },
         },
       },
       {
@@ -55,11 +67,10 @@ export default class OrderTable extends BaseTable<IOrder> {
     ];
 
     const orders = await this.model.aggregate(pipeline).exec();
-
     return orders;
   }
-  override buildColumns(): IColumn<IOrder>[] {
-    const columns: IColumn<IOrder>[] = [
+  override buildColumns(requestUser: any): IColumn<IOrder>[] {
+    let columns: IColumn<IOrder>[] = [
       {
         title: "User",
         propertyName: "userName",
@@ -97,7 +108,9 @@ export default class OrderTable extends BaseTable<IOrder> {
         ],
       },
     ];
-
+    if (requestUser.role === eRoles.User) {
+      columns = columns.filter((col: any) => col.title !== "User");
+    }
     return columns;
   }
 }
