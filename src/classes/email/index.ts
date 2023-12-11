@@ -54,6 +54,7 @@ class Email {
       name: `${this.user.email}`,
       admin: `${this.creator.email}`,
       password: this.user.password,
+      url: `http:localhost:8080/login`,
     });
   }
 

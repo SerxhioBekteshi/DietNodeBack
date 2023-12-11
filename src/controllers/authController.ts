@@ -315,19 +315,13 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
 //   });
 // });
 
-// const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
-//   const user = await User.findOneAndUpdate(
-//     { _id: req.user._id },
-//     { shouldVerify: false }
-//   ).lean();
-//   const customer = await Customer.findById(user.customer).lean();
-//   createSendSession(
-//     { ...user, customerDetails: customer, shouldVerify: false },
-//     200,
-//     req,
-//     res
-//   );
-// });
+const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
+  const user = await User.findOneAndUpdate(
+    { id: req.user.id },
+    { accountSubmitted: true }
+  ).lean();
+  createSendSession({ ...user }, 200, req, res);
+});
 
 // const resendEmailConfirmation = catchAsync(async (req: any, res: any, next: any) => {
 //   const user = req.user;
@@ -403,7 +397,7 @@ export default {
   updatePassword,
   // refreshAccessToken,
   changePassword,
-  // confirmEmail,
+  confirmEmail,
   // resendEmailConfirmation,
   signToken,
   forgotPassowrd,
