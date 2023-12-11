@@ -42,7 +42,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
 
 const uploadImage = multer({ storage: storage, fileFilter: fileFilter });
 
-const uploadMealImage = async (req, res, next) => {
+const uploadMealImage = async (req: any, res: any, next: any) => {
   if (!req.file) return next(new AppError("No file", 404));
 
   const meal = await Meal.findOne({ id: req.params.id });

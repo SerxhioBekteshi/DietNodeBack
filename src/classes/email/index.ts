@@ -13,7 +13,7 @@ class Email {
   constructor(user: IUser, creator?: IUser) {
     this.creator = creator;
     this.to = user.email;
-    this.from = `Hr-Web <${process.env.EMAIL_FROM}>`;
+    this.from = `<${process.env.EMAIL_FROM}>`;
     this.cc = process.env.EMAIL_CC;
     this.user = user;
   }
@@ -48,8 +48,17 @@ class Email {
     return await this.newTransport().sendMail(mailOptions);
   }
 
+  async sendTest() {
+    await this.send("welcome", "Welcome to Serxhio Test!", {
+      email: this.user.email,
+      name: `${this.user.email}`,
+      admin: `${this.creator.email}`,
+      password: this.user.password,
+    });
+  }
+
   async sendRegister() {
-    await this.send("register", "Welcome to Hr-Web Family!", {
+    await this.send("register", "Welcome to Serxhio Test!", {
       email: this.user.email,
       name: `${this.user.name} ${this.user.lastName}`,
       admin: `${this.creator.name} ${this.creator.lastName}`,
