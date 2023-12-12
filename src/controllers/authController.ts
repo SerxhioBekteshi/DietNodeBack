@@ -320,6 +320,7 @@ const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
 const resendEmailConfirmation = catchAsync(
   async (req: any, res: any, next: any) => {
     const user = req.user;
+    console.log(req.user, "USER AFTER RESEND?");
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
     await new Email(user, req.user).registerAuth(accessToken);
