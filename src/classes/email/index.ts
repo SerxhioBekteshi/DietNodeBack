@@ -49,7 +49,7 @@ class Email {
   }
 
   async sendTest() {
-    await this.send("welcome", "Welcome to Serxhio Test!", {
+    await this.send("register", "Welcome to Serxhio Test!", {
       email: this.user.email,
       name: `${this.user.email}`,
       admin: `${this.creator.email}`,
@@ -68,7 +68,7 @@ class Email {
   }
 
   async registerAuth(token: string) {
-    await this.send("welcome", "Authorization Hr-Web", {
+    await this.send("welcome", "Authorization Serxhio Project", {
       url: `${process.env.WEBPAGE_URL}confirm?token=${token}`,
       name: `${this.user.name} ${this.user.lastName}`,
     });

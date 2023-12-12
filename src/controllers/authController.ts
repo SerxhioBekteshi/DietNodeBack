@@ -80,7 +80,7 @@ const login = catchAsync(async (req: any, res: any, next: any) => {
   if (!(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect password!", 400));
   }
-  new Email(req.body, req.body).sendTest();
+  await new Email(req.body, req.body).sendTest();
   createSendSession({ ...user.toJSON() }, 200, req, res);
 });
 
@@ -195,15 +195,8 @@ const register = catchAsync(async (req: any, res: any, next: any) => {
       return next(new AppError("User with this email already exist", 403));
     }
 
-    const {
-      email,
-      name,
-      lastName,
-      phoneNumber,
-      password,
-      passwordConfirm,
-      role,
-    } = req.body;
+    const { email, name, lastName, phoneNumber, password, passwordConfirm } =
+      req.body;
 
     const newUser = await User.create({
       email,
@@ -212,13 +205,14 @@ const register = catchAsync(async (req: any, res: any, next: any) => {
       phoneNumber,
       password,
       passwordConfirm,
-      role: role || eRoles.User,
+      role: eRoles.User,
       roleId: 3,
     });
 
-    // const session: ISession = createSession(newUser);
-    // const accessToken = signAccessToken(session);
-    // await new Email(newUser, req.user).registerAuth(accessToken);
+    const session: ISession = createSession(newUser);
+    const accessToken = signAccessToken(session);
+
+    await new Email(newUser, req.user).registerAuth(accessToken);
     createSendSession({ ...newUser.toJSON() }, 201, req, res);
   });
 });
@@ -323,13 +317,15 @@ const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
   createSendSession({ ...user }, 200, req, res);
 });
 
-// const resendEmailConfirmation = catchAsync(async (req: any, res: any, next: any) => {
-//   const user = req.user;
-//   const session: ISession = createSession(user);
-//   const accessToken = signAccessToken(session);
-//   await new Email(user, req.user).registerAuth(accessToken);
-//   res.sendStatus(200);
-// });
+const resendEmailConfirmation = catchAsync(
+  async (req: any, res: any, next: any) => {
+    const user = req.user;
+    const session: ISession = createSession(user);
+    const accessToken = signAccessToken(session);
+    await new Email(user, req.user).registerAuth(accessToken);
+    res.sendStatus(200);
+  }
+);
 
 const forgotPassowrd = catchAsync(async (req, res, next) => {
   // 1.Get the user based on Posted Email.
@@ -398,7 +394,7 @@ export default {
   // refreshAccessToken,
   changePassword,
   confirmEmail,
-  // resendEmailConfirmation,
+  resendEmailConfirmation,
   signToken,
   forgotPassowrd,
   resetPassowrd,

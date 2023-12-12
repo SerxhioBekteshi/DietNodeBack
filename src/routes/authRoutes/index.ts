@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.use(protect);
 router.post("/changePassword", authController.changePassword);
-// router.post("/confirm", authController.confirmEmail);
-// router.post("/resendEmailConfirmation", authController.resendEmailConfirmation);
+router.post("/confirm", authController.confirmEmail);
+router.post("/resendEmailConfirmation", authController.resendEmailConfirmation);
 export default router;
