@@ -75,12 +75,9 @@ const login = catchAsync(async (req: any, res: any, next: any) => {
   const user = await User.findOne({ email }).select("+password");
   if (!user) return next(new AppError("This email does not Exist!", 400));
 
-  // const customer = await Customer.findById(user.customer).lean();
-
   if (!(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect password!", 400));
   }
-  await new Email(req.body, req.body).sendTest();
   createSendSession({ ...user.toJSON() }, 200, req, res);
 });
 
@@ -320,7 +317,6 @@ const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
 const resendEmailConfirmation = catchAsync(
   async (req: any, res: any, next: any) => {
     const user = req.user;
-    console.log(req.user, "USER AFTER RESEND?");
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
     await new Email(user, req.user).registerAuth(accessToken);

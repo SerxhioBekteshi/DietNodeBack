@@ -48,15 +48,15 @@ class Email {
     return await this.newTransport().sendMail(mailOptions);
   }
 
-  async sendTest() {
-    await this.send("register", "Welcome to Serxhio Test!", {
-      email: this.user.email,
-      name: `${this.user.email}`,
-      admin: `${this.creator.email}`,
-      password: this.user.password,
-      url: `http:localhost:8080/login`,
-    });
-  }
+  // async sendTest() {
+  //   await this.send("register", "Welcome to Serxhio Test!", {
+  //     email: this.user.email,
+  //     name: `${this.user.email}`,
+  //     admin: `${this.creator.email}`,
+  //     password: this.user.password,
+  //     url: `http:localhost:8080/login`,
+  //   });
+  // }
 
   async sendRegister() {
     await this.send("register", "Welcome to Serxhio Test!", {
