@@ -1,4 +1,4 @@
-import { eFilterOperator } from "../enums";
+import { eFilterOperator, eRoles } from "../enums";
 import Menu from "../models/menuModel";
 import Role from "../models/roleModel";
 import User from "../models/userModel";
@@ -155,12 +155,28 @@ export const initializeMenuItems = async function () {
     //   to: "/orders",
     //   roleId: 3,
     // },
+    // {
+    //   id: 10,
+    //   label: "Meals Configurations",
+    //   icon: "pi pi-calculator",
+    //   to: "/mealsConfigurations",
+    //   roleId: 1,
+    // },
+    // {
+    //   id: 13,
+    //   label: "Permissions",
+    //   icon: "pi pi-wrench",
+    //   to: "/permissions",
+    //   roleId: 1,
+    //   menuType: eRoles.Admin,
+    // },
     {
-      id: 10,
-      label: "Meals Configurations",
-      icon: "pi pi-calculator",
-      to: "/mealsConfigurations",
+      id: 15,
+      label: "Provider emails",
+      icon: "pi pi-send",
+      to: "/provider/emails",
       roleId: 1,
+      menuType: eRoles.Admin,
     },
   ];
 

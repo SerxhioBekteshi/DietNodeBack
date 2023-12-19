@@ -8,6 +8,9 @@ import IMealRating from "./IMealRating";
 import IOrder from "./IOrder";
 import IOrderDetails from "./IOrderDetailts";
 import IFieldAnswers from "./IFieldAnswers";
+import { IPermission } from "./IPermission";
+import { IMenuPermission } from "./IMenuPermission";
+import { IRolePermission } from "./IRolePermissions";
 
 export {
   IUser,
@@ -20,4 +23,7 @@ export {
   IOrderDetails,
   IMealRating,
   IOrder,
+  IPermission,
+  IMenuPermission,
+  IRolePermission,
 };

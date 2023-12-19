@@ -257,54 +257,54 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
   });
 });
 
-// const refreshAccessToken = catchAsync(async (req: any, res: any, next: any) => {
-//   const decodedAccessToken: any = jwt.verify(
-//     req.body.accessToken,
-//     process.env.JWT_SECRET
-//   );
+const refreshAccessToken = catchAsync(async (req: any, res: any, next: any) => {
+  const decodedAccessToken: any = jwt.verify(
+    req.body.accessToken,
+    process.env.JWT_SECRET
+  );
 
-//   const decodedRefreshToken: any = jwt.verify(
-//     req.body.refreshToken,
-//     process.env.JWT_REFRESH_SECRET
-//   );
+  const decodedRefreshToken: any = jwt.verify(
+    req.body.refreshToken,
+    process.env.JWT_REFRESH_SECRET
+  );
 
-//   if (decodedRefreshToken.userId != decodedAccessToken.user._id) {
-//     return res.status(403).send("Something went wrong! Please Log In Again!");
-//   }
-//   // Check if user still exists
-//   const currUser = await User.findById(decodedAccessToken.user._id);
+  if (decodedRefreshToken.userId != decodedAccessToken.user._id) {
+    return res.status(403).send("Something went wrong! Please Log In Again!");
+  }
+  // Check if user still exists
+  const currUser = await User.findById(decodedAccessToken.user._id);
 
-//   // Check if user changed password after the token was issued
-//   if (currUser.changePasswordAfter(decodedRefreshToken.iat)) {
-//     return next(
-//       new AppError(
-//         "You have recently changed your password! Please log in again",
-//         403
-//       )
-//     );
-//   }
+  // Check if user changed password after the token was issued
+  if (currUser.changePasswordAfter(decodedRefreshToken.iat)) {
+    return next(
+      new AppError(
+        "You have recently changed your password! Please log in again",
+        403
+      )
+    );
+  }
 
-//   const { user, sessionId } = decodedAccessToken;
+  const { user, sessionId } = decodedAccessToken;
 
-//   const session = { sessionId, user };
+  const session = { sessionId, user };
 
-//   const access_token = signAccessToken(session);
+  const access_token = signAccessToken(session);
 
-//   if (!access_token) {
-//     return res.status(401).send("Unable to generate access token");
-//   }
+  if (!access_token) {
+    return res.status(401).send("Unable to generate access token");
+  }
 
-//   const refresh_token = signRefreshToken(
-//     session.sessionId,
-//     user._id,
-//     req.body.refreshExpire
-//   );
+  const refresh_token = signRefreshToken(
+    session.sessionId,
+    user._id,
+    req.body.refreshExpire
+  );
 
-//   return res.status(200).send({
-//     access_token,
-//     refresh_token,
-//   });
-// });
+  return res.status(200).send({
+    access_token,
+    refresh_token,
+  });
+});
 
 const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
   const user = await User.findOneAndUpdate(
@@ -320,6 +320,19 @@ const resendEmailConfirmation = catchAsync(
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
     await new Email(user, req.user).registerAuth(accessToken);
+    res.sendStatus(200);
+  }
+);
+
+const sendEmailToRegister = catchAsync(
+  async (req: any, res: any, next: any) => {
+    const user = req.user;
+    const session: ISession = createSession(user);
+    const accessToken = signAccessToken(session);
+
+    await new Email(req.body.email, req.user).sendEmailTemplateToRegister(
+      accessToken
+    );
     res.sendStatus(200);
   }
 );
@@ -388,12 +401,13 @@ export default {
   registerProvider,
   login,
   updatePassword,
-  // refreshAccessToken,
+  refreshAccessToken,
   changePassword,
   confirmEmail,
   resendEmailConfirmation,
   signToken,
   forgotPassowrd,
   resetPassowrd,
+  sendEmailToRegister,
   // googleLogin,
 };

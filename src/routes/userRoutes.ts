@@ -16,10 +16,10 @@ router.post("/forgotpassword", authController.forgotPassowrd);
 router.post("/resetpassword", authController.resetPassowrd);
 
 //routes below can be accessed only if you are logged in or if you have permission
+
 router.use(protect);
 router.get("/", userController.getAllUsers);
 router.get("/me", userController.getUserDetail);
-
 router.put("/updatePassword", authController.updatePassword);
 router.put("/update", userController.updateLoggedUser);
 

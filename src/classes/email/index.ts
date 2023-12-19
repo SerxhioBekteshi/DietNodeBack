@@ -10,9 +10,9 @@ class Email {
   creator: IUser;
   cc: string;
 
-  constructor(user: IUser, creator?: IUser) {
+  constructor(user: IUser | any, creator?: IUser) {
     this.creator = creator;
-    this.to = user.email;
+    this.to = typeof user === "object" ? user.email : user;
     this.from = `<${process.env.EMAIL_FROM}>`;
     this.cc = process.env.EMAIL_CC;
     this.user = user;
@@ -29,13 +29,11 @@ class Email {
   }
   // Send the actual email
   async send(template: string, subject: string, payload?: any) {
-    // 1) Render HTML based on a pug template
     const html = pug.renderFile(
       `${__dirname}/templates/${template}Template.pug`,
       payload
     );
 
-    // 2) Define email options
     const mailOptions = {
       from: this.from,
       to: this.to,
@@ -44,19 +42,8 @@ class Email {
       html,
     };
 
-    // 3) Create a transport and send email
     return await this.newTransport().sendMail(mailOptions);
   }
-
-  // async sendTest() {
-  //   await this.send("register", "Welcome to Serxhio Test!", {
-  //     email: this.user.email,
-  //     name: `${this.user.email}`,
-  //     admin: `${this.creator.email}`,
-  //     password: this.user.password,
-  //     url: `http:localhost:8080/login`,
-  //   });
-  // }
 
   async sendRegister() {
     await this.send("register", "Welcome to Serxhio Test!", {
@@ -71,6 +58,13 @@ class Email {
     await this.send("welcome", "Authorization Serxhio Project", {
       url: `${process.env.WEBPAGE_URL}confirm?token=${token}`,
       name: `${this.user.name} ${this.user.lastName}`,
+    });
+  }
+
+  async sendEmailTemplateToRegister(token: string) {
+    await this.send("emailToRegister", "Provider Registration process", {
+      url: `${process.env.WEBPAGE_URL}?hashData=${token}`,
+      email: this.to,
     });
   }
 
