@@ -63,7 +63,7 @@ class Email {
 
   async sendEmailTemplateToRegister(token: string) {
     await this.send("emailToRegister", "Provider Registration process", {
-      url: `${process.env.WEBPAGE_URL}?hashData=${token}`,
+      url: `${process.env.WEBPAGE_URL}registerProvider?hashData=${token}`,
       email: this.to,
     });
   }

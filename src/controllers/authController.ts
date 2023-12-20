@@ -8,6 +8,7 @@ import { ISession } from "../interfaces";
 import mongoose from "mongoose";
 import { eRoles } from "../enums";
 import { Email } from "../classes/email";
+const crypto = require("crypto");
 
 const signToken = (
   payload: string | object | Buffer,
@@ -329,6 +330,11 @@ const sendEmailToRegister = catchAsync(
     const user = req.user;
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
+
+    // const randomString =
+    //   Math.random().toString(36).substring(2, 15) +
+    //   Math.random().toString(36).substring(2, 15);
+    // const hash = crypto.createHash("sha256").update(randomString).digest("hex");
 
     await new Email(req.body.email, req.user).sendEmailTemplateToRegister(
       accessToken
