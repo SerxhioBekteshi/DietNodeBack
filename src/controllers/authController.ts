@@ -152,9 +152,8 @@ const login = catchAsync(async (req: any, res: any, next: any) => {
 // });
 
 const updatePassword = catchAsync(async (req: any, res: any, next: any) => {
-  // 1. Get user from collection
-  const user = await User.findById(req.user._id).select("+password");
-  // 2. Check if POST current password is correct
+  const user = await User.findById({ id: req.user._id }).select("+password");
+
   if (
     !user ||
     !(await user.correctPassword(req.body.oldPassword, user.password))
@@ -162,12 +161,11 @@ const updatePassword = catchAsync(async (req: any, res: any, next: any) => {
     return next(new AppError("Incorrect password!", 400));
   }
 
-  // 3. update password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   user.firstLogin = false;
   await user.save();
-  // 4. log in the user
+
   createSendSession({ ...user.toJSON() }, 200, req, res);
 });
 
@@ -331,11 +329,6 @@ const sendEmailToRegister = catchAsync(
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
 
-    // const randomString =
-    //   Math.random().toString(36).substring(2, 15) +
-    //   Math.random().toString(36).substring(2, 15);
-    // const hash = crypto.createHash("sha256").update(randomString).digest("hex");
-
     await new Email(req.body.email, req.user).sendEmailTemplateToRegister(
       accessToken
     );
@@ -344,18 +337,16 @@ const sendEmailToRegister = catchAsync(
 );
 
 const forgotPassowrd = catchAsync(async (req, res, next) => {
-  // 1.Get the user based on Posted Email.
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new AppError("There is no user with this email address.", 404));
   }
 
-  // 2. Generate the random reset token
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
   try {
-    // await new Email(user).sendPasswordReset(resetToken);
+    await new Email(user).sendPasswordReset(resetToken);
 
     res.sendStatus(200);
   } catch (err) {
@@ -373,7 +364,6 @@ const forgotPassowrd = catchAsync(async (req, res, next) => {
 });
 
 const resetPassowrd = catchAsync(async (req, res, next) => {
-  // 1. Get user based on the token
   const decodedAccessToken: any = jwt.verify(
     req.query.token,
     process.env.JWT_RESET_TOKEN
@@ -387,7 +377,7 @@ const resetPassowrd = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
     passwordResetToken: req.query.token,
   });
-  // 2. If token has not expired, and there is user set the new password
+
   if (!user) {
     return next(new AppError("Token is invalid or has expired", 400));
   }

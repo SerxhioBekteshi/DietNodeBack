@@ -56,6 +56,11 @@ const userSchema = new Schema<IUser>(
       required: true,
       ref: "Role",
     },
+    role: {
+      type: String,
+      enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
+      default: eRoles.User,
+    },
     address: {
       type: String,
     },
@@ -66,12 +71,7 @@ const userSchema = new Schema<IUser>(
     state: {
       type: String,
     },
-    role: {
-      type: String,
-      enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
-      default: eRoles.User,
-    },
-    phoneNumber: String,
+    phoneNumber: { type: String, default: null },
     quizFulfilled: {
       type: Boolean,
       default: false,
