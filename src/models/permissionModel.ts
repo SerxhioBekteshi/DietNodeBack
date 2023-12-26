@@ -21,18 +21,20 @@ const PermissionsSchema = new Schema<IPermission>(
       type: Boolean,
       default: false,
     },
-    action: {
-      type: String,
-    },
-    menuId: {
+    subjectId: {
       type: Number,
       ref: "Menu",
       default: null,
+    },
+    action: {
+      type: String,
     },
     createdBy: {
       type: Number,
       ref: "User",
     },
+    // rolePermissions: [{ type: Schema.Types.ObjectId, ref: "RolePermission" }],
+    // menuPermissions: [{ type: Schema.Types.ObjectId, ref: "MenuPermission" }],
   },
   { timestamps: true }
 );

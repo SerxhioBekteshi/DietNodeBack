@@ -1,0 +1,24 @@
+ SELECT am.*
+            FROM MenuPermissions mp
+	            INNER JOIN ApplicationMenu am ON mp.MenuId = am.Id
+	            INNER JOIN [Permissions] p ON mp.PermissionId = p.Id
+	            LEFT JOIN UserPermissions up ON mp.PermissionId = up.PermissionId
+            WHERE p.IsActive = 1 AND up.IsActive = 1 AND up.UserId = @UserId AND am.ParentId IS NULL AND p.SubjectId IS NULL
+
+			UNION ALL
+
+			SELECT am.*
+            FROM MenuPermissions mp
+	            INNER JOIN ApplicationMenu am ON mp.MenuId = am.Id
+	            INNER JOIN [Permissions] p ON mp.PermissionId = p.Ids
+	            LEFT JOIN RolePermissions rp ON mp.PermissionId = rp.PermissionId
+	            LEFT JOIN AspNetRoles r ON r.Id = rp.RoleId
+            WHERE p.IsActive = 1 AND rp.IsActive = 1 AND r.Name = @UserRole AND am.ParentId IS NULL AND p.SubjectId IS NULL 
+					and rp.PermissionId NOT IN( SELECT up.PermissionId
+												FROM MenuPermissions mp
+													INNER JOIN ApplicationMenu am ON mp.MenuId = am.Id
+													INNER JOIN [Permissions] p ON mp.PermissionId = p.Id
+													LEFT JOIN UserPermissions up ON mp.PermissionId = up.PermissionId
+												WHERE p.IsActive = 1 AND up.IsActive = 1 AND up.UserId = @UserId AND am.ParentId IS NULL AND p.SubjectId IS NULL)
+
+			ORDER BY am.[Order] ASC

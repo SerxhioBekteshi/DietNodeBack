@@ -6,7 +6,11 @@ import { eRoles } from "../enums";
 const router = express.Router();
 
 router.use(protect);
-router.get("/get-all", quizController.getQuiz);
+router.get(
+  "/get-all",
+  restrictTo(eRoles.Admin, eRoles.User),
+  quizController.getQuiz
+);
 
 router.use(restrictTo(eRoles.Admin));
 router.post("", quizController.createQuizRow);

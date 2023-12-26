@@ -6,7 +6,7 @@ import authRouter from "./authRoutes";
 import mealRoutes from "./mealRoutes";
 import quizRoutes from "./quizRoutes";
 import paymentRoutes from "./paymentRoutes";
-import orderRoutes from "./OrderRoutes";
+import orderRoutes from "./orderRoutes";
 import quizResultRoutes from "./userQuizResultRoutes";
 import permissionRoutes from "./permissionRoutes";
 const router = express.Router();

@@ -35,11 +35,14 @@ router.post(
 );
 
 // all route handlers below can be accessed from Admin
-router.use(restrictTo(eRoles.Admin));
-router.get("/providers/get-all", userController.getProviders); //getting the providers
+router.get(
+  "/providers/get-all",
+  restrictTo(eRoles.Admin),
+  userController.getProviders
+);
 router.put(
-  //controlling their account submission after registering
   "/provider/controlSubmission/:id",
+  restrictTo(eRoles.Admin),
   userController.submitUnsubmitProvider
 );
 

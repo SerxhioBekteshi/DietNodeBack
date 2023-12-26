@@ -230,6 +230,7 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
       phoneNumber,
       password,
       passwordConfirm,
+      address,
       nipt,
       termsAgreed = true,
     } = req.body;
@@ -243,13 +244,14 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
       passwordConfirm,
       nipt,
       termsAgreed,
+      address,
       roleId: 2,
       role: eRoles.Provider,
     });
 
     res.status(200).json({
       message: "Please wait for the admin to submit your account.",
-      contact: "355697293469",
+      contact: "355697293469 - ADMIN",
       email: "serxhio131@gmail.com",
       user: newUser,
     });

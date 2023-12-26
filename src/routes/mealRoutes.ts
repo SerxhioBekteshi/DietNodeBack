@@ -2,12 +2,19 @@ import express from "express";
 import mealController from "../controllers/mealController";
 import { protect, restrictTo } from "../middlewares/protection";
 import { assignTo } from "../middlewares/assignTo";
+import { eRoles } from "../enums";
 // import patchUser from '../middlewares/patchUser';
 
 const router = express.Router();
 
 router.use(protect);
-router.get("/get-all", mealController.getAllMeals);
+router.get(
+  "/get-all",
+  restrictTo(eRoles.User, eRoles.Provider),
+  mealController.getAllMeals
+);
+
+router.use(restrictTo(eRoles.Provider));
 router.post("", mealController.createMeal);
 router
   .route("/:id")
@@ -21,9 +28,5 @@ router.put(
   mealController.uploadMealImage
 );
 router.put("/rate/:id", mealController.rateMeal);
-// all route handlers below can be accessed from Admin and Manager Roles
-// router.use(restrictTo(eRoles.Admin));
-
-// router.post("/", assignTo, userController.createUserController);
 
 export default router;

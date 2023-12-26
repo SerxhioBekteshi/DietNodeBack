@@ -2,26 +2,28 @@ import mongoose, { Schema, model } from "mongoose";
 import { IMenuPermission } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
 
-const menuPermissionsSchema = new Schema<IMenuPermission>({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
+const menuPermissionsSchema = new Schema<IMenuPermission>(
+  {
+    id: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    menuId: {
+      type: Number,
+      ref: "Menu",
+      required: true,
+    },
+    permissionId: {
+      type: Number,
+      ref: "Permission",
+      required: true,
+    },
   },
-  menuId: {
-    type: Number,
-    ref: "Menu",
-    required: true,
-  },
-  permissionId: {
-    type: Number,
-    ref: "Permission",
-    required: true,
-  },
-  dateCreated: {
-    type: Date,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 AutoIncrement.initialize(mongoose.connection);
 
 menuPermissionsSchema.plugin(AutoIncrement.plugin, {
