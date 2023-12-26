@@ -11,6 +11,7 @@ import IFieldAnswers from "./IFieldAnswers";
 import { IPermission } from "./IPermission";
 import { IMenuPermission } from "./IMenuPermission";
 import { IRolePermission } from "./IRolePermissions";
+import { IAppNotification } from "./IAppNotification";
 
 export {
   IUser,
@@ -26,4 +27,5 @@ export {
   IPermission,
   IMenuPermission,
   IRolePermission,
+  IAppNotification,
 };
