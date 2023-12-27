@@ -35,7 +35,7 @@ export default class PermissionTable extends BaseTable<IPermission> {
       {
         $lookup: {
           from: Menu.collection.name,
-          localField: "menuId",
+          localField: "subjectId",
           foreignField: "id",
           as: "menu",
         },
@@ -57,8 +57,12 @@ export default class PermissionTable extends BaseTable<IPermission> {
             $concat: ["$createdByUser.name", " ", "$createdByUser.lastName"],
           },
           action: "$action",
-          menuId: "$menuId",
-          menu: "$menu.title",
+          subjectId: "$subjectId",
+          createdAt: "$createdAt",
+          updatedAt: "$updatedAt",
+          menuTitle: {
+            $ifNull: [{ $arrayElemAt: ["$menu.label", 0] }, null],
+          },
         },
       },
       {
@@ -117,15 +121,9 @@ export default class PermissionTable extends BaseTable<IPermission> {
         propertyType: eColumnType.String,
         filtrable: true,
       },
-      //   {
-      //     title: "menuId",
-      //     propertyName: "menuId",
-      //     propertyType: eColumnType.String,
-      //     filtrable: true,
-      //   },
       {
-        title: "menu",
-        propertyName: "menu",
+        title: "Menu Title",
+        propertyName: "menuTitle",
         propertyType: eColumnType.String,
         filtrable: true,
       },

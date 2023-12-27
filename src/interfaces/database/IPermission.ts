@@ -4,8 +4,8 @@ export interface IPermission {
   description: string;
   isActive: boolean;
   action: string;
-  menuId: number;
+  subjectId: number;
   createdBy: number;
-  createdAt: boolean;
-  updatedAt: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -9,7 +9,6 @@ export enum eColumnType {
   DateOnly,
   Actions,
   Select,
-  Tags,
   Image,
   Status,
   Array,

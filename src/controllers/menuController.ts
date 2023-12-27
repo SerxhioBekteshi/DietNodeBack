@@ -11,6 +11,11 @@ const getMenuItems = catchAsync(async (req: any, res: any, next: any) => {
   res.status(200).json(menuItems);
 });
 
+const getMenuItemsNoRole = catchAsync(async (req: any, res: any, next: any) => {
+  const menuItems = await Menu.find();
+  res.status(200).json(menuItems);
+});
+
 const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
   // const subqueryResult = await MenuPermission.aggregate([
   //   {
@@ -119,4 +124,4 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
   res.status(200).json(menuItems);
 });
 
-export default { getMenuItems, getMenuItems2 };
+export default { getMenuItems, getMenuItemsNoRole, getMenuItems2 };

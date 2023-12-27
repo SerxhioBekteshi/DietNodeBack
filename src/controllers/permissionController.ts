@@ -7,21 +7,42 @@ import MenuPermission from "../models/menuPermissionsModel";
 import RolePermission from "../models/rolePermissionModel";
 import Role from "../models/roleModel";
 
-const getPermission = getOne(Permission);
+const getPermission = catchAsync(async (req: any, res: any, next: any) => {
+  const listRoles: String[] = [];
+  const existingPermission = await Permission.findOne({ id: req.params.id });
+
+  console.log(existingPermission, "EXISTING PERMISSION ");
+  const roleIds = await RolePermission.find({ roleId: existingPermission.id });
+  console.log(roleIds);
+  roleIds.forEach(async (roleId: any) => {
+    const roleName = await Role.findOne({ id: roleId }).select("roleName");
+    listRoles.push(roleName);
+  });
+
+  existingPermission.roles = listRoles;
+  console.log(listRoles, existingPermission, "CHECKS IN THE END");
+
+  res.status(200).json({ permission: existingPermission });
+});
 
 const updatePermission = updateOne(Permission);
 
 const deletePermission = deleteOne(Permission);
 
-const createPermission = catchAsync(async (req: any, res: any) => {
+const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   req.body.createdBy = req.user.id;
   const doc = await Permission.create(req.body);
-  await createMenuPermission(req.body, doc);
+  createMenuPermission(req.body, doc, next);
+  createRolePermission(req.body, doc, next);
   res.status(200).json({ doc: doc, message: "Created successfully" });
 });
 
-const createMenuPermission = (addPermissionData: any, permissionCreated: any) =>
-  catchAsync(async (req: any, res: any, next: any) => {
+const createMenuPermission = async (
+  addPermissionData: any,
+  permissionCreated: any,
+  next: any
+) => {
+  try {
     if (addPermissionData.subjectId !== null) {
       const menuItem = await Menu.findOne({ id: addPermissionData.subjectId });
       if (menuItem) {
@@ -34,21 +55,30 @@ const createMenuPermission = (addPermissionData: any, permissionCreated: any) =>
           permissionId: permissionCreated.id,
         };
         if (checkRelationMenu) {
-          await MenuPermission.updateOne(menuPermissionBody);
+          await MenuPermission.updateOne(checkRelationMenu, menuPermissionBody);
         } else {
           await MenuPermission.create(menuPermissionBody);
         }
       }
     }
+  } catch (err: any) {
+    console.log(err, "IN CREATE PERMISSION");
+    return next(new AppError(err, 500));
+  }
+};
+
+const createRolePermission = async (
+  addPermissionData: any,
+  permissionCreated: any,
+  next: any
+) => {
+  const rolePermissions = await RolePermission.find({
+    permissionId: permissionCreated.id,
   });
 
-const createRolePermission = (addPermissionData: any, permissionCreated: any) =>
-  catchAsync(async (req: any, res: any, next: any) => {
-    const rolePermission = await RolePermission.findOne({
-      id: permissionCreated.id,
-    });
-    if (rolePermission.length !== 0) {
-      const roleIds = rolePermission.map((role: any) => role.id);
+  try {
+    if (rolePermissions.length !== 0) {
+      const roleIds = rolePermissions.map((role: any) => role.id);
       await RolePermission.updateMany(
         { id: { $in: roleIds } },
         { $set: { isActive: 0 } }
@@ -57,20 +87,21 @@ const createRolePermission = (addPermissionData: any, permissionCreated: any) =>
 
     if (addPermissionData.roles.length !== 0) {
       addPermissionData.roles.forEach(async (role: any) => {
-        const { id } = await Role.findOne({ roleName: role });
+        const { roleId } = await Role.findOne({ roleName: role });
+
         const rolePermissionBody = {
-          roleId: id,
+          roleId: roleId,
           permissionId: permissionCreated.id,
         };
 
         const checkRelationRole = await RolePermission.findOne({
-          roleId: id,
+          roleId: roleId,
           permissionId: permissionCreated.id,
         });
 
-        if (!checkRelationRole) {
+        if (checkRelationRole) {
           if (!checkRelationRole.isActive) {
-            await RolePermission.updateOne({
+            await RolePermission.updateOne(checkRelationRole, {
               ...rolePermissionBody,
               isActive: true,
             });
@@ -83,7 +114,11 @@ const createRolePermission = (addPermissionData: any, permissionCreated: any) =>
         }
       });
     }
-  });
+  } catch (err: any) {
+    console.log(err, "IN CREATE PERMISSION");
+    return next(new AppError(err, 500));
+  }
+};
 
 export default {
   createPermission,
