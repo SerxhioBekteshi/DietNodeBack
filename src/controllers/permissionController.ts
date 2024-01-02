@@ -149,10 +149,10 @@ const createRolePermission = async (
   try {
     if (rolePermissions.length !== 0) {
       const roleIds = rolePermissions.map((role: any) => role.id);
-      // await RolePermission.updateMany(
-      //   { id: { $in: roleIds } },
-      //   { $set: { isActive: 0 } }
-      // );
+      await RolePermission.updateMany(
+        { id: { $in: roleIds } },
+        { $set: { isActive: 0 } }
+      );
     }
 
     if (permissionPayload.roles.length !== 0) {
@@ -170,7 +170,7 @@ const createRolePermission = async (
         });
 
         if (checkRelationRole) {
-          if (!checkRelationRole.isActive) {
+          if (checkRelationRole.isActive === false) {
             await RolePermission.updateOne(checkRelationRole, {
               ...rolePermissionBody,
               isActive: true,
