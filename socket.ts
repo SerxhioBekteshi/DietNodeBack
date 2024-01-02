@@ -57,28 +57,28 @@ const initialize = (
 
 const getInstance = () => io;
 
-// const sendAppNotificationToClient = (
-//   userId: any,
-//   message: any,
-//   customer: any,
-//   sender: any,
-//   route?: string
-// ) => {
-//   AppNotification.create({
-//     message,
-//     customer,
-//     route,
-//     user: userId,
-//     sender,
-//   }).then((val) => {
-//     User.findById(val.sender).then((user) => {
-//       io.to(userRoomName(userId)).emit("AppNotification", {
-//         ...val.toJSON(),
-//         sender: user.toJSON(),
-//       });
-//     });
-//   });
-// };
+const sendAppNotificationToClient = (
+  userId: any,
+  message: any,
+  customer: any,
+  sender: any,
+  route?: string
+) => {
+  AppNotification.create({
+    message,
+    customer,
+    route,
+    user: userId,
+    sender,
+  }).then((val) => {
+    User.findById(val.sender).then((user) => {
+      io.to(adminRoomName(userId)).emit("AppNotification", {
+        ...val.toJSON(),
+        sender: user.toJSON(),
+      });
+    });
+  });
+};
 const sendMessageToClient = (
   userId: any,
   messageName: string,
@@ -92,7 +92,7 @@ const sendMessageToAdmin = (
   messageName: string,
   message: any
 ) => {
-  io.to(userRoomName(adminId)).emit(messageName, message);
+  io.to(adminRoomName(adminId)).emit(messageName, message);
 };
 
 // function sendMessageToTimeOff(
@@ -133,6 +133,6 @@ export default {
   sendMessageToClient,
   sendMessageToAdmin,
   // sendMessageToCustomer,
-  // sendAppNotificationToClient,
+  sendAppNotificationToClient,
   // sendMessageToTimeOff,
 };

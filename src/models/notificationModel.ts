@@ -1,5 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { IAppNotification } from "../interfaces/database/IAppNotification";
+import AutoIncrement from "mongoose-auto-increment";
 
 const appNotificationSchema = new Schema<IAppNotification>({
   message: {
@@ -32,6 +33,15 @@ const appNotificationSchema = new Schema<IAppNotification>({
     type: Date,
     default: Date.now,
   },
+});
+
+AutoIncrement.initialize(mongoose.connection);
+
+appNotificationSchema.plugin(AutoIncrement.plugin, {
+  model: "AppNotification",
+  field: "id",
+  startAt: 1,
+  incrementBy: 1,
 });
 
 const AppNotification = model<IAppNotification>(
