@@ -72,13 +72,23 @@ const getInstance = () => io;
 //     sender,
 //   }).then((val) => {
 //     User.findById(val.sender).then((user) => {
-//       io.to(userRoomName(userId)).emit("AppNotification", {
+//       io.to(adminRoomName(userId)).emit("AppNotification", {
 //         ...val.toJSON(),
 //         sender: user.toJSON(),
 //       });
 //     });
 //   });
 // };
+
+const sendNotificationToAdmin = (adminId: any, notification: any) => {
+  // User.findById(adminId).then((adminUser: any) => {
+  // if (adminUser && adminUser.role === 'admin') {
+  // }
+  // })
+
+  io.to(adminRoomName(adminId)).emit("AppNotification", notification);
+};
+
 const sendMessageToClient = (
   userId: any,
   messageName: string,
@@ -92,7 +102,7 @@ const sendMessageToAdmin = (
   messageName: string,
   message: any
 ) => {
-  io.to(userRoomName(adminId)).emit(messageName, message);
+  io.to(adminRoomName(adminId)).emit(messageName, message);
 };
 
 // function sendMessageToTimeOff(
@@ -134,5 +144,6 @@ export default {
   sendMessageToAdmin,
   // sendMessageToCustomer,
   // sendAppNotificationToClient,
+  sendNotificationToAdmin,
   // sendMessageToTimeOff,
 };
