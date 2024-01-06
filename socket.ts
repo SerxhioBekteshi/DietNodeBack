@@ -143,11 +143,7 @@ export default {
   sendMessageToClient,
   sendMessageToAdmin,
   // sendMessageToCustomer,
-<<<<<<< HEAD
-  sendAppNotificationToClient,
-=======
   // sendAppNotificationToClient,
   sendNotificationToAdmin,
->>>>>>> 504c1c5ff7f1b2dd12c34391217844dcd5f36a05
   // sendMessageToTimeOff,
 };
