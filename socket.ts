@@ -57,28 +57,38 @@ const initialize = (
 
 const getInstance = () => io;
 
-const sendAppNotificationToClient = (
-  userId: any,
-  message: any,
-  customer: any,
-  sender: any,
-  route?: string
-) => {
-  AppNotification.create({
-    message,
-    customer,
-    route,
-    user: userId,
-    sender,
-  }).then((val) => {
-    User.findById(val.sender).then((user) => {
-      io.to(adminRoomName(userId)).emit("AppNotification", {
-        ...val.toJSON(),
-        sender: user.toJSON(),
-      });
-    });
-  });
+// const sendAppNotificationToClient = (
+//   userId: any,
+//   message: any,
+//   customer: any,
+//   sender: any,
+//   route?: string
+// ) => {
+//   AppNotification.create({
+//     message,
+//     customer,
+//     route,
+//     user: userId,
+//     sender,
+//   }).then((val) => {
+//     User.findById(val.sender).then((user) => {
+//       io.to(adminRoomName(userId)).emit("AppNotification", {
+//         ...val.toJSON(),
+//         sender: user.toJSON(),
+//       });
+//     });
+//   });
+// };
+
+const sendNotificationToAdmin = (adminId: any, notification: any) => {
+  // User.findById(adminId).then((adminUser: any) => {
+  // if (adminUser && adminUser.role === 'admin') {
+  // }
+  // })
+
+  io.to(adminRoomName(adminId)).emit("AppNotification", notification);
 };
+
 const sendMessageToClient = (
   userId: any,
   messageName: string,
@@ -133,6 +143,11 @@ export default {
   sendMessageToClient,
   sendMessageToAdmin,
   // sendMessageToCustomer,
+<<<<<<< HEAD
   sendAppNotificationToClient,
+=======
+  // sendAppNotificationToClient,
+  sendNotificationToAdmin,
+>>>>>>> 504c1c5ff7f1b2dd12c34391217844dcd5f36a05
   // sendMessageToTimeOff,
 };
