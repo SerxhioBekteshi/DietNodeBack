@@ -4,6 +4,7 @@ import IColumn from "../../interfaces/table/IColumn";
 import { eColumnType, eFilterOperator } from "../../enums";
 import { IAppNotification } from "../../interfaces/database/IAppNotification";
 import AppNotification from "../../models/notificationModel";
+import User from "../../models/userModel";
 
 export default class AppNotificationTable extends BaseTable<IAppNotification> {
   constructor(request: ITableRequest, user: any) {
@@ -12,20 +13,45 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
 
   override async buildRows() {
     try {
-      const rows = await super.buildRows();
-      const query = AppNotification.find(this.buildFilters(this.filters))
-        .populate("sender")
-        .skip((this.page - 1) * this.pageSize)
-        .limit(this.pageSize);
+      // const rows = await super.buildRows();
+      const matchFilters = this.buildFilters(this.filters);
 
-      const sort = this.buildSort();
-
-      if (sort) {
-        query.sort(sort);
-      }
-
-      const rows2 = await query.lean().exec();
-      console.log(rows2, "aaaaaaaa");
+      const pipeline = [
+        {
+          $match: matchFilters,
+        },
+        {
+          $lookup: {
+            from: User.collection.name,
+            localField: "user",
+            foreignField: "id",
+            as: "users",
+          },
+        },
+        {
+          $addFields: {
+            user: { $arrayElemAt: ["$users", 0] },
+          },
+        },
+        {
+          $project: {
+            id: 1,
+            message: 1,
+            route: 1,
+            updatedAt: 1,
+            seen: 1,
+            sender: 1,
+            user: { name: "$user.name", lastName: "$user.lastName" },
+          },
+        },
+        {
+          $skip: (this.page - 1) * this.pageSize,
+        },
+        {
+          $limit: this.pageSize,
+        },
+      ];
+      const rows = await this.model.aggregate(pipeline).exec();
       return rows;
     } catch (error) {
       throw error;
