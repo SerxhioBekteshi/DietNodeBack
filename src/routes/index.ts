@@ -9,6 +9,8 @@ import paymentRoutes from "./paymentRoutes";
 import orderRoutes from "./orderRoutes";
 import quizResultRoutes from "./userQuizResultRoutes";
 import permissionRoutes from "./permissionRoutes";
+import notificationRoutes from "./notificationRoutes";
+
 const router = express.Router();
 
 router.use("/authentication", authRouter);
@@ -21,5 +23,6 @@ router.use("/quizResult", quizResultRoutes);
 router.use("/payment", paymentRoutes);
 router.use("/order", orderRoutes);
 router.use("/permissions", permissionRoutes);
+router.use("/notification", notificationRoutes);
 
 export default router;

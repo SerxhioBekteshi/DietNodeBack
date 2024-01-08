@@ -1,12 +1,12 @@
 import { Schema } from "mongoose";
 
 export interface IAppNotification {
+  id: number;
   _id: Schema.Types.ObjectId;
   message: any;
   route: string;
   seen: boolean;
   createdAt: Date;
-  customer: Schema.Types.ObjectId;
-  sender: Schema.Types.ObjectId;
-  user: Schema.Types.ObjectId;
+  sender: number;
+  user: number;
 }

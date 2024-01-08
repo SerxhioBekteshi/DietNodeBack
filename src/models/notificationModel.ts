@@ -3,30 +3,31 @@ import { IAppNotification } from "../interfaces/database/IAppNotification";
 import AutoIncrement from "mongoose-auto-increment";
 
 const appNotificationSchema = new Schema<IAppNotification>({
+  id: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   message: {
     type: Object,
     required: true,
   },
   route: {
     type: String,
+    default: null,
   },
   seen: {
     type: Boolean,
     default: false,
   },
   sender: {
-    type: Schema.Types.ObjectId,
+    type: Number,
     ref: "User",
     required: true,
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: Number,
     ref: "User",
-    required: true,
-  },
-  customer: {
-    type: Schema.Types.ObjectId,
-    ref: "Customer",
     required: true,
   },
   createdAt: {

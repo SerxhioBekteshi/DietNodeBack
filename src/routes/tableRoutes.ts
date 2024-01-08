@@ -7,6 +7,7 @@ import {
 import { protect } from "../middlewares/protection";
 import { getAll } from "../controllers/tableController";
 import {
+  IAppNotification,
   IMeal,
   IOrder,
   IOrderDetails,
@@ -19,6 +20,7 @@ import MealTable from "../classes/tables/MealTable";
 import OrderTable from "../classes/tables/OrderTable";
 import OrderDetailsTable from "../classes/tables/OrderDetailsTable";
 import PermissionTable from "../classes/tables/PermissionsTable";
+import AppNotificationTable from "../classes/tables/AppNotificationTable";
 
 const router = express.Router();
 router.use(protect);
@@ -28,6 +30,7 @@ createTableRoutes<IMeal>("meals", MealTable);
 createTableRoutes<IOrder>("orders", OrderTable);
 createTableRoutes<IOrderDetails>("orderDetails", OrderDetailsTable);
 createTableRoutes<IPermission>("permissions", PermissionTable);
+createTableRoutes<IAppNotification>("notifications", AppNotificationTable);
 
 function createTableRoutes<T>(route: string, table: TableConstructor<T>) {
   router.post(`/${route}`, getAll<T>(table));
