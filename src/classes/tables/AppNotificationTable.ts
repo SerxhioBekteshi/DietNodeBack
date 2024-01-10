@@ -41,6 +41,7 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
             updatedAt: 1,
             seen: 1,
             sender: 1,
+            createdAt: 1,
             user: { name: "$user.name", lastName: "$user.lastName" },
           },
         },
