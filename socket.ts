@@ -80,12 +80,34 @@ const getInstance = () => io;
 //   });
 // };
 
+const sendAppNotificationToAdmin = (
+  userId: any,
+  message: any,
+  sender: any,
+  route?: string
+) => {
+  AppNotification.create({
+    message,
+    route,
+    user: userId,
+    sender,
+  }).then((val) => {
+    User.findById(val.sender).then((user) => {
+      io.to(adminRoomName(userId)).emit("AppNotification", {
+        ...val.toJSON(),
+        sender: user.toJSON(),
+      });
+    });
+  });
+};
+
 const sendNotificationToAdmin = (adminId: any, notification: any) => {
   // User.findById(adminId).then((adminUser: any) => {
   // if (adminUser && adminUser.role === 'admin') {
   // }
   // })
 
+  console.log("KETU DUHET TE BEHET EMIT??");
   io.to(adminRoomName(adminId)).emit("AppNotification", notification);
 };
 
@@ -144,6 +166,7 @@ export default {
   sendMessageToAdmin,
   // sendMessageToCustomer,
   // sendAppNotificationToClient,
+  sendAppNotificationToAdmin,
   sendNotificationToAdmin,
   // sendMessageToTimeOff,
 };

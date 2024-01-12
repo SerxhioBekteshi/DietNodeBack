@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import { eRoles } from "../enums";
 import { Email } from "../classes/email";
 const crypto = require("crypto");
+import socketManager from "../../socket";
 
 const signToken = (
   payload: string | object | Buffer,
@@ -254,6 +255,10 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
       contact: "355697293469 - ADMIN",
       email: "serxhio131@gmail.com",
       user: newUser,
+    });
+
+    socketManager.sendNotificationToAdmin(1, {
+      message: "A new provider was registered to the platform",
     });
   });
 });
