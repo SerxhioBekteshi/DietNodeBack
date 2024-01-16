@@ -18,4 +18,17 @@ const markAllRead = catchAsync(async (req: any, res: any, next: any) => {
 
   res.json(updateAll.nModified);
 });
-export { updateNotification, markAllRead };
+
+const deleteAll = catchAsync(async (req: any, res: any, next: any) => {
+  const { user } = req;
+  if (!user) {
+    return next(new AppError("Something went wrong please login again!", 404));
+  }
+  const deleted = await AppNotification.deleteMany({
+    id: { $in: req.body.ids },
+  });
+
+  res.json(deleted);
+});
+
+export { updateNotification, markAllRead, deleteAll };
