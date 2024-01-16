@@ -257,9 +257,18 @@ const registerProvider = catchAsync(async (req: any, res: any, next: any) => {
       user: newUser,
     });
 
-    socketManager.sendNotificationToAdmin(1, {
-      message: "A new provider was registered to the platform",
-    });
+    socketManager.sendAppNotificationToAdmin(
+      "A new provider was registered into the platform",
+      newUser.id,
+      "New registration",
+      "/admin/providers/registration",
+      eRoles.Admin
+    );
+    // socketManager.sendAppNotificationToAdmin({
+    //   message: "A new provider was registered into the platform",
+    //   sender: newUser.id,
+    //   route: "/admin/providers/registration",
+    // });
   });
 });
 

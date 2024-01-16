@@ -23,7 +23,7 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
         {
           $lookup: {
             from: User.collection.name,
-            localField: "user",
+            localField: "sender",
             foreignField: "id",
             as: "users",
           },
@@ -42,6 +42,7 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
             seen: 1,
             sender: 1,
             createdAt: 1,
+            title: 1,
             user: { name: "$user.name", lastName: "$user.lastName" },
           },
         },
@@ -65,9 +66,9 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
   override buildFilters(filters: IFilter[]) {
     const newFilters: IFilter[] = [...filters];
     newFilters.push({
-      columnName: "user",
+      columnName: "role",
       operation: eFilterOperator.Equal,
-      value: (this.user as any).id,
+      value: (this.user as any).role,
     });
     return super.buildFilters(newFilters);
   }

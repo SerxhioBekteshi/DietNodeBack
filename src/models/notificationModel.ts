@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IAppNotification } from "../interfaces/database/IAppNotification";
 import AutoIncrement from "mongoose-auto-increment";
+import { eRoles } from "../enums";
 
 const appNotificationSchema = new Schema<IAppNotification>({
   id: {
@@ -8,13 +9,21 @@ const appNotificationSchema = new Schema<IAppNotification>({
     required: true,
     unique: true,
   },
+  title: {
+    type: String,
+    required: true,
+  },
   message: {
-    type: Object,
+    type: String,
     required: true,
   },
   route: {
     type: String,
     default: null,
+  },
+  customAction: {
+    type: Object,
+    required: false,
   },
   seen: {
     type: Boolean,
@@ -25,10 +34,10 @@ const appNotificationSchema = new Schema<IAppNotification>({
     ref: "User",
     required: true,
   },
-  user: {
-    type: Number,
-    ref: "User",
-    required: true,
+  role: {
+    type: String,
+    enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
+    default: eRoles.Admin,
   },
   createdAt: {
     type: Date,

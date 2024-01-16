@@ -1,3 +1,4 @@
+import { eRoles } from "../enums";
 import AppNotification from "../models/notificationModel";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
@@ -11,9 +12,10 @@ const markAllRead = catchAsync(async (req: any, res: any, next: any) => {
     return next(new AppError("Something went wrong please login again!", 404));
   }
   const updateAll = await AppNotification.updateMany(
-    { user: { $eq: user._id } },
+    { role: req.user.role },
     { seen: true }
   );
+
   res.json(updateAll.nModified);
 });
 export { updateNotification, markAllRead };

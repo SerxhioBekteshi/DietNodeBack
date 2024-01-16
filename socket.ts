@@ -4,7 +4,7 @@ import https from "https";
 import AppNotification from "./src/models/notificationModel";
 import User from "./src/models/userModel";
 // import { readComments } from './src/controllers/timeOffController';
-import { eSocketEvent } from "./src/enums";
+import { eRoles, eSocketEvent } from "./src/enums";
 let io: Server = null;
 
 const initialize = (
@@ -81,35 +81,38 @@ const getInstance = () => io;
 // };
 
 const sendAppNotificationToAdmin = (
-  userId: any,
   message: any,
-  sender: any,
-  route?: string
+  sender: number,
+  title: string,
+  route?: string,
+  role?: eRoles,
+  customAction?: any
 ) => {
   AppNotification.create({
     message,
-    route,
-    user: userId,
     sender,
+    title,
+    route,
+    role,
+    customAction,
   }).then((val) => {
-    User.findById(val.sender).then((user) => {
-      io.to(adminRoomName(userId)).emit("AppNotification", {
+    User.findOne({ role: role }).then((user) => {
+      io.to(adminRoomName(user.id)).emit("AppNotification", {
         ...val.toJSON(),
-        sender: user.toJSON(),
       });
     });
   });
 };
 
-const sendNotificationToAdmin = (adminId: any, notification: any) => {
-  // User.findById(adminId).then((adminUser: any) => {
-  // if (adminUser && adminUser.role === 'admin') {
-  // }
-  // })
+// const sendNotificationToAdmin = (adminId: any, notification: any) => {
+//   // User.findById(adminId).then((adminUser: any) => {
+//   // if (adminUser && adminUser.role === 'admin') {
+//   // }
+//   // })
 
-  console.log("KETU DUHET TE BEHET EMIT??");
-  io.to(adminRoomName(adminId)).emit("AppNotification", notification);
-};
+//   console.log("KETU DUHET TE BEHET EMIT??");
+//   io.to(adminRoomName(adminId)).emit("AppNotification", notification);
+// };
 
 const sendMessageToClient = (
   userId: any,
@@ -117,14 +120,6 @@ const sendMessageToClient = (
   message: any
 ) => {
   io.to(userRoomName(userId)).emit(messageName, message);
-};
-
-const sendMessageToAdmin = (
-  adminId: any,
-  messageName: string,
-  message: any
-) => {
-  io.to(adminRoomName(adminId)).emit(messageName, message);
 };
 
 // function sendMessageToTimeOff(
@@ -163,10 +158,9 @@ export default {
   initialize,
   getInstance,
   sendMessageToClient,
-  sendMessageToAdmin,
   // sendMessageToCustomer,
   // sendAppNotificationToClient,
   sendAppNotificationToAdmin,
-  sendNotificationToAdmin,
+  // sendNotificationToAdmin,
   // sendMessageToTimeOff,
 };
