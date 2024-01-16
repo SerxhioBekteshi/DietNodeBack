@@ -9,4 +9,5 @@ export interface IAppNotification {
   createdAt: Date;
   sender: number;
   user: number;
+  title: string;
 }
