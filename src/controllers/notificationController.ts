@@ -28,7 +28,7 @@ const deleteAll = catchAsync(async (req: any, res: any, next: any) => {
     id: { $in: req.body.ids },
   });
 
-  res.json(deleted);
+  res.json(deleted.deletedCount);
 });
 
 export { updateNotification, markAllRead, deleteAll };
