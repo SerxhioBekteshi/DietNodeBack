@@ -33,6 +33,7 @@ const createOrder = catchAsync(async (req: any, res: any, next: any) => {
   req.body.address = req.body.purchase_units[0].shipping.address.address_line_1;
   delete req.body.purchase_units[0];
 
+  console.log(req.body, "REQ BODY");
   const orderDetailsDoc = await OrderDetails.create(req.body);
 
   socketManager.sendAppNotificationToAdmin(

@@ -20,11 +20,16 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
     const rows = await super.buildRows();
     const res = rows.map((row: any) => {
       const newRow = row;
+      console.log(row, "ROW");
       return {
         ...newRow,
         valuePaid: `${newRow.valuePaid}` + ` ${newRow.currency}`,
+        description: "Not key row for the moment",
+        address: "not key row for the moment ",
       };
     });
+
+    console.log(res, "RES");
     return res;
   }
 
