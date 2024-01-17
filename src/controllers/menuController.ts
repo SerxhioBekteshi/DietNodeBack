@@ -105,8 +105,7 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
                 { "rolePermission.isActive": true },
                 { "role.roleName": req.userRole },
                 { "permission.subjectId": null },
-                { "rolePermission.permissionId": { $nin: [] } }, // Fill in the array with the subquery result, this should be the result of the first
-                //subquery with the exception of SELECT up.permissionId, so just select the IDS
+                { "rolePermission.permissionId": { $nin: [] } },
               ],
             },
           },

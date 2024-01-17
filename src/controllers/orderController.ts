@@ -3,6 +3,8 @@ import Order from "../models/orderModel";
 import { catchAsync } from "../utils/catchAsync";
 import { AppError } from "../utils/appError";
 import OrderDetails from "../models/orderDetailModel";
+import { eRoles } from "../enums";
+import socketManager from "../../socket";
 
 const getOrders = getAll(Order);
 
@@ -32,6 +34,14 @@ const createOrder = catchAsync(async (req: any, res: any, next: any) => {
   delete req.body.purchase_units[0];
 
   const orderDetailsDoc = await OrderDetails.create(req.body);
+
+  socketManager.sendAppNotificationToAdmin(
+    "A new order was made",
+    orderDetailsDoc.id,
+    "New order",
+    `/admin/orders/${orderDetailsDoc.id}`,
+    eRoles.Admin
+  );
 
   if (!orderDetailsDoc) {
     return next(new AppError("Order Details error", 400));
