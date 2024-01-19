@@ -15,7 +15,7 @@ export default class UserTable extends BaseTable<IUser> {
       const newRow = row;
       return {
         ...newRow,
-        name: { value: newRow.name, photo: `images/users/${row.photo}` },
+        name: { value: newRow.name, image: `images/users/${row.image}` },
       };
     });
     return res;

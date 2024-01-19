@@ -11,7 +11,7 @@ import { catchAsync } from "../utils/catchAsync";
 import multer from "multer";
 import { AppError } from "../utils/appError";
 import deleteFile from "../utils/deleteFile";
-import { isObjEmpty } from "../utils";
+import { getPermissionForLoggedUser, isObjEmpty } from "../utils";
 import { eRoles } from "../enums";
 import { APIFeatures } from "../utils/apiFeatures";
 // import HolidayConfig from "../models/holidayConfig";
@@ -27,6 +27,21 @@ const updateUser = updateOne(User);
 const getAllUsers = getAll(User);
 
 const deleteUser = deleteOne(User);
+
+const getLoggedUser = catchAsync(async (req: any, res: any, next: any) => {
+  try {
+    const user = await User.findOne({ id: req.user.id });
+    if (!user) {
+      return next(new AppError("Could not get the current logged user", 404));
+    }
+
+    const aclPermissions = await getPermissionForLoggedUser(user, next);
+    const newUser = { ...user.toObject(), accessPermissions: aclPermissions };
+    res.status(200).json(newUser);
+  } catch (err: any) {
+    return next(new AppError(err, 500));
+  }
+});
 
 const getProviders = async (req: any, res: any, next: any) => {
   const features = new APIFeatures(
@@ -73,8 +88,8 @@ const storage = multer.diskStorage({
   },
 
   filename: function (req: any, file: any, cb: any) {
-    req.fileType = file.mimetype.split("/")[1]; // jpg/jpeg or png
-    cb(null, `user-profile-pic-${req.user._id}-${Date.now()}.${req.fileType}`);
+    req.fileType = file.mimetype.split("/")[1];
+    cb(null, `user-profile-pic-${req.user._id}.${req.fileType}`);
   },
 });
 
@@ -98,20 +113,25 @@ const resizeUserPhoto = catchAsync(async (req, res, next) => {
   next();
 });
 
-const updateProfileImage = async (req, res, next) => {
+const updateProfileImage = async (req: any, res: any, next: any) => {
   if (!req.file) return next();
-  console.log(req.user.photo, "photo");
-  const ss = await User.findByIdAndUpdate(
-    { _id: req.user._id },
-    { photo: req.file.filename }
-  );
 
-  console.log(ss);
+  const currentLoggedUser = await User.findById({ _id: req.user._id });
+  if (!currentLoggedUser)
+    return next(new AppError("No doc find with that id", 404));
 
-  if (req.user.photo !== "default.jpg")
-    await deleteFile(`public/images/users/${req.user.photo}`);
+  const image = req.file.path;
+  currentLoggedUser.image = image.replace(/ /g, "");
 
-  res.status(200).json({ fileName: req.file.filename });
+  const result = currentLoggedUser.save();
+  if (result) return res.status(200).json({ message: "Update successfully" });
+
+  // if (req.user.image !== "default.jpg")
+  //   await deleteFile(`public/images/users/${req.user.image}`);
+
+  res.status(200).json({
+    message: "Image updated successfully",
+  });
 };
 
 const updateLoggedUser = async (req: any, res: any, next: any) => {
@@ -139,6 +159,7 @@ export default {
   updateUser,
   deleteUser,
   getUserDetail,
+  getLoggedUser,
   getProviders,
   submitUnsubmitProvider,
   uploadImage,

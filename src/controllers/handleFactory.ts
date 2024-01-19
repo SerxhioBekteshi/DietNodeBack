@@ -64,33 +64,8 @@ const getOne = (Model: any, popOptions?: any) =>
 
 const getUserByTokenId = (Model: Model<IUser, {}, {}>, popOptions?: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
-    const user = await Model.aggregate([
-      {
-        $lookup: {
-          from: "sth",
-          // from: Customer.collection.name,
-          localField: "customer",
-          foreignField: "_id",
-          as: "customers",
-        },
-      },
-      {
-        $match: { _id: { $eq: req.user._id } },
-      },
-      {
-        $addFields: {
-          customerDetails: { $arrayElemAt: ["$customers", 0] },
-        },
-      },
-      {
-        $limit: 1,
-      },
-    ]);
-    if (!user || user.length === 0) {
-      return next(new AppError("No doc find with that id", 404));
-    }
-
-    res.status(200).send(user[0]);
+    const user = await Model.findById({ _id: req.user._id });
+    res.status(200).send(user);
   });
 
 // create middleware with this code

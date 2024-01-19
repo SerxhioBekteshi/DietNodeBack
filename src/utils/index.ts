@@ -1,7 +1,10 @@
 import { eFilterOperator, eRoles } from "../enums";
 import Menu from "../models/menuModel";
+import Permission from "../models/permissionModel";
 import Role from "../models/roleModel";
+import RolePermission from "../models/rolePermissionModel";
 import User from "../models/userModel";
+import { AppError } from "./appError";
 
 export const getRandomHexadecimal = (size) => {
   return [...Array(size)]
@@ -181,4 +184,40 @@ export const initializeMenuItems = async function () {
   ];
 
   return Menu.insertMany(menuItems);
+};
+
+export const getPermissionForLoggedUser = async (user: any, next: any) => {
+  try {
+    const rolePermissions = await RolePermission.find(
+      { roleId: user.roleId, isActive: true },
+      "id roleId permissionId isActive"
+    );
+    const permissionsInfo = await Promise.all(
+      rolePermissions.map(async (rolePermission: any) => {
+        const permissionId = rolePermission.permissionId;
+        const permission = await Permission.findOne({
+          id: permissionId,
+        });
+        if (!permission) {
+          return null;
+        }
+        const { subjectId, action } = permission;
+        if (subjectId) {
+          const menu = await Menu.findOne({ id: subjectId });
+          if (!menu) {
+            return null;
+          }
+          const { label } = menu;
+          return { action, subject: label };
+        }
+        return { action, subject: "" };
+      })
+    );
+    const aclPermissions = permissionsInfo.filter(
+      (permission) => permission !== null
+    );
+    return aclPermissions;
+  } catch (err) {
+    return next(new AppError(`Something went wrong`, 500));
+  }
 };

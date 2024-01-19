@@ -6,6 +6,12 @@ export interface IVacationAllocation {
   vacationDays: number;
   expirationDate: Date;
 }
+
+export interface ACL {
+  action: string;
+  subject: string;
+}
+
 export interface IUser {
   id: Number;
   _id: Schema.Types.ObjectId;
@@ -14,11 +20,12 @@ export interface IUser {
   role: eRoles;
   quizFulfilled: Boolean;
   accountSubmitted: Boolean;
+  accessPermissions: ACL[];
   nipt: String;
   termsAgreed: String;
   address: String;
   state: String;
-  photo: string;
+  image: string;
   email: string;
   createdAt: Date;
   active: boolean;

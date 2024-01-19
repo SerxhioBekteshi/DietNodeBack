@@ -38,7 +38,7 @@ const userSchema = new Schema<IUser>(
       type: Number,
       ref: "User",
     },
-    photo: {
+    image: {
       type: String,
       default: "default.jpg",
     },

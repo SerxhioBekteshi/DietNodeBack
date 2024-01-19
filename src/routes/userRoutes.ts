@@ -22,13 +22,14 @@ router.get("/", userController.getAllUsers);
 router.get("/me", userController.getUserDetail);
 router.put("/updatePassword", authController.updatePassword);
 router.put("/update", userController.updateLoggedUser);
+router.get("/loggedUser", userController.getLoggedUser);
 
 router
   .route("/:id")
   .get(userController.getUser)
   .delete(userController.deleteUser);
 
-router.post(
+router.put(
   "/image",
   userController.uploadImage.single("image"),
   userController.updateProfileImage
