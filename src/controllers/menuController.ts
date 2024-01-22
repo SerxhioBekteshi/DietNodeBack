@@ -120,6 +120,8 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
       },
     },
   ]);
+
+  console.log(menuItems, "AWDAWDAWD");
   res.status(200).json(menuItems);
 });
 
