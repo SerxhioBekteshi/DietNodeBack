@@ -173,14 +173,57 @@ export const initializeMenuItems = async function () {
     //   roleId: 1,
     //   menuType: eRoles.Admin,
     // },
-    {
-      id: 15,
-      label: "Provider emails",
-      icon: "pi pi-send",
-      to: "/provider/emails",
-      roleId: 1,
-      menuType: eRoles.Admin,
-    },
+    // {
+    //   id: 15,
+    //   label: "Provider emails",
+    //   icon: "pi pi-send",
+    //   to: "/provider/emails",
+    //   roleId: 1,
+    //   menuType: eRoles.Admin,
+    // },
+    // { id: 16, label: "Dashboard", icon: "pi pi-user", to: "/" },
+    // {
+    //   id: 17,
+    //   label: "Provider accounts",
+    //   icon: "pi pi-question",
+    //   to: "/providers/registration",
+    // },
+    // {
+    //   id: 18,
+    //   label: "Quiz configuration",
+    //   icon: "pi pi-question",
+    //   to: "/quiz",
+    // },
+    // {
+    //   id: 19,
+    //   label: "Orders",
+    //   icon: "pi pi-calculator",
+    //   to: "/orders",
+    // },
+    // {
+    //   id: 20,
+    //   label: "Meals",
+    //   icon: "pi pi-box",
+    //   to: "/meals",
+    // },
+    // {
+    //   id: 21,
+    //   label: "Meals Configurations",
+    //   icon: "pi pi-calculator",
+    //   to: "/mealsConfigurations",
+    // },
+    // {
+    //   id: 22,
+    //   label: "Permissions",
+    //   icon: "pi pi-wrench",
+    //   to: "/permissions",
+    // },
+    // {
+    //   id: 23,
+    //   label: "Provider emails",
+    //   icon: "pi pi-send",
+    //   to: "/provider/emails",
+    // },
   ];
 
   return Menu.insertMany(menuItems);

@@ -10,8 +10,8 @@ const menuSchema = new Schema<IMenu>({
   to: { type: String, required: true },
   roleId: {
     type: Number,
-    required: true,
-    default: 1,
+    // required: true,
+    // default: 1,
     ref: "Role",
   },
   collapisble: { type: Boolean },
@@ -19,7 +19,7 @@ const menuSchema = new Schema<IMenu>({
   menuType: {
     type: String,
     enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
-    default: eRoles.User,
+    // default: eRoles.User,
   },
 });
 
