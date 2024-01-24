@@ -17,141 +17,69 @@ const getMenuItemsNoRole = catchAsync(async (req: any, res: any, next: any) => {
 });
 
 const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
-  // const menuItems = await Menu.aggregate([
-  //   {
-  //     $facet: {
-  //       $facet1: [
-  //         {
-  //           $lookup: {
-  //             from: MenuPermission.collection.name,
-  //             localField: "id",
-  //             foreignField: "menuId",
-  //             as: "menuPermission",
-  //           },
-  //         },
-  //         {
-  //           $lookup: {
-  //             from: Permission.collection.name,
-  //             localField: "menuPermission.permissionId",
-  //             foreignField: "permission.id",
-  //             as: "permission",
-  //           },
-  //         },
-  //         {
-  //           $match: {
-  //             $and: [
-  //               { "permission.isActive": true },
-  //               { "permission.subjectId": null },
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //       $facet2: [
-  //         {
-  //           $lookup: {
-  //             from: MenuPermission.collection.name,
-  //             localField: "id",
-  //             foreignField: "menuId",
-  //             as: "menuPermission",
-  //           },
-  //         },
-  //         {
-  //           $lookup: {
-  //             from: Permission.collection.name,
-  //             localField: "menuPermission.permissionId",
-  //             foreignField: "permission.id",
-  //             as: "permission",
-  //           },
-  //         },
-  //         {
-  //           $lookup: {
-  //             from: RolePermission.collection.name,
-  //             localField: "menuPermission.permissionId",
-  //             foreignField: "rolePermission.permissionId",
-  //             as: "rolePermission",
-  //           },
-  //         },
-  //         {
-  //           $lookup: {
-  //             from: Role.collection.name,
-  //             localField: "rolePermission.roleId",
-  //             foreignField: "role.id",
-  //             as: "role",
-  //           },
-  //         },
-  //         {
-  //           $match: {
-  //             $and: [
-  //               { "permission.isActive": true },
-  //               { "rolePermission.isActive": true },
-  //               { "role.roleName": req.userRole },
-  //               { "permission.subjectId": null },
-  //               { "rolePermission.permissionId": { $nin: [] } },
-  //             ],
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   },
-  //   {
-  //     $project: {
-  //       unionResult: {
-  //         $concatArrays: ["$facet1", "$facet2"],
-  //       },
-  //     },
-  //   },
-  // ]);
-  const menuItems = await MenuPermission.aggregate([
+  const menuItems = await Menu.aggregate([
     {
       $lookup: {
-        from: Menu.collection.name,
-        localField: "menuId",
-        foreignField: "menu.id",
-        as: "menu",
+        from: MenuPermission.collection.name,
+        localField: "id",
+        foreignField: "menuId",
+        as: "mp",
       },
+    },
+    {
+      $unwind: "$mp",
     },
     {
       $lookup: {
         from: Permission.collection.name,
-        localField: "menuPermission.permissionId",
-        foreignField: "permission.id",
+        localField: "mp.permissionId",
+        foreignField: "id",
         as: "permission",
       },
     },
     {
+      $unwind: "$permission",
+    },
+    {
       $lookup: {
         from: RolePermission.collection.name,
-        localField: "menuPermission.permissionId",
-        foreignField: "rolePermission.permissionId",
-        as: "rolePermission",
+        localField: "mp.permissionId",
+        foreignField: "permisionId",
+        as: "rp",
       },
     },
     {
       $lookup: {
         from: Role.collection.name,
-        localField: "rolePermission.roleId",
-        foreignField: "role.id",
+        localField: "rp.roleId",
+        foreignField: "id",
         as: "role",
       },
     },
-    // {
-    //   $match: {
-    //     "permission.isActive": true,
-    //     "rolePermission.isActive": true,
-    //     "role.roleName": req.user.role,
-    //     // "menu.parentId": null,
-    //     "permission.subjectId": null,
-    //     // "rolePermission.permissionId": { $nin: [] },
-    //   },
-    // },
-    // {
-    //   $project: {
-    //     "menu.id": 1,
-    //     "menu.label": 1,
-    //     "menu.icon": 1,
-    //     "menu.to": 1,
-    //   },
-    // },
+    {
+      $unwind: {
+        path: "$role",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $match: {
+        "permission.isActive": true,
+        "rp.isActive": true,
+        "role.roleName": req.user.role,
+        parentId: null,
+        // "permission.subjectId": null,
+      },
+    },
+    {
+      $project: {
+        label: 1,
+        icon: 1,
+        to: 1,
+        id: 1,
+        parentId: 1,
+      },
+    },
   ]);
 
   console.log(menuItems, "MENU ITEMS");
