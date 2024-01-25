@@ -49,17 +49,19 @@ const updatePermission = catchAsync(async (req: any, res: any, next: any) => {
   if (!doc) {
     return next(new AppError("No doc find with that id", 404));
   }
-  createMenuPermission(req.body, doc, next, "update");
+  createMenuPermission(req.body, doc, next);
   createRolePermission(req.body, doc, next);
   res.status(200).json({ doc: doc, message: "Updated successfully" });
 });
 
 const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
+  console.log(req.params.id, "PARAMS ID");
   const query = await Permission.findOneAndDelete({ id: req.params.id });
   if (!query) {
     return next(new AppError("No doc find with that id", 404));
   }
 
+  console.log(query, "QUERY");
   if (query) {
     const rolePermissions = await RolePermission.deleteMany({
       permissionId: req.params.id,
@@ -97,36 +99,46 @@ const createPermission = catchAsync(async (req: any, res: any, next: any) => {
 const createMenuPermission = async (
   permissionPayload: any,
   permissionRow: any,
-  next: any,
-  mode?: string
+  next: any
 ) => {
   try {
-    if (mode !== "edit") {
-      //we are supposing subjet Id can not be modifed for the certain permission row for the moment
-      if (permissionPayload.subjectId !== null) {
-        const menuItem = await Menu.findOne({
-          id: permissionPayload.subjectId,
-        });
-        if (menuItem) {
-          const checkRelationMenu = await MenuPermission.findOne({
-            menuId: menuItem.id,
-            permissionId: permissionRow.id,
-          });
+    //we are supposing subjet Id can not be modifed for the certain permission row for the moment
+    // if (permissionPayload.subjectId !== null) {
+    //   const menuItem = await Menu.findOne({
+    //     id: permissionPayload.subjectId,
+    //   });
+    //   if (menuItem) {
+    //     const checkRelationMenu = await MenuPermission.findOne({
+    //       menuId: menuItem.id,
+    //       permissionId: permissionRow.id,
+    //     });
+    //     const menuPermissionBody = {
+    //       menuId: menuItem.id,
+    //       permissionId: permissionRow.id,
+    //     };
+    //     if (checkRelationMenu) {
+    //       await MenuPermission.updateOne(checkRelationMenu, menuPermissionBody);
+    //     } else {
+    //       await MenuPermission.create(menuPermissionBody);
+    //     }
+    //   } else {
+    //     return next(new AppError("No menu item was found with that id", 404));
+    //   }
+    // }
+    if (permissionPayload.subjectId === null) {
+      const menuItem = await Menu.findOne({ label: permissionPayload.name });
 
+      if (menuItem) {
+        const menuPermission = await MenuPermission.findOne({
+          menuId: menuItem.id,
+        });
+
+        if (!menuPermission) {
           const menuPermissionBody = {
             menuId: menuItem.id,
             permissionId: permissionRow.id,
           };
-          if (checkRelationMenu) {
-            await MenuPermission.updateOne(
-              checkRelationMenu,
-              menuPermissionBody
-            );
-          } else {
-            await MenuPermission.create(menuPermissionBody);
-          }
-        } else {
-          return next(new AppError("No menu item was found with that id", 404));
+          await MenuPermission.create(menuPermissionBody);
         }
       }
     }

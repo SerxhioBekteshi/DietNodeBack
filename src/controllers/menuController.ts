@@ -23,52 +23,44 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
         from: MenuPermission.collection.name,
         localField: "id",
         foreignField: "menuId",
-        as: "mp",
+        as: "menuPermissions",
       },
     },
-    {
-      $unwind: "$mp",
-    },
+    { $unwind: "$menuPermissions" },
     {
       $lookup: {
         from: Permission.collection.name,
-        localField: "mp.permissionId",
+        localField: "menuPermissions.permissionId",
         foreignField: "id",
         as: "permission",
       },
     },
-    {
-      $unwind: "$permission",
-    },
+    { $unwind: "$permission" },
     {
       $lookup: {
         from: RolePermission.collection.name,
-        localField: "mp.permissionId",
-        foreignField: "permisionId",
-        as: "rp",
+        localField: "menuPermissions.permissionId",
+        foreignField: "permissionId",
+        as: "rolePermissions",
       },
     },
     {
       $lookup: {
         from: Role.collection.name,
-        localField: "rp.roleId",
+        localField: "rolePermissions.roleId",
         foreignField: "id",
         as: "role",
       },
     },
-    {
-      $unwind: {
-        path: "$role",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
+    { $unwind: { path: "$role", preserveNullAndEmptyArrays: true } },
+
     {
       $match: {
         "permission.isActive": true,
-        "rp.isActive": true,
+        "rolePermissions.isActive": true,
         "role.roleName": req.user.role,
         parentId: null,
-        // "permission.subjectId": null,
+        "permission.subjectId": null,
       },
     },
     {

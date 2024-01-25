@@ -1,6 +1,8 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IPermission } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
+import RolePermission from "./rolePermissionModel";
+import MenuPermission from "./menuPermissionsModel";
 
 const PermissionsSchema = new Schema<IPermission>(
   {
@@ -33,8 +35,8 @@ const PermissionsSchema = new Schema<IPermission>(
       type: Number,
       ref: "User",
     },
-    // rolePermissions: [{ type: Schema.Types.ObjectId, ref: "RolePermission" }],
-    // menuPermissions: [{ type: Schema.Types.ObjectId, ref: "MenuPermission" }],
+    rolePermissions: [{ type: Number, ref: RolePermission.collection.name }],
+    menuPermissions: [{ type: Number, ref: MenuPermission.collection.name }],
   },
   { timestamps: true }
 );

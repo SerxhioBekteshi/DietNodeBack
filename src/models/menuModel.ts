@@ -2,6 +2,8 @@ import mongoose, { Schema, model } from "mongoose";
 import { eRoles } from "../enums";
 import { IMenu } from "../interfaces/database/IMenu";
 import AutoIncrement from "mongoose-auto-increment";
+import Permission from "./permissionModel";
+import MenuPermission from "./menuPermissionsModel";
 
 const menuSchema = new Schema<IMenu>({
   id: { type: Number, required: true, unique: true },
@@ -15,17 +17,13 @@ const menuSchema = new Schema<IMenu>({
     ref: "Role",
   },
   collapisble: { type: Boolean },
-  children: { type: Array<IMenu> },
   parentId: {
     type: Number,
     ref: "Menu",
     default: null,
   },
-  // menuType: {
-  //   type: String,
-  //   enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
-  //   // default: eRoles.User,
-  // },
+  permissions: [{ type: Number, ref: Permission.collection.name }],
+  menuPermission: { type: Number, ref: MenuPermission.collection.name },
 });
 
 AutoIncrement.initialize(mongoose.connection);

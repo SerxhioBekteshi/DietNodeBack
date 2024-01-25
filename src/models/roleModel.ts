@@ -1,6 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
 import { IMenu, IRole } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
+import RolePermission from "./rolePermissionModel";
 
 const roleSchema = new Schema<IRole>({
   id: {
@@ -12,6 +13,7 @@ const roleSchema = new Schema<IRole>({
     type: String,
     required: true,
   },
+  rolePermissions: [{ type: Number, ref: RolePermission.collection.name }],
 });
 AutoIncrement.initialize(mongoose.connection);
 
