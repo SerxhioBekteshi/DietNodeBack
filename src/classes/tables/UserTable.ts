@@ -50,8 +50,14 @@ export default class UserTable extends BaseTable<IUser> {
 
     return columns;
   }
-  override async delete(ids: any[]): Promise<number> {
+
+  override async delete(
+    ids: any[]
+  ): Promise<{ deleteCount: number; message: string }> {
     const res = await User.updateMany({ _id: { $in: ids } }, { active: false });
-    return res.nModified;
+    return {
+      deleteCount: res.nModified,
+      message: `${res.nModified} were updated successfully`,
+    };
   }
 }

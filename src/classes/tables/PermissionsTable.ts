@@ -3,7 +3,9 @@ import { IOrder, IPermission } from "../../interfaces/database";
 import { ITableRequest } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
 import Menu from "../../models/menuModel";
+import MenuPermission from "../../models/menuPermissionsModel";
 import Permission from "../../models/permissionModel";
+import RolePermission from "../../models/rolePermissionModel";
 import User from "../../models/userModel";
 import BaseTable from "./BaseTable";
 
@@ -142,5 +144,28 @@ export default class PermissionTable extends BaseTable<IPermission> {
       },
     ];
     return columns;
+  }
+
+  override async delete(ids: any[]) {
+    try {
+      const res = await this.model.deleteMany({ id: { $in: ids } });
+      if (res && res.deletedCount) {
+        ids.forEach(async (id: any) => {
+          await RolePermission.deleteMany({
+            permissionId: id,
+          });
+
+          await MenuPermission.deleteMany({
+            permissionId: id,
+          });
+        });
+      }
+      return {
+        deleteCount: res.deletedCount,
+        message: `${res.deletedCount} were deleted successfully`,
+      };
+    } catch (err) {
+      //i should do next here????
+    }
   }
 }

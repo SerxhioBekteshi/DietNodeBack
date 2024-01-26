@@ -259,7 +259,9 @@ export const getPermissionForLoggedUser = async (user: any, next: any) => {
     const aclPermissions = permissionsInfo.filter(
       (permission) => permission !== null
     );
-    return aclPermissions;
+    return aclPermissions.filter(
+      (permission: any) => permission.subject !== ""
+    );
   } catch (err) {
     return next(new AppError(`Something went wrong`, 500));
   }

@@ -61,6 +61,7 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
         "role.roleName": req.user.role,
         parentId: null,
         "permission.subjectId": null,
+        id: { $gt: 15 },
       },
     },
     {
@@ -74,7 +75,6 @@ const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
     },
   ]);
 
-  console.log(menuItems, "MENU ITEMS");
   res.status(200).json(menuItems);
 });
 

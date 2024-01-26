@@ -55,13 +55,11 @@ const updatePermission = catchAsync(async (req: any, res: any, next: any) => {
 });
 
 const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
-  console.log(req.params.id, "PARAMS ID");
   const query = await Permission.findOneAndDelete({ id: req.params.id });
   if (!query) {
     return next(new AppError("No doc find with that id", 404));
   }
 
-  console.log(query, "QUERY");
   if (query) {
     const rolePermissions = await RolePermission.deleteMany({
       permissionId: req.params.id,
@@ -72,24 +70,14 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
     });
   }
 
-  // if (!rolePermissions) {
-  //   return next(
-  //     new AppError("No role permissions could be deleted, not found!", 404)
-  //   );
-  // }
-
-  // if(!menuPermissions){
-  //   return next(
-  //     new AppError("No menu permissions could be deleted, not found!", 404)
-  //   );
-  // }
-  // }
-
   res.status(200).json("Delete successfully");
 });
 
 const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   req.body.createdBy = req.user.id;
+  if (req.body.subjectId !== null) {
+    req.body.name = `${req.body.action} ${req.body.name}`;
+  }
   const doc = await Permission.create(req.body);
   createMenuPermission(req.body, doc, next);
   createRolePermission(req.body, doc, next);
@@ -126,7 +114,10 @@ const createMenuPermission = async (
     //   }
     // }
     if (permissionPayload.subjectId === null) {
-      const menuItem = await Menu.findOne({ label: permissionPayload.name });
+      const menuItem = await Menu.findOne({
+        label: permissionPayload.name,
+        id: { $gt: 15 },
+      });
 
       if (menuItem) {
         const menuPermission = await MenuPermission.findOne({
@@ -151,8 +142,7 @@ const createMenuPermission = async (
 const createRolePermission = async (
   permissionPayload: any,
   permissionRow: any,
-  next: any,
-  mode?: string
+  next: any
 ) => {
   const rolePermissions = await RolePermission.find({
     permissionId: permissionRow.id,
