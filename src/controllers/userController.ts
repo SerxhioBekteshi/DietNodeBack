@@ -30,6 +30,7 @@ const deleteUser = deleteOne(User);
 
 const getLoggedUser = catchAsync(async (req: any, res: any, next: any) => {
   try {
+    console.log(req.user.id, "WHAT");
     const user = await User.findOne({ id: req.user.id });
     if (!user) {
       return next(new AppError("Could not get the current logged user", 404));
