@@ -343,7 +343,9 @@ const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
 
 const resendEmailConfirmation = catchAsync(
   async (req: any, res: any, next: any) => {
-    const user = req.user;
+    const email = req.body.email;
+    const user = email ? await User.findOne({ email: email }).lean() : req.user;
+
     const session: ISession = createSession(user);
     const accessToken = signAccessToken(session);
     await new Email(user, req.user).registerAuth(accessToken);

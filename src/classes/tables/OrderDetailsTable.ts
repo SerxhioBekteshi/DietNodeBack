@@ -95,12 +95,6 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
         propertyType: eColumnType.DateTime,
         filtrable: true,
       },
-      {
-        title: "Icons",
-        propertyName: "icons",
-        propertyType: eColumnType.Icons,
-        icons: [],
-      },
     ];
 
     return columns;
