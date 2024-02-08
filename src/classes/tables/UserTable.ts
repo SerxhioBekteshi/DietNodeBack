@@ -3,48 +3,100 @@ import { IUser } from "../../interfaces/database";
 import User from "../../models/userModel";
 import { IFilter, ITableRequest } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
-import { eColumnType } from "../../enums";
+import { eColumnType, eRoles } from "../../enums";
 
 export default class UserTable extends BaseTable<IUser> {
   constructor(request: ITableRequest, user: any) {
     super(User, request, user);
   }
+
   override async buildRows(): Promise<any> {
     const rows = await super.buildRows();
     const res = rows.map((row) => {
       const newRow = row;
       return {
         ...newRow,
-        name: { value: newRow.name, image: `images/users/${row.image}` },
+        fullName: `${newRow.name} ${newRow.lastName}`,
+        image: `images/users/${row.image}`,
       };
     });
     return res;
   }
   override buildFilters(filters: IFilter[]) {
-    const newFilters: IFilter[] = [...filters];
-    return super.buildFilters(newFilters);
+    const baseFilters = super.buildFilters(filters);
+    const roleFilter = { role: { $in: [eRoles.Provider, eRoles.User] } };
+    const allFilters = { ...baseFilters, ...roleFilter };
+    return allFilters;
   }
+
   override buildColumns(): IColumn<IUser>[] {
     const columns: IColumn<IUser>[] = [
       {
-        title: "Name", // TODO: Translation
-        propertyName: "name",
-        propertyType: eColumnType.String,
-        filtrable: true,
-        hasExtraData: true,
-        style: { fontWeight: 500 },
-      },
-      {
-        title: "Last Name", // TODO: Translation
-        propertyName: "lastName",
+        title: "Full Name",
+        propertyName: "fullName",
         propertyType: eColumnType.String,
         filtrable: true,
       },
       {
-        title: "Email", // TODO: Translation
+        title: "Role",
+        propertyName: "role",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Email",
         propertyName: "email",
         propertyType: eColumnType.String,
         filtrable: true,
+      },
+      {
+        title: "Address",
+        propertyName: "address",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "State",
+        propertyName: "state",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "NIPT",
+        propertyName: "nipt",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Phone number",
+        propertyName: "phoneNumber",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Account Submitted",
+        propertyName: "accountSubmitted",
+        propertyType: eColumnType.Boolean,
+        filtrable: true,
+      },
+      {
+        title: "Quiz fulfilled",
+        propertyName: "quizFulfilled",
+        propertyType: eColumnType.Boolean,
+        filtrable: true,
+      },
+      {
+        title: "Icons",
+        propertyName: "icons",
+        propertyType: eColumnType.Icons,
+        icons: [
+          // {
+          //   icon: "edit",
+          //   color: "primary",
+          //   name: "pi pi-file-edit",
+          // },
+          { icon: "delete", color: "danger", name: "pi pi-trash" },
+        ],
       },
     ];
 

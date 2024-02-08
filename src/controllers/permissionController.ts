@@ -70,7 +70,7 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
     });
   }
 
-  res.status(200).json("Delete successfully");
+  res.status(200).json({ message: "Permision deleted successfully" });
 });
 
 const createPermission = catchAsync(async (req: any, res: any, next: any) => {
@@ -113,6 +113,7 @@ const createMenuPermission = async (
     //     return next(new AppError("No menu item was found with that id", 404));
     //   }
     // }
+
     if (permissionPayload.subjectId === null) {
       const menuItem = await Menu.findOne({
         label: permissionPayload.name,

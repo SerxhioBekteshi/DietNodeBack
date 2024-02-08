@@ -63,6 +63,7 @@ const userSchema = new Schema<IUser>(
     },
     address: {
       type: String,
+      default: null,
     },
     paymentMethod: {
       type: String,
@@ -70,6 +71,7 @@ const userSchema = new Schema<IUser>(
     },
     state: {
       type: String,
+      default: null,
     },
     phoneNumber: { type: String, default: null },
     quizFulfilled: {
@@ -82,7 +84,7 @@ const userSchema = new Schema<IUser>(
     },
     nipt: {
       type: String,
-      default: "",
+      default: null,
     },
     termsAgreed: {
       type: Boolean,

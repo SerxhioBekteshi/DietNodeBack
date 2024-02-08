@@ -224,6 +224,12 @@ export const initializeMenuItems = async function () {
     //   icon: "pi pi-send",
     //   to: "/provider/emails",
     // },
+    // {
+    //   id: 24,
+    //   label: "Users",
+    //   icon: "pi pi-user",
+    //   to: "/users",
+    // },
   ];
 
   return Menu.insertMany(menuItems);
