@@ -25,7 +25,7 @@ import AppNotificationTable from "../classes/tables/AppNotificationTable";
 const router = express.Router();
 router.use(protect);
 
-createTableRoutes<IUser>("users", UserTable);
+createTableRoutes<IUser>("user", UserTable);
 createTableRoutes<IMeal>("meals", MealTable);
 createTableRoutes<IOrder>("orders", OrderTable);
 createTableRoutes<IOrderDetails>("orderDetails", OrderDetailsTable);

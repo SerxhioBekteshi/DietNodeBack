@@ -12,6 +12,8 @@ const deleteOne = (Model: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
     const doc = await Model.findOne({ id: req.params.id });
 
+    console.log(doc, "");
+
     if (doc) {
       // Use the remove() method to delete the document
       doc.remove((err: any) => {

@@ -1,6 +1,6 @@
-import { eColumnType, eRoles } from "../../enums";
+import { eColumnType, eFilterOperator, eRoles } from "../../enums";
 import { IOrder } from "../../interfaces/database";
-import { ITableRequest } from "../../interfaces/table";
+import { IFilter, ITableRequest } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
 import Order from "../../models/orderModel";
 import User from "../../models/userModel";
@@ -16,6 +16,16 @@ export default class OrderTable extends BaseTable<IOrder> {
   //     // const columnNames = Object.keys(Meal.schema.paths);
   //     // return columnNames
   //   }
+
+  // override buildFilters(filters: IFilter[]) {
+  //   const newFilters: IFilter[] = [...filters];
+  //   newFilters.push({
+  //     columnName: "role",
+  //     operation: eFilterOperator.Equal,
+  //     value: (this.user as any).role,
+  //   });
+  //   return super.buildFilters(newFilters);
+  // }
 
   override async buildRows(requestUser: any): Promise<IOrder[]> {
     const matchFilters = this.buildFilters(this.filters);
@@ -58,6 +68,7 @@ export default class OrderTable extends BaseTable<IOrder> {
           },
         },
       },
+
       {
         $skip: (this.page - 1) * this.pageSize,
       },
