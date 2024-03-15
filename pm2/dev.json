@@ -1,0 +1,25 @@
+{
+  "apps": [
+    {
+      "name": "recommendation",
+      "script": "processes/recommendation.ts",
+      "kill_timeout": 15000,
+      "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+      "args": [],
+      "watch": false,
+      "ignore_watch": ["node_modules", "log", "tmp"],
+      "merge_logs": true,
+      "cwd": "./",
+      "instances": 1,
+      "exec_mode": "cluster",
+      "error_file": "./log/recommendation-err.log",
+      "out_file": "./log/recommendation-out.log",
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_DEBUG": "debug",
+        "IS_TLS": "false"
+      },
+      "pid_file": "./tmp/recommendation.pid"
+    }
+  ]
+}
