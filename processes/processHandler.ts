@@ -1,9 +1,10 @@
 import { EventEmitter } from "events";
-import * as process from "process";
-import * as log from "../src/utils/log";
-import * as debug from "debug";
+import process from "process";
+import log from "../src/utils/log";
+import util from "util";
+const debug = util.debuglog("debug");
 
-class SMPP3Process {
+class ProcessHandler {
   app: any;
 
   constructor(
@@ -93,4 +94,4 @@ class SMPP3Process {
   }
 }
 
-export = SMPP3Process;
+export = ProcessHandler;

@@ -47,7 +47,6 @@
  */
 
 import bunyan from "bunyan";
-import fs from "fs";
 import os from "os";
 import path from "path";
 import process from "process";
@@ -64,8 +63,9 @@ if (process.env.NODE_ENV !== "test") {
 } else {
   procName = "test";
 }
+const logFilePath = path.join(ROOT, "log", "recommendation-err.log");
 
-const log = bunyan.createLogger({
+const log: any = bunyan.createLogger({
   name: procName,
   serializers: {
     err: bunyan.stdSerializers.err,
@@ -75,115 +75,22 @@ const log = bunyan.createLogger({
       // trace e debug non vengono salvati su file, tutti gli altri si
       level: "info",
       path: `${path.normalize(
-        `${ROOT}/log`
-      )}/dietApp_${os.hostname()}_${procName}.log`,
+        `${ROOT}`
+      )}/DietNodeBack_${os.hostname()}_${procName}.log`,
     },
   ],
 });
 
-/**
- * variabili di ambiente
- * @type {Object}
- */
-const processFields: Record<string, any> = {
-  hostname: os.hostname(),
-  pid: process.pid,
+log.warn = (details: any, message: string) => {
+  log.info({ details }, message);
 };
 
-/**
- * ritorna la data corrente in formato ISO stringa
- * @return {string}
- */
-function now(): string {
-  return new Date().toISOString();
-}
-
-/**
- * clona un oggetto
- * @param  {obj} source
- * @return {obj}
- */
-function clone(source: Record<string, any>): Record<string, any> {
-  const dest: Record<string, any> = {};
-  for (const i in source) {
-    dest[i] = source[i];
-  }
-  return dest;
-}
-
-/**
- * Registra un log in formato simil-bunyan
- * @param  {string|obj} data elemento da loggare
- * @param  {string} file percorso del file
- */
-function append(data: string | Record<string, any>, file: string): void {
-  const fields = clone(processFields);
-  fields.time = now();
-
-  if (typeof data === "string") {
-    data = { msg: data };
-  }
-
-  for (const i in data) {
-    fields[i] = data[i];
-  }
-  const str = `${JSON.stringify(fields)}\r\n`;
-
-  fs.appendFileSync(file, str, { encoding: "utf8" });
-}
-
-/**
- * Compone una stringa concatenando: path, prefix, *data odierna in formato yyyy-mm-dd*, suffix
- * @param  {string} path
- * @param  {string} prefix
- * @param  {string} suffix
- * @return {string}
- */
-function filename(dir: string, prefix: string, suffix: string): string {
-  const today = new Date();
-  const date = today.toISOString().substring(0, 10); // yyyy-mm-dd
-  return path.join(dir, `${prefix}${date}${suffix}`);
-}
-
-/**
- * Mixin: estende log
- * log degli sms
- * @param  {Sms} data sms instance
- */
-log.sms = function (data: any): void {
-  const file = filename(
-    path.normalize(`${ROOT}/log`),
-    "/serversmpp.",
-    ".sms.log"
-  );
-  return append(data, file);
+log.error = (details: any, message: string) => {
+  log.error({ details }, message);
 };
 
-/**
- * Mixin: estende log
- * log delle dlr
- * @param  {dlr} data dlr instance
- */
-log.dlr = function (data: any): void {
-  const file = filename(
-    path.normalize(`${ROOT}/log`),
-    "/serversmpp.",
-    ".dlr.log"
-  );
-  return append(data, file);
-};
-
-/**
- * Mixin: estende log
- * log elastic search queris
- * @param  {dlr} data dlr instance
- */
-log.esLog = function (data: any): void {
-  const file = path.join(
-    path.normalize(`${ROOT}/log`),
-    `serversmpp_${os.hostname()}.elastic.log`
-  );
-  return append(data, file);
+log.fatal = (details: any, message: string) => {
+  log.fatal({ details }, message);
 };
 
 export = log;
