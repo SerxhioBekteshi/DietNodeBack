@@ -8,10 +8,6 @@ const router = express.Router();
 router.use(protect);
 router.get("/get-all", orderController.getOrders);
 
-router.post(
-  "",
-  router.use(restrictTo(eRoles.User)),
-  orderController.createOrder
-);
+router.post("", restrictTo(eRoles.User), orderController.createOrder);
 
 export default router;

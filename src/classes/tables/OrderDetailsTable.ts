@@ -29,7 +29,6 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
       };
     });
 
-    console.log(res, "RES");
     return res;
   }
 

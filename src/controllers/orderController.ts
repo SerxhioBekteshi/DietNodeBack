@@ -9,7 +9,6 @@ import socketManager from "../../socket";
 const getOrders = getAll(Order);
 
 const createOrder = catchAsync(async (req: any, res: any, next: any) => {
-  console.log("WTF??????");
   const doc = await Order.create({
     userId: req.user.id,
     status: req.body.status,
