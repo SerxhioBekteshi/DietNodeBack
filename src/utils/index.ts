@@ -241,33 +241,38 @@ export const getPermissionForLoggedUser = async (user: any, next: any) => {
       { roleId: user.roleId, isActive: true },
       "id roleId permissionId isActive"
     );
-    const permissionsInfo = await Promise.all(
-      rolePermissions.map(async (rolePermission: any) => {
-        const permissionId = rolePermission.permissionId;
-        const permission = await Permission.findOne({
-          id: permissionId,
-        });
-        if (!permission) {
-          return null;
-        }
-        const { subjectId, action } = permission;
-        if (subjectId) {
-          const menu = await Menu.findOne({ id: subjectId });
-          if (!menu) {
+
+    if (user.role === eRoles.User && user?.quizFulfilled == false)
+      return [{ action: "read", subject: "quiz layout" }];
+    else {
+      const permissionsInfo = await Promise.all(
+        rolePermissions.map(async (rolePermission: any) => {
+          const permissionId = rolePermission.permissionId;
+          const permission = await Permission.findOne({
+            id: permissionId,
+          });
+          if (!permission) {
             return null;
           }
-          const { label } = menu;
-          return { action, subject: label };
-        }
-        return { action, subject: "" };
-      })
-    );
-    const aclPermissions = permissionsInfo.filter(
-      (permission) => permission !== null
-    );
-    return aclPermissions.filter(
-      (permission: any) => permission.subject !== ""
-    );
+          const { subjectId, action } = permission;
+          if (subjectId) {
+            const menu = await Menu.findOne({ id: subjectId });
+            if (!menu) {
+              return null;
+            }
+            const { label } = menu;
+            return { action, subject: label };
+          }
+          return { action, subject: "" };
+        })
+      );
+      const aclPermissions = permissionsInfo.filter(
+        (permission) => permission !== null
+      );
+      return aclPermissions.filter(
+        (permission: any) => permission.subject !== ""
+      );
+    }
   } catch (err) {
     return next(new AppError(`Something went wrong`, 500));
   }

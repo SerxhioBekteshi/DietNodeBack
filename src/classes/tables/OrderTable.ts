@@ -1,3 +1,4 @@
+import { match } from "assert";
 import { eColumnType, eFilterOperator, eRoles } from "../../enums";
 import { IOrder } from "../../interfaces/database";
 import { IFilter, ITableRequest } from "../../interfaces/table";
@@ -29,6 +30,16 @@ export default class OrderTable extends BaseTable<IOrder> {
 
   override async buildRows(requestUser: any): Promise<IOrder[]> {
     const matchFilters = this.buildFilters(this.filters);
+    let match = {};
+    if (requestUser.role === eRoles.User) {
+      // matchFilters.columnName = "userId";
+      // matchFilters.operation = eFilterOperator.Equal;
+      // matchFilters.value = requestUser.Iid;
+      match = {
+        userId: requestUser.id,
+      };
+    }
+
     const pipeline = [
       {
         $match: matchFilters,
@@ -45,6 +56,9 @@ export default class OrderTable extends BaseTable<IOrder> {
         $addFields: {
           user: { $arrayElemAt: ["$users", 0] },
         },
+      },
+      {
+        $match: match,
       },
       {
         $project: {

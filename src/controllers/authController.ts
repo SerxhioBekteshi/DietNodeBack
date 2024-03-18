@@ -338,7 +338,13 @@ const confirmEmail = catchAsync(async (req: any, res: any, next: any) => {
     { id: req.user.id },
     { accountSubmitted: true }
   ).lean();
-  createSendSession({ ...user }, 200, req, res);
+  const aclPermissions = await getPermissionForLoggedUser(user, next);
+  createSendSession(
+    { ...user, accessPermissions: aclPermissions },
+    200,
+    req,
+    res
+  );
 });
 
 const resendEmailConfirmation = catchAsync(

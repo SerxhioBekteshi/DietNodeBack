@@ -34,7 +34,6 @@ export default class MealTable extends BaseTable<IMeal> {
       ratingsMap = new Map(
         ratings.map((rating: any) => [rating._id, rating.avgRating])
       );
-
       const pipeline = [
         {
           $match: matchFilters,
