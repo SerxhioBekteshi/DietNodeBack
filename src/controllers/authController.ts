@@ -372,7 +372,7 @@ const sendEmailToRegister = catchAsync(
   }
 );
 
-const forgotPassowrd = catchAsync(async (req, res, next) => {
+const forgotPassowrd = catchAsync(async (req: any, res: any, next: any) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new AppError("There is no user with this email address.", 404));
