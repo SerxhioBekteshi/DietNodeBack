@@ -20,16 +20,65 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
     const rows = await super.buildRows();
     const res = rows.map((row: any) => {
       const newRow = row;
-      console.log(row, "ROW");
       return {
         ...newRow,
         valuePaid: `${newRow.valuePaid}` + ` ${newRow.currency}`,
         description: "Not key row for the moment",
         address: "not key row for the moment ",
+        payer: this.convertToObjectStructure(newRow.payer),
+        items: this.convertArrayToObjectStructure(newRow.items),
       };
     });
 
     return res;
+  }
+
+  public convertToObjectStructure = (obj: any) => {
+    const converted = [];
+    for (const key in obj) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
+        converted.push({
+          key: key,
+          label: key,
+          items: this.convertToObjectStructure(obj[key]),
+        });
+      } else {
+        converted.push({
+          key: key,
+          label: `${key}: ${obj[key]}`,
+          value: obj[key],
+        });
+      }
+    }
+    return converted;
+  };
+
+  public convertArrayToObjectStructure(arr: any) {
+    const converted = [];
+    arr.forEach((item: any, index: number) => {
+      const itemObject = {
+        key: index.toString(),
+        label: item.name,
+        items: [],
+      };
+      for (const key in item) {
+        if (typeof item[key] === "object" && item[key] !== null) {
+          itemObject.items.push({
+            key: key,
+            label: key,
+            items: this.convertToObjectStructure(item[key]),
+          });
+        } else {
+          itemObject.items.push({
+            key: key,
+            label: `${key}: ${item[key]}`,
+            value: item[key],
+          });
+        }
+      }
+      converted.push(itemObject);
+    });
+    return converted;
   }
 
   override buildColumns(): IColumn<IOrderDetails>[] {
@@ -84,7 +133,7 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
       },
       {
         title: "Items",
-        propertyName: "purchase_units",
+        propertyName: "items",
         propertyType: eColumnType.Array,
         filtrable: true,
       },

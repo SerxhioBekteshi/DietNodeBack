@@ -2,6 +2,7 @@ import mongoose, { Schema, SchemaTypes, model } from "mongoose";
 import { IMeal } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
 import { IIngredients } from "../interfaces/database/IIngredients";
+import { INutritionValues } from "../interfaces/database/INutritionValues";
 
 const MealSchema = new Schema<IMeal>(
   {
@@ -28,6 +29,15 @@ const MealSchema = new Schema<IMeal>(
       //
       type: String,
       required: true,
+    },
+    stock: {
+      type: Number,
+      default: 0,
+    },
+    nutritionValues: {
+      type: Array<INutritionValues>,
+      required: false,
+      default: [],
     },
     calories: {
       type: Number,

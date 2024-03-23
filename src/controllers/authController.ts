@@ -399,11 +399,13 @@ const forgotPassowrd = catchAsync(async (req: any, res: any, next: any) => {
   }
 });
 
-const resetPassowrd = catchAsync(async (req, res, next) => {
+const resetPassowrd = catchAsync(async (req: any, res: any, next: any) => {
   const decodedAccessToken: any = jwt.verify(
     req.query.token,
     process.env.JWT_RESET_TOKEN
   );
+
+  console.log(decodedAccessToken, "AWDAWd");
 
   if (Math.floor(new Date().getTime() / 1000) > decodedAccessToken.exp) {
     return next(

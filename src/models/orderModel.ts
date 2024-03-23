@@ -15,6 +15,7 @@ const OrderSchema = new Schema<IOrder>(
       ref: "User",
       required: true,
     },
+    meals: [{ type: Number, ref: "Meal" }],
     status: {
       type: String,
       enum: [

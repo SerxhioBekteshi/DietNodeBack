@@ -12,6 +12,7 @@ const createOrder = catchAsync(async (req: any, res: any, next: any) => {
   const doc = await Order.create({
     userId: req.user.id,
     status: req.body.status,
+    meals: req.body.mealIds,
   });
   if (!doc) {
     return next(new AppError("No order could be created", 400));

@@ -17,7 +17,6 @@ router.post("/resetpassword", authController.resetPassowrd);
 
 //routes below can be accessed only if you are logged in or if you have permission
 
-// router.use(protect);
 router.get("/", protect, userController.getAllUsers);
 router.get("/me", protect, userController.getUserDetail);
 router.put("/updatePassword", protect, authController.updatePassword);
@@ -26,23 +25,27 @@ router.get("/loggedUser", protect, userController.getLoggedUser);
 
 router
   .route("/:id")
-  .get(userController.getUser)
-  .delete(userController.deleteUser);
+  .get(protect, userController.getUser)
+  .delete(protect, userController.deleteUser);
 
 router.put(
   "/image",
+  protect,
   userController.uploadImage.single("image"),
+  protect,
   userController.updateProfileImage
 );
 
 // all route handlers below can be accessed from Admin
 router.get(
   "/providers/get-all",
+  protect,
   restrictTo(eRoles.Admin),
   userController.getProviders
 );
 router.put(
   "/provider/controlSubmission/:id",
+  protect,
   restrictTo(eRoles.Admin),
   userController.submitUnsubmitProvider
 );

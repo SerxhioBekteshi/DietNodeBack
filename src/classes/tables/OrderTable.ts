@@ -6,6 +6,7 @@ import IColumn from "../../interfaces/table/IColumn";
 import Order from "../../models/orderModel";
 import User from "../../models/userModel";
 import BaseTable from "./BaseTable";
+import Meal from "../../models/mealModel";
 
 export default class OrderTable extends BaseTable<IOrder> {
   constructor(request: ITableRequest, user: any) {
@@ -58,31 +59,75 @@ export default class OrderTable extends BaseTable<IOrder> {
         },
       },
       {
+        $unwind: "$meals",
+      },
+      {
+        $lookup: {
+          from: Meal.collection.name,
+          localField: "meals",
+          foreignField: "id",
+          as: "meal",
+        },
+      },
+      {
+        $unwind: "$meal",
+      },
+      {
+        $lookup: {
+          from: User.collection.name,
+          localField: "meal.providerId",
+          foreignField: "id",
+          as: "provider",
+        },
+      },
+      {
+        $addFields: {
+          providerName: { $arrayElemAt: ["$provider.name", 0] },
+        },
+      },
+      {
         $match: match,
       },
       {
-        $project: {
-          id: 1,
-          status: 1,
-          createdAt: 1,
-          updatedAt: 1,
-          icons: 1,
-          // userName: "$user.name",
+        $group: {
+          _id: "$_id",
+          status: { $first: "$status" },
+          createdAt: { $first: "$createdAt" },
+          updatedAt: { $first: "$updatedAt" },
+          icons: { $first: "$icons" },
           userName: {
-            $cond: {
-              if: {
-                $or: [
-                  { $eq: [requestUser.role, eRoles.Provider] },
-                  { $eq: [requestUser.role, eRoles.Admin] },
-                ],
+            $first: {
+              $cond: {
+                if: {
+                  $or: [
+                    { $eq: [requestUser.role, eRoles.Provider] },
+                    { $eq: [requestUser.role, eRoles.Admin] },
+                  ],
+                },
+                then: "$user.name",
+                else: null,
               },
-              then: "$user.name",
-              else: null,
+            },
+          },
+          mealProvider: {
+            $push: {
+              $concat: ["$meal.name", "=>", "$providerName"],
             },
           },
         },
       },
 
+      {
+        $project: {
+          id: "$_id",
+          status: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          icons: 1,
+          userName: 1,
+          mealProvider: 1,
+        },
+      },
       {
         $skip: (this.page - 1) * this.pageSize,
       },
@@ -92,6 +137,8 @@ export default class OrderTable extends BaseTable<IOrder> {
     ];
 
     const orders = await this.model.aggregate(pipeline).exec();
+    orders[0].mealProvider = orders[0].mealProvider.join(", ");
+    console.log(orders, "ORDERS");
     return orders;
   }
   override buildColumns(requestUser: any): IColumn<IOrder>[] {
@@ -99,6 +146,12 @@ export default class OrderTable extends BaseTable<IOrder> {
       {
         title: "User",
         propertyName: "userName",
+        propertyType: eColumnType.String,
+        filtrable: true,
+      },
+      {
+        title: "Provider",
+        propertyName: "mealProvider",
         propertyType: eColumnType.String,
         filtrable: true,
       },
