@@ -5,6 +5,11 @@ import { AppError } from "../utils/appError";
 import OrderDetails from "../models/orderDetailModel";
 import { eRoles } from "../enums";
 import socketManager from "../../socket";
+import Meal from "../models/mealModel";
+import {
+  convertArrayToObjectStructure,
+  convertToObjectStructure,
+} from "../utils";
 
 const getOrders = getAll(Order);
 
@@ -33,13 +38,30 @@ const createOrder = catchAsync(async (req: any, res: any, next: any) => {
   req.body.currency = req.body.purchase_units[0].amount.currency_code;
   req.body.valuePaid = req.body.purchase_units[0].amount.value;
   req.body.address = req.body.purchase_units[0].shipping.address.address_line_1;
+
   delete req.body.purchase_units[0];
 
   const orderDetailsDoc = await OrderDetails.create(req.body);
 
+  req.body.mealIds.forEach(async (meal: number) => {
+    const mealOfProvider = await Meal.findOne({ id: meal });
+
+    if (mealOfProvider) {
+      socketManager.sendNotificationProvider(
+        "A new order was made",
+        mealOfProvider.providerId,
+        req.user.id,
+        "New order",
+        `/orders/${orderDetailsDoc.id}`,
+        eRoles.Provider
+      );
+    }
+  });
+
   socketManager.sendAppNotificationToAdmin(
     "A new order was made",
-    orderDetailsDoc.id,
+    1,
+    req.user.id,
     "New order",
     `/orders/${orderDetailsDoc.id}`,
     eRoles.Admin
@@ -55,7 +77,21 @@ const createOrder = catchAsync(async (req: any, res: any, next: any) => {
   });
 });
 
+const getOrderDetailsByOrder = catchAsync(
+  async (req: any, res: any, next: any) => {
+    const orderDetail = await OrderDetails.findOne({
+      orderId: req.params.id,
+    }).exec();
+    (orderDetail.valuePaid =
+      `${orderDetail.valuePaid}` + ` ${orderDetail.currency}`),
+      (orderDetail.payer = convertToObjectStructure(orderDetail.payer));
+    // (orderDetail.items = convertArrayToObjectStructure(orderDetail.items));
+    res.status(200).json(orderDetail);
+  }
+);
+
 export default {
   createOrder,
   getOrders,
+  getOrderDetailsByOrder,
 };

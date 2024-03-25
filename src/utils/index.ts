@@ -277,3 +277,51 @@ export const getPermissionForLoggedUser = async (user: any, next: any) => {
     return next(new AppError(`Something went wrong`, 500));
   }
 };
+
+export const convertToObjectStructure = (obj: any) => {
+  const converted = [];
+  for (const key in obj) {
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      converted.push({
+        key: key,
+        label: key,
+        items: convertToObjectStructure(obj[key]),
+      });
+    } else {
+      converted.push({
+        key: key,
+        label: `${key}: ${obj[key]}`,
+        value: obj[key],
+      });
+    }
+  }
+  return converted;
+};
+
+export const convertArrayToObjectStructure = (arr: any) => {
+  const converted = [];
+  arr.forEach((item: any, index: number) => {
+    const itemObject = {
+      key: index.toString(),
+      label: item.name,
+      items: [],
+    };
+    for (const key in item) {
+      if (typeof item[key] === "object" && item[key] !== null) {
+        itemObject.items.push({
+          key: key,
+          label: key,
+          items: convertToObjectStructure(item[key]),
+        });
+      } else {
+        itemObject.items.push({
+          key: key,
+          label: `${key}: ${item[key]}`,
+          value: item[key],
+        });
+      }
+    }
+    converted.push(itemObject);
+  });
+  return converted;
+};

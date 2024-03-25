@@ -32,9 +32,14 @@ const appNotificationSchema = new Schema<IAppNotification>({
   sender: {
     type: Number,
     ref: "User",
+  },
+  receiver: {
+    type: Number,
+    ref: "User",
     required: true,
   },
   role: {
+    //related to receiver
     type: String,
     enum: [eRoles.User, eRoles.Admin, eRoles.Provider],
     default: eRoles.Admin,

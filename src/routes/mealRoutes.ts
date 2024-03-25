@@ -22,6 +22,8 @@ router
   .put(mealController.updateMeal)
   .delete(mealController.deleteMeal);
 
+router.put("/stock/:id", mealController.updateMealStock);
+
 router.put(
   "/image/:id",
   mealController.uploadImage.single("image"),

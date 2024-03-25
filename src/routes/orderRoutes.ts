@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.use(protect);
 router.get("/get-all", orderController.getOrders);
+router.get("/:id", orderController.getOrderDetailsByOrder);
 
 router.post("", restrictTo(eRoles.User), orderController.createOrder);
 

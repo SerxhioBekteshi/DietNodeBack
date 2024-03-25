@@ -1,7 +1,7 @@
 import BaseTable from "./BaseTable";
 import { IFilter, ITableRequest } from "../../interfaces/table";
 import IColumn from "../../interfaces/table/IColumn";
-import { eColumnType, eFilterOperator } from "../../enums";
+import { eColumnType, eFilterOperator, eRoles } from "../../enums";
 import { IAppNotification } from "../../interfaces/database/IAppNotification";
 import AppNotification from "../../models/notificationModel";
 import User from "../../models/userModel";
@@ -14,6 +14,21 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
   override async buildRows() {
     try {
       // const rows = await super.buildRows();
+
+      if (
+        this.user.role === eRoles.Provider ||
+        this.user.role === eRoles.User
+      ) {
+        this.filters = [
+          ...this.filters,
+          {
+            columnName: "receiver",
+            operation: eFilterOperator.Equal,
+            value: this.user.id,
+          },
+        ];
+      }
+
       const matchFilters = this.buildFilters(this.filters);
 
       const pipeline = [
@@ -47,6 +62,12 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
           },
         },
         {
+          $sort: {
+            seen: 1,
+            createdAt: -1,
+          },
+        },
+        {
           $skip: (this.page - 1) * this.pageSize,
         },
         {
@@ -59,10 +80,10 @@ export default class AppNotificationTable extends BaseTable<IAppNotification> {
       throw error;
     }
   }
-  override buildSort() {
-    const sort = super.buildSort();
-    return { ...sort, createdAt: -1 };
-  }
+  // override buildSort() {
+  //   const sort = super.buildSort();
+  //   return { ...sort, createdAt: -1 };
+  // }
   override buildFilters(filters: IFilter[]) {
     const newFilters: IFilter[] = [...filters];
     newFilters.push({

@@ -94,7 +94,6 @@ export default class OrderTable extends BaseTable<IOrder> {
           status: { $first: "$status" },
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
-          icons: { $first: "$icons" },
           userName: {
             $first: {
               $cond: {
@@ -119,7 +118,7 @@ export default class OrderTable extends BaseTable<IOrder> {
 
       {
         $project: {
-          id: "$_id",
+          id: 1,
           status: 1,
           createdAt: 1,
           updatedAt: 1,
@@ -138,7 +137,6 @@ export default class OrderTable extends BaseTable<IOrder> {
 
     const orders = await this.model.aggregate(pipeline).exec();
     orders[0].mealProvider = orders[0].mealProvider.join(", ");
-    console.log(orders, "ORDERS");
     return orders;
   }
   override buildColumns(requestUser: any): IColumn<IOrder>[] {

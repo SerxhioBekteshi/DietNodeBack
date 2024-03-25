@@ -62,6 +62,19 @@ const createMeal = catchAsync(async (req: any, res: any) => {
   res.status(200).json({ doc: doc, message: "Created successfully" });
 });
 
+const updateMealStock = catchAsync(async (req: any, res: any, next: any) => {
+  const doc = await Meal.findOneAndUpdate({ id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!doc) {
+    return next(new AppError("No doc find with that id", 404));
+  }
+  return res
+    .status(200)
+    .json({ doc: doc, message: "Meal stock updated successfully" });
+});
+
 const rateMeal = catchAsync(async (req: any, res: any, next: any) => {
   const meal = await Meal.findOne({ id: req.params.id });
   if (!meal) {
@@ -92,6 +105,7 @@ export default {
   createMeal,
   getMeal,
   updateMeal,
+  updateMealStock,
   getAllMeals,
   deleteMeal,
   uploadImage,

@@ -8,6 +8,7 @@ export interface IAppNotification {
   seen: boolean;
   createdAt: Date;
   sender: number;
+  receiver: number;
   user: number;
   title: string;
 }

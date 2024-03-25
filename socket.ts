@@ -24,8 +24,6 @@ const initialize = (
     socket.join(userRoomName(socket.handshake.query.userId));
     socket.join(adminRoomName(socket.handshake.query.adminId));
 
-    // socket.join(customerRoomName(socket.handshake.query.customerId));
-
     socket.on(eSocketEvent.Disconnect, function (reason) {
       console.log("> A client disconnected with id = ", socket.id);
       console.log("> Reason: ", reason);
@@ -82,6 +80,7 @@ const getInstance = () => io;
 
 const sendAppNotificationToAdmin = (
   message: any,
+  receiver: number,
   sender: number,
   title: string,
   route?: string,
@@ -90,6 +89,7 @@ const sendAppNotificationToAdmin = (
 ) => {
   AppNotification.create({
     message,
+    receiver,
     sender,
     title,
     route,
@@ -100,6 +100,30 @@ const sendAppNotificationToAdmin = (
       io.to(adminRoomName(user.id)).emit("AppNotification", {
         ...val.toJSON(),
       });
+    });
+  });
+};
+
+const sendNotificationProvider = (
+  message: any,
+  receiver: number,
+  sender: number,
+  title: string,
+  route?: string,
+  role?: eRoles,
+  customAction?: any
+) => {
+  AppNotification.create({
+    message,
+    receiver,
+    sender,
+    title,
+    route,
+    role,
+    customAction,
+  }).then((val) => {
+    io.to(userRoomName(receiver)).emit("AppNotification", {
+      ...val.toJSON(),
     });
   });
 };
@@ -122,42 +146,19 @@ const sendMessageToClient = (
   io.to(userRoomName(userId)).emit(messageName, message);
 };
 
-// function sendMessageToTimeOff(
-//   timeOffId: any,
-//   messageName: string,
-//   message?: any
-// ) {
-//   io.to(timeOffRoomName(timeOffId)).emit(messageName, message);
-// }
-// const sendMessageToCustomer = (
-//   customerId: any,
-//   messageName: string,
-//   message: any
-// ) => {
-//   io.to(customerRoomName(customerId)).emit(messageName, message);
-// };
-const customerRoomName = (customerId: any) => {
-  return `Customer_${customerId}`;
-};
 const userRoomName = (userId: any) => {
   return `User_${userId}`;
-};
-const timeOffRoomName = (timeOffId: any) => {
-  return `Time_Off_${timeOffId}`;
 };
 
 const adminRoomName = (adminId: any) => {
   return `Admin_${adminId}`;
 };
 
-function sendTableUpdatedMessage(timeOffId, controllerName: eSocketEvent) {
-  io.to(timeOffRoomName(timeOffId)).emit(controllerName);
-}
-
 export default {
   initialize,
   getInstance,
   sendMessageToClient,
+  sendNotificationProvider,
   // sendMessageToCustomer,
   // sendAppNotificationToClient,
   sendAppNotificationToAdmin,
