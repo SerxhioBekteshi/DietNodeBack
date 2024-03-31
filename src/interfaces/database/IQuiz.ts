@@ -1,4 +1,4 @@
-import { IFieldAnswers } from "./IFieldAnswers";
+import IFieldAnswers from "./IFieldAnswers";
 
 export default interface IQuiz {
   id: number;

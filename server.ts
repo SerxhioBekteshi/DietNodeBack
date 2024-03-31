@@ -22,7 +22,7 @@ const main = async () => {
     //process.exit(1);
   });
 
-  const port = process.env.PORT || 1112;
+  const port = process.env.PORT;
 
   await database.initialize();
 

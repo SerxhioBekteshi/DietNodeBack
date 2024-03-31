@@ -1,0 +1,107 @@
+2024-03-30 23:30:17 +01:00: Logger {
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  _level: 30,
+  streams: [
+    {
+      level: 30,
+      path: 'C:\\Users\\Perdorues\\Desktop\\DietNodeBack\\src/DietNodeBack_DESKTOP-AS2VS3D_C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation.log',
+      type: 'file',
+      raw: false,
+      reemitErrorEvents: true,
+      stream: [WriteStream],
+      closeOnExit: true
+    }
+  ],
+  serializers: { err: [Function (anonymous)] },
+  src: false,
+  fields: {
+    name: 'C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation',
+    hostname: 'DESKTOP-AS2VS3D',
+    pid: 8252
+  },
+  [Symbol(shapeMode)]: false,
+  [Symbol(kCapture)]: false
+} LOG HERE??????
+2024-03-30 23:31:52 +01:00: Logger {
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  _level: 30,
+  streams: [
+    {
+      level: 30,
+      path: 'C:\\Users\\Perdorues\\Desktop\\DietNodeBack\\src/DietNodeBack_DESKTOP-AS2VS3D_C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation.log',
+      type: 'file',
+      raw: false,
+      reemitErrorEvents: true,
+      stream: [WriteStream],
+      closeOnExit: true
+    }
+  ],
+  serializers: { err: [Function (anonymous)] },
+  src: false,
+  fields: {
+    name: 'C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation',
+    hostname: 'DESKTOP-AS2VS3D',
+    pid: 5080
+  },
+  warn: [Function (anonymous)],
+  error: [Function (anonymous)],
+  fatal: [Function (anonymous)],
+  [Symbol(shapeMode)]: false,
+  [Symbol(kCapture)]: false
+} LOG HERE??????
+2024-03-30 23:32:27 +01:00: Logger {
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  _level: 30,
+  streams: [
+    {
+      level: 30,
+      path: 'C:\\Users\\Perdorues\\Desktop\\DietNodeBack\\src/DietNodeBack_DESKTOP-AS2VS3D_C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation.log',
+      type: 'file',
+      raw: false,
+      reemitErrorEvents: true,
+      stream: [WriteStream],
+      closeOnExit: true
+    }
+  ],
+  serializers: { err: [Function (anonymous)] },
+  src: false,
+  fields: {
+    name: 'C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation',
+    hostname: 'DESKTOP-AS2VS3D',
+    pid: 17312
+  },
+  [Symbol(shapeMode)]: false,
+  [Symbol(kCapture)]: false
+} LOG HERE??????
+2024-03-30 23:36:05 +01:00: Logger {
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  _level: 30,
+  streams: [
+    {
+      level: 30,
+      path: 'C:\\Users\\Perdorues\\Desktop\\DietNodeBack\\src/DietNodeBack_DESKTOP-AS2VS3D_C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation.log',
+      type: 'file',
+      raw: false,
+      reemitErrorEvents: true,
+      stream: [WriteStream],
+      closeOnExit: true
+    }
+  ],
+  serializers: { err: [Function (anonymous)] },
+  src: false,
+  fields: {
+    name: 'C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation',
+    hostname: 'DESKTOP-AS2VS3D',
+    pid: 7976
+  },
+  [Symbol(shapeMode)]: false,
+  [Symbol(kCapture)]: false
+} LOG HERE??????

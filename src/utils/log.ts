@@ -65,7 +65,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 const logFilePath = path.join(ROOT, "log", "recommendation-err.log");
 
-const log: any = bunyan.createLogger({
+export const log: any = bunyan.createLogger({
   name: procName,
   serializers: {
     err: bunyan.stdSerializers.err,
@@ -80,17 +80,3 @@ const log: any = bunyan.createLogger({
     },
   ],
 });
-
-log.warn = (details: any, message: string) => {
-  log.info({ details }, message);
-};
-
-log.error = (details: any, message: string) => {
-  log.error({ details }, message);
-};
-
-log.fatal = (details: any, message: string) => {
-  log.fatal({ details }, message);
-};
-
-export = log;

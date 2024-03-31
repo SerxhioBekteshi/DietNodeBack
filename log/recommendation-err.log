@@ -234,3 +234,248 @@ TypeError: log.warn is not a function
     at ProcessHandler.exit (C:\Users\user\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
     at C:\Users\user\Desktop\DietNodeBack\processes\processHandler.ts:35:14
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of undefined (reading 'warn')
+    at ProcessHandler.exit (C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:75:9)
+    at C:\Users\Perdorues\Desktop\DietNodeBack\processes\processHandler.ts:35:14
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)

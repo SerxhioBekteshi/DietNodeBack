@@ -1,5 +1,5 @@
 {
-  "exelude": ["**/*.spec.ts"],
+  "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
     "target": "ES2019",
     "module": "CommonJS",

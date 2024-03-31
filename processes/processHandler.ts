@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import process from "process";
-import log from "../src/utils/log";
+import { log } from "../src/utils/log";
 import util from "util";
 const debug = util.debuglog("debug");
 
@@ -28,6 +28,7 @@ class ProcessHandler {
     this.app
       .start()
       .then(() => {
+        console.log(log, "LOG HERE??????");
         debug(`${this.app.constructor.name} started`);
         log.warn(`${this.app.constructor.name} started`);
       })
