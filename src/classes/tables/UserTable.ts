@@ -30,7 +30,7 @@ export default class UserTable extends BaseTable<IUser> {
   }
 
   override buildColumns(): IColumn<IUser>[] {
-    const columns: IColumn<IUser>[] = [
+    let columns: IColumn<IUser>[] = [
       {
         title: "Full Name",
         propertyName: "fullName",
@@ -40,7 +40,8 @@ export default class UserTable extends BaseTable<IUser> {
       {
         title: "Role",
         propertyName: "role",
-        propertyType: eColumnType.String,
+        propertyType: eColumnType.Link,
+        link: "systemUser",
         filtrable: true,
       },
       {

@@ -14,6 +14,8 @@ router.get(
   mealController.getAllMeals
 );
 
+router.put("/rate/:id", restrictTo(eRoles.User), mealController.rateMeal);
+
 router.use(restrictTo(eRoles.Provider));
 router.post("", mealController.createMeal);
 router
@@ -29,6 +31,5 @@ router.put(
   mealController.uploadImage.single("image"),
   mealController.uploadMealImage
 );
-router.put("/rate/:id", mealController.rateMeal);
 
 export default router;

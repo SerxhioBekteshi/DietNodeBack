@@ -1,5 +1,5 @@
-import { ISelectOption } from '..';
-import { eColumnType } from '../../enums';
+import { ISelectOption } from "..";
+import { eColumnType } from "../../enums";
 
 export interface ITableIcons {
   icon?: string;
@@ -7,13 +7,13 @@ export interface ITableIcons {
   color?: string;
 }
 export interface ITableActions {
-  name: string
+  name: string;
   label: string;
   outline?: boolean;
   color?: string;
 }
 export interface ITableTag {
-  text: string
+  text: string;
   color: string;
 }
 
@@ -25,7 +25,8 @@ export default interface IColumn<T = {}> {
   filtrable?: boolean;
   unSortable?: boolean;
   icons?: ITableIcons[];
-  selectItems?: Array<ISelectOption>
+  selectItems?: Array<ISelectOption>;
   hasExtraData?: boolean;
+  link?: string;
   style?: any;
 }

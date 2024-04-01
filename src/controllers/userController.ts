@@ -14,12 +14,42 @@ import deleteFile from "../utils/deleteFile";
 import { getPermissionForLoggedUser, isObjEmpty } from "../utils";
 import { eRoles } from "../enums";
 import { APIFeatures } from "../utils/apiFeatures";
+import Order from "../models/orderModel";
+import UserQuizResult from "../models/userQuizResultModel";
+import { FilterQuery } from "mongoose";
 // import HolidayConfig from "../models/holidayConfig";
 
 const createUser = createOne(User);
 
-const getUser = getOne(User);
+const getUser = catchAsync(async (req: any, res: any, next: any) => {
+  try {
+    const user = await User.findOne({ id: req.params.id }).lean();
 
+    if (!user) {
+      return next(new AppError("Could not get the current logged user", 404));
+    }
+
+    if (user.role === eRoles.Provider) {
+      //show a raport for this orders meals and stuff
+    } else if (user.role === eRoles.User) {
+      const numberOfOrders = await Order.find({
+        userId: user.id as FilterQuery<number>,
+      }).countDocuments();
+      const quizResults = await UserQuizResult.findOne({
+        userId: user.id as FilterQuery<number>,
+      });
+      const aclPermissions = await getPermissionForLoggedUser(user, next);
+      user["numberOfOrders"] = numberOfOrders;
+      user["quizResults"] = quizResults;
+      user["accessPermissions"] = aclPermissions;
+      // const newUser = { ...user.toObject(), accessPermissions: aclPermissions };
+      // res.status(200).json(newUser);
+    }
+    res.status(200).json(user);
+  } catch (err: any) {
+    return next(new AppError(err, 500));
+  }
+});
 const getUserDetail = getUserByTokenId(User);
 
 const updateUser = updateOne(User);

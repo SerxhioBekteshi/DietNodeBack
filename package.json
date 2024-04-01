@@ -8,7 +8,8 @@
     "start:prod": "cross-env NODE_ENV=production nodemon server.ts",
     "start:inspect": "cross-env NODE_ENV=development nodemon --exec \"node --require ts-node/register --inspect=1234 server.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pretty": "prettier --write \"./**/*.{js,ts,json}\""
+    "pretty": "prettier --write \"./**/*.{js,ts,json}\"",
+    "typescript:check": "tsc"
   },
   "author": "WeWeb",
   "license": "ISC",

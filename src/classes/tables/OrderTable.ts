@@ -91,6 +91,7 @@ export default class OrderTable extends BaseTable<IOrder> {
       {
         $group: {
           _id: "$_id",
+          id: { $first: "$id" },
           status: { $first: "$status" },
           createdAt: { $first: "$createdAt" },
           updatedAt: { $first: "$updatedAt" },
@@ -115,7 +116,6 @@ export default class OrderTable extends BaseTable<IOrder> {
           },
         },
       },
-
       {
         $project: {
           id: 1,
