@@ -17,6 +17,7 @@ const getMenuItemsNoRole = catchAsync(async (req: any, res: any, next: any) => {
 });
 
 const getMenuItems2 = catchAsync(async (req: any, res: any, next: any) => {
+  //ALSO WHEN I AM SETTING THE IS ACTIVE TO FALSE AFTER REMOVING THE PROVIDER WHY THE FUCK DOES NOT role.permission.isactive work?
   const menuItems = await Menu.aggregate([
     {
       $lookup: {

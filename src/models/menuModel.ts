@@ -8,15 +8,15 @@ import MenuPermission from "./menuPermissionsModel";
 const menuSchema = new Schema<IMenu>({
   id: { type: Number, required: true, unique: true },
   label: { type: String, required: true },
-  icon: { type: String, required: true },
-  to: { type: String, required: true },
+  icon: { type: String, default: "" },
+  to: { type: String, default: "" },
   roleId: {
     type: Number,
     // required: true,
     // default: 1,
     ref: "Role",
   },
-  collapisble: { type: Boolean },
+  collapisble: { type: Boolean, default: false },
   parentId: {
     type: Number,
     ref: "Menu",
@@ -24,6 +24,7 @@ const menuSchema = new Schema<IMenu>({
   },
   permissions: [{ type: Number, ref: Permission.collection.name }],
   menuPermission: { type: Number, ref: MenuPermission.collection.name },
+  shouldDisplay: { type: Boolean, default: true },
 });
 
 AutoIncrement.initialize(mongoose.connection);

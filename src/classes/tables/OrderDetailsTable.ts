@@ -14,11 +14,20 @@ export default class OrderDetailsTable extends BaseTable<IOrderDetails> {
     super(OrderDetails, request, user);
   }
 
-  //   override buildColumnsToSearch(): (keyof IOrder)[] {
-  //     return ["name", "dietCategory", "cousine", "intolerance"];
-  //     // const columnNames = Object.keys(Meal.schema.paths);
-  //     // return columnNames
-  //   }
+  override buildColumnsToSearch(): (keyof IOrderDetails)[] {
+    return [
+      "orderId",
+      "orderIdGenerated",
+      "create_time",
+      "intent",
+      "link",
+      "address",
+      "valuePaid",
+      "description",
+    ];
+    // const columnNames = Object.keys(Meal.schema.paths);
+    // return columnNames
+  }
 
   override async buildRows(): Promise<IOrderDetails[]> {
     const rows = await super.buildRows();

@@ -13,11 +13,11 @@ export default class OrderTable extends BaseTable<IOrder> {
     super(Order, request, user);
   }
 
-  //   override buildColumnsToSearch(): (keyof IOrder)[] {
-  //     return ["name", "dietCategory", "cousine", "intolerance"];
-  //     // const columnNames = Object.keys(Meal.schema.paths);
-  //     // return columnNames
-  //   }
+  // override buildColumnsToSearch(): (keyof IOrder)[] {
+  //   return ["user", "provider", "status"];
+  //   // const columnNames = Object.keys(Meal.schema.paths);
+  //   // return columnNames
+  // }
 
   // override buildFilters(filters: IFilter[]) {
   //   const newFilters: IFilter[] = [...filters];

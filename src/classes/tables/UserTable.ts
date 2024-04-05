@@ -10,6 +10,22 @@ export default class UserTable extends BaseTable<IUser> {
     super(User, request, user);
   }
 
+  override buildColumnsToSearch(): (keyof IUser)[] {
+    return [
+      "name",
+      "nipt",
+      "address",
+      "state",
+      "email",
+      "state",
+      "phoneNumber",
+      "gender",
+      "role",
+    ];
+    // const columnNames = Object.keys(Meal.schema.paths);
+    // return columnNames
+  }
+
   override async buildRows(): Promise<any> {
     const rows = await super.buildRows();
     const res = rows.map((row) => {

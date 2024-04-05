@@ -6,8 +6,8 @@ export interface IMenu {
   label?: string;
   icon: string;
   to: string;
-  roleId: Number;
+  roleId: number;
   collapisble: boolean;
-  children?: Array<IMenu>;
-  menuType: eRoles;
+  parentId: number;
+  shouldDisplay?: boolean;
 }

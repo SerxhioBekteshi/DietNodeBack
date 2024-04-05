@@ -75,13 +75,49 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
 
 const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   req.body.createdBy = req.user.id;
-  if (req.body.subjectId !== null) {
-    req.body.name = `${req.body.action} ${req.body.name}`;
+
+  //TO DO CHECK IF no custom subject but the select (which might be bull or number type)
+  //IF for those cases if the permission.name does not equal one of the menus already
+  //throw an error that it should match them
+  //otherwise if custom subject (then permission name can be whatever it wants)
+  req.body.subjectId = null;
+  const menuItems = await Menu.find({ id: { $gt: 15 } })
+    .select("label")
+    .lean();
+  if (!menuItems.includes(req.body.name) && req.body.subjectId === null) {
+    return next(
+      new AppError(
+        "Can't create permission if the name does not correlate with the name of one of the menu items",
+        500
+      )
+    );
   }
-  const doc = await Permission.create(req.body);
-  createMenuPermission(req.body, doc, next);
-  createRolePermission(req.body, doc, next);
-  res.status(200).json({ doc: doc, message: "Created successfully" });
+
+  // if (req.body.subjectId !== null) {
+  //   if (!isNaN(req.body.subject)) {
+  //     try {
+  //       const lastMenuItem = await Menu.findOne().sort({ _id: -1 }).exec();
+  //       const menuCreated = await Menu.create({
+  //         id: lastMenuItem.id + 1,
+  //         shouldDisplay: true,
+  //         label: req.body.subject, //here i can make it splittable by capital or change the front to a certain format
+  //         menuType: [],
+  //         to: "",
+  //       });
+  //       if (menuCreated) {
+  //         //if created determine the id of the menu subject created
+  //         req.body.subjectId = menuCreated.id;
+  //       }
+  //     } catch (error: any) {
+  //       return next(new AppError(error.message, 500));
+  //     }
+  //   }
+  //   req.body.name = `${req.body.action} ${req.body.name}`;
+  // }
+  // const doc = await Permission.create(req.body);
+  // createMenuPermission(req.body, doc, next);
+  // createRolePermission(req.body, doc, next);
+  // res.status(200).json({ doc: doc, message: "Created successfully" });
 });
 
 const createMenuPermission = async (
@@ -90,30 +126,7 @@ const createMenuPermission = async (
   next: any
 ) => {
   try {
-    //we are supposing subjet Id can not be modifed for the certain permission row for the moment
-    // if (permissionPayload.subjectId !== null) {
-    //   const menuItem = await Menu.findOne({
-    //     id: permissionPayload.subjectId,
-    //   });
-    //   if (menuItem) {
-    //     const checkRelationMenu = await MenuPermission.findOne({
-    //       menuId: menuItem.id,
-    //       permissionId: permissionRow.id,
-    //     });
-    //     const menuPermissionBody = {
-    //       menuId: menuItem.id,
-    //       permissionId: permissionRow.id,
-    //     };
-    //     if (checkRelationMenu) {
-    //       await MenuPermission.updateOne(checkRelationMenu, menuPermissionBody);
-    //     } else {
-    //       await MenuPermission.create(menuPermissionBody);
-    //     }
-    //   } else {
-    //     return next(new AppError("No menu item was found with that id", 404));
-    //   }
-    // }
-
+    permissionPayload.subjectId = null; //be careful if the intent is to create menu permission it should be correlated
     if (permissionPayload.subjectId === null) {
       const menuItem = await Menu.findOne({
         label: permissionPayload.name,
@@ -150,6 +163,7 @@ const createRolePermission = async (
   });
 
   try {
+    //THIS LOGIC SHOULD BE RESEEN BECAUSE WHEN I ADDED THE PROVIDER ROLE AND REMOVED IT IT STILL WAS COMING
     if (rolePermissions.length !== 0) {
       const roleIds = rolePermissions.map((role: any) => role.id);
       await RolePermission.updateMany(
@@ -186,6 +200,8 @@ const createRolePermission = async (
           });
         }
       });
+    } else {
+      return next(new AppError("Specify roles for this permission", 500));
     }
   } catch (err: any) {
     console.log(err, "In create Role Permission");
