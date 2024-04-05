@@ -76,48 +76,68 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
 const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   req.body.createdBy = req.user.id;
 
-  //TO DO CHECK IF no custom subject but the select (which might be bull or number type)
-  //IF for those cases if the permission.name does not equal one of the menus already
-  //throw an error that it should match them
-  //otherwise if custom subject (then permission name can be whatever it wants)
-  req.body.subjectId = null;
   const menuItems = await Menu.find({ id: { $gt: 15 } })
     .select("label")
     .lean();
   if (!menuItems.includes(req.body.name) && req.body.subjectId === null) {
+    //in name not same as the menu (subjectId null) -> throw error
     return next(
       new AppError(
         "Can't create permission if the name does not correlate with the name of one of the menu items",
         500
       )
     );
+  } else {
+    //else subjectId not null but the name still
+    if (req.body.subjectId !== null) {
+      console.log(isNaN(req.body.subjectId));
+      if (isNaN(req.body.subjectId)) {
+        //but the subjectId is string isntead
+        try {
+          const lastMenuItem = await Menu.findOne().sort({ _id: -1 }).exec();
+
+          //before creation check if it is already created once
+          const menuItem = await Menu.findOne({
+            label: req.body.subjectId,
+            id: { $gt: 15 },
+          });
+
+          if (menuItem) {
+            //if it already exists throw an error
+            return next(
+              new AppError(
+                "Can't create permission because the custom subject it is already once created",
+                400
+              )
+            );
+          } else {
+            //otherwise
+            const menuCreated = await Menu.create({
+              id: lastMenuItem.id + 1,
+              shouldDisplay: false,
+              label: req.body.subjectId, //here i can make it splittable by capital or change the front to a certain format
+              menuType: [],
+              to: "",
+            });
+
+            if (menuCreated) {
+              //if created determine the id of the menu subject created
+              req.body.subjectId = menuCreated.id;
+            }
+          }
+        } catch (error: any) {
+          return next(new AppError(error.message, 500));
+        }
+      } else {
+        req.body.name = `${req.body.action} ${req.body.name}`;
+      }
+    }
   }
 
-  // if (req.body.subjectId !== null) {
-  //   if (!isNaN(req.body.subject)) {
-  //     try {
-  //       const lastMenuItem = await Menu.findOne().sort({ _id: -1 }).exec();
-  //       const menuCreated = await Menu.create({
-  //         id: lastMenuItem.id + 1,
-  //         shouldDisplay: true,
-  //         label: req.body.subject, //here i can make it splittable by capital or change the front to a certain format
-  //         menuType: [],
-  //         to: "",
-  //       });
-  //       if (menuCreated) {
-  //         //if created determine the id of the menu subject created
-  //         req.body.subjectId = menuCreated.id;
-  //       }
-  //     } catch (error: any) {
-  //       return next(new AppError(error.message, 500));
-  //     }
-  //   }
-  //   req.body.name = `${req.body.action} ${req.body.name}`;
-  // }
-  // const doc = await Permission.create(req.body);
-  // createMenuPermission(req.body, doc, next);
-  // createRolePermission(req.body, doc, next);
-  // res.status(200).json({ doc: doc, message: "Created successfully" });
+  const doc = await Permission.create(req.body);
+  createMenuPermission(req.body, doc, next);
+  createRolePermission(req.body, doc, next);
+  res.status(200).json({ doc: doc, message: "Created successfully" });
 });
 
 const createMenuPermission = async (
@@ -126,7 +146,6 @@ const createMenuPermission = async (
   next: any
 ) => {
   try {
-    permissionPayload.subjectId = null; //be careful if the intent is to create menu permission it should be correlated
     if (permissionPayload.subjectId === null) {
       const menuItem = await Menu.findOne({
         label: permissionPayload.name,
