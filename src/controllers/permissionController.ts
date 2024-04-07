@@ -32,6 +32,12 @@ const getPermission = catchAsync(async (req: any, res: any, next: any) => {
       listRoles.push(destructedRole.roleName);
     }
   }
+  const menuItem = await Menu.findOne({
+    id: Number(existingPermission.subjectId),
+  });
+  if (menuItem.to === "") {
+    existingPermission["subjectId"] = menuItem.label;
+  }
   existingPermission["roles"] = listRoles;
 
   res.status(200).json(existingPermission);
@@ -41,16 +47,53 @@ const updatePermission = catchAsync(async (req: any, res: any, next: any) => {
   if (isObjEmpty(req.body)) {
     return next(new AppError("There are no data for updating the doc.", 400));
   }
-  const doc = await Permission.findOneAndUpdate(
-    { id: req.params.id },
-    req.body
-  );
+  const doc = await Permission.findOne({ id: req.params.id });
 
   if (!doc) {
     return next(new AppError("No doc find with that id", 404));
   }
-  createMenuPermission(req.body, doc, next);
-  createRolePermission(req.body, doc, next);
+
+  const menuItems = await Menu.find({ id: { $gt: 15 } })
+    .select("label")
+    .lean();
+  if (!menuItems.includes(req.body.name) && req.body.subjectId === null) {
+    //in name not same as the menu (subjectId null) -> throw error
+    return next(
+      new AppError(
+        "Can't update permission if the name does not correlate with the name of one of the menu items",
+        500
+      )
+    );
+  } else {
+    //else subjectId not null but the name still
+    if (req.body.subjectId !== null) {
+      if (isNaN(req.body.subjectId)) {
+        //but the subjectId is string isntead
+        try {
+          const menuUpdated = await Menu.findOneAndUpdate(
+            {
+              id: doc.subjectId,
+            },
+            {
+              label: req.body.subjectId,
+            }
+          );
+          if (menuUpdated) {
+            req.body.subjectId = menuUpdated.id;
+            await Permission.updateOne({ id: req.params.id }, req.body); //here might add condition if it was updated then perform
+            //the other functions
+            await createMenuPermission(req.body, doc, next);
+            await createRolePermission(req.body, doc, next);
+          }
+        } catch (error: any) {
+          return next(new AppError(error.message, 500));
+        }
+      } else {
+        req.body.name = `${req.body.action} ${req.body.name}`;
+      }
+    }
+  }
+
   res.status(200).json({ doc: doc, message: "Updated successfully" });
 });
 
@@ -61,11 +104,11 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
   }
 
   if (query) {
-    const rolePermissions = await RolePermission.deleteMany({
+    await RolePermission.deleteMany({
       permissionId: req.params.id,
     });
 
-    const menuPermissions = await MenuPermission.deleteMany({
+    await MenuPermission.deleteMany({
       permissionId: req.params.id,
     });
   }
@@ -90,7 +133,6 @@ const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   } else {
     //else subjectId not null but the name still
     if (req.body.subjectId !== null) {
-      console.log(isNaN(req.body.subjectId));
       if (isNaN(req.body.subjectId)) {
         //but the subjectId is string isntead
         try {
@@ -135,8 +177,8 @@ const createPermission = catchAsync(async (req: any, res: any, next: any) => {
   }
 
   const doc = await Permission.create(req.body);
-  createMenuPermission(req.body, doc, next);
-  createRolePermission(req.body, doc, next);
+  await createMenuPermission(req.body, doc, next);
+  await createRolePermission(req.body, doc, next);
   res.status(200).json({ doc: doc, message: "Created successfully" });
 });
 
@@ -167,7 +209,6 @@ const createMenuPermission = async (
       }
     }
   } catch (err: any) {
-    console.log(err, "In create Menu Permission");
     return next(new AppError(err, 500));
   }
 };
@@ -223,7 +264,6 @@ const createRolePermission = async (
       return next(new AppError("Specify roles for this permission", 500));
     }
   } catch (err: any) {
-    console.log(err, "In create Role Permission");
     return next(new AppError(err, 500));
   }
 };

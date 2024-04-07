@@ -7,7 +7,7 @@ import MenuPermission from "./menuPermissionsModel";
 
 const menuSchema = new Schema<IMenu>({
   id: { type: Number, required: true, unique: true },
-  label: { type: String, required: true },
+  label: { type: String, required: true, unique: true },
   icon: { type: String, default: "" },
   to: { type: String, default: "" },
   roleId: {
@@ -22,8 +22,8 @@ const menuSchema = new Schema<IMenu>({
     ref: "Menu",
     default: null,
   },
-  permissions: [{ type: Number, ref: Permission.collection.name }],
-  menuPermission: { type: Number, ref: MenuPermission.collection.name },
+  // permissions: [{ type: Number, ref: Permission.collection.name }],
+  // menuPermission: { type: Number, ref: MenuPermission.collection.name },
   shouldDisplay: { type: Boolean, default: true },
 });
 

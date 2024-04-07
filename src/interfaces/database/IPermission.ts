@@ -4,7 +4,7 @@ export interface IPermission {
   description: string;
   isActive: boolean;
   action: string;
-  subjectId: number;
+  subjectId: string;
   createdBy: number;
   createdAt: Date;
   updatedAt: Date;

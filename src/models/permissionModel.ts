@@ -35,8 +35,8 @@ const PermissionsSchema = new Schema<IPermission>(
       type: Number,
       ref: "User",
     },
-    rolePermissions: [{ type: Number, ref: RolePermission.collection.name }],
-    menuPermissions: [{ type: Number, ref: MenuPermission.collection.name }],
+    // rolePermissions: [{ type: Number, ref: RolePermission.collection.name }],
+    // menuPermissions: [{ type: Number, ref: MenuPermission.collection.name }],
   },
   { timestamps: true }
 );
