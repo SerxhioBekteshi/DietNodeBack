@@ -29,6 +29,8 @@ const getUser = catchAsync(async (req: any, res: any, next: any) => {
       return next(new AppError("Could not get the current logged user", 404));
     }
 
+    const ordersByMonth = await getOrdersByLast12Months(user, next);
+
     if (user.role === eRoles.Provider) {
       //show a raport for this orders meals and stuff
     } else if (user.role === eRoles.User) {
@@ -42,6 +44,7 @@ const getUser = catchAsync(async (req: any, res: any, next: any) => {
       user["numberOfOrders"] = numberOfOrders;
       user["quizResults"] = quizResults;
       user["accessPermissions"] = aclPermissions;
+      user["orders"] = ordersByMonth;
       // const newUser = { ...user.toObject(), accessPermissions: aclPermissions };
       // res.status(200).json(newUser);
     }
@@ -66,7 +69,17 @@ const getLoggedUser = catchAsync(async (req: any, res: any, next: any) => {
     }
 
     const aclPermissions = await getPermissionForLoggedUser(user, next);
-    const newUser = { ...user.toObject(), accessPermissions: aclPermissions };
+
+    const newUser = {
+      ...user.toObject(),
+      accessPermissions: aclPermissions,
+    };
+
+    if (user.role !== eRoles.Admin) {
+      const ordersByMonth = await getOrdersByLast12Months(user, next);
+      newUser["orders"] = ordersByMonth;
+    }
+
     res.status(200).json(newUser);
   } catch (err: any) {
     return next(new AppError(err, 500));
@@ -179,6 +192,65 @@ const updateLoggedUser = async (req: any, res: any, next: any) => {
     res
       .status(200)
       .json({ user: user, message: "Your data were updated succesfully" });
+  }
+};
+
+const getOrdersByLast12Months = async (user: any, next: any) => {
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+  try {
+    const result = await Order.aggregate([
+      {
+        $match: {
+          userId: user.id,
+          createdAt: { $gte: twelveMonthsAgo }, // Filter for orders created in the last 12 months
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { "_id.year": -1, "_id.month": -1 },
+      },
+    ]);
+
+    const months = [];
+    const currentDate = new Date();
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - i,
+        1
+      );
+      months.push({
+        _id: { year: date.getFullYear(), month: date.getMonth() + 1 },
+        count: 0,
+      });
+    }
+
+    const mergedResult = months.map((month) => {
+      const matchingResult = result.find(
+        (r) => r._id.year === month._id.year && r._id.month === month._id.month
+      );
+      return matchingResult ? matchingResult : month;
+    });
+
+    mergedResult.sort((a, b) => {
+      const dateA = new Date(a._id.year, a._id.month - 1).getTime();
+      const dateB = new Date(b._id.year, b._id.month - 1).getTime();
+      return dateA - dateB;
+    });
+
+    return mergedResult;
+  } catch (error: any) {
+    return next(new AppError(error, 500));
   }
 };
 
