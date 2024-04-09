@@ -86,7 +86,19 @@ export default class OrderTable extends BaseTable<IOrder> {
         },
       },
       {
-        $match: match,
+        $match: {
+          $or: [
+            {
+              "user.id": requestUser.id, // Filter orders where the user's id matches the logged-in user's id
+            },
+            {
+              "meal.providerId": requestUser.id, // Filter orders where meal providerId matches logged-in providers id
+            },
+            // {
+            //   "user.role": eRoles.Admin, // Admin sees all orders
+            // },
+          ],
+        },
       },
       {
         $group: {

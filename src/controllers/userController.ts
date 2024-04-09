@@ -223,6 +223,20 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
 
     const months = [];
     const currentDate = new Date();
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
     for (let i = 0; i < 12; i++) {
       const date = new Date(
         currentDate.getFullYear(),
@@ -230,18 +244,26 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
         1
       );
       months.push({
-        _id: { year: date.getFullYear(), month: date.getMonth() + 1 },
+        _id: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          monthName: monthNames[date.getMonth()],
+        },
         count: 0,
       });
     }
 
+    // Left join the aggregated results with the months array
     const mergedResult = months.map((month) => {
       const matchingResult = result.find(
         (r) => r._id.year === month._id.year && r._id.month === month._id.month
       );
-      return matchingResult ? matchingResult : month;
+      return matchingResult
+        ? { ...matchingResult, _id: { ...month._id } }
+        : month;
     });
 
+    // Sort the final result from oldest to most recent date
     mergedResult.sort((a, b) => {
       const dateA = new Date(a._id.year, a._id.month - 1).getTime();
       const dateB = new Date(b._id.year, b._id.month - 1).getTime();
