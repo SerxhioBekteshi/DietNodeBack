@@ -33,11 +33,12 @@ export default class OrderTable extends BaseTable<IOrder> {
     const matchFilters = this.buildFilters(this.filters);
     let match = {};
     if (requestUser.role === eRoles.User) {
-      // matchFilters.columnName = "userId";
-      // matchFilters.operation = eFilterOperator.Equal;
-      // matchFilters.value = requestUser.Iid;
       match = {
         userId: requestUser.id,
+      };
+    } else if (requestUser.role === eRoles.Provider) {
+      match = {
+        "meal.providerId": requestUser.id,
       };
     }
 
@@ -85,21 +86,22 @@ export default class OrderTable extends BaseTable<IOrder> {
           providerName: { $arrayElemAt: ["$provider.name", 0] },
         },
       },
-      {
-        $match: {
-          $or: [
-            {
-              "user.id": requestUser.id, // Filter orders where the user's id matches the logged-in user's id
-            },
-            {
-              "meal.providerId": requestUser.id, // Filter orders where meal providerId matches logged-in providers id
-            },
-            // {
-            //   "user.role": eRoles.Admin, // Admin sees all orders
-            // },
-          ],
-        },
-      },
+      { $match: match },
+      // {
+      //   $match: {
+      //     $or: [
+      //       {
+      //         "users.id": requestUser.id, // Filter orders where the users id matches the logged-in users id
+      //       },
+      //       {
+      //         "meal.providerId": requestUser.id, // Filter orders where meal providerId matches logged providers id
+      //       },
+      //       {
+      //         "users.role": eRoles.Admin, // Admin sees all orders
+      //       },
+      //     ],
+      //   },
+      // },
       {
         $group: {
           _id: "$_id",
@@ -148,7 +150,9 @@ export default class OrderTable extends BaseTable<IOrder> {
     ];
 
     const orders = await this.model.aggregate(pipeline).exec();
-    orders[0].mealProvider = orders[0].mealProvider.join(", ");
+    // console.log
+    if (orders.length !== 0)
+      orders[0].mealProvider = orders[0].mealProvider.join(", ");
     return orders;
   }
   override buildColumns(requestUser: any): IColumn<IOrder>[] {
