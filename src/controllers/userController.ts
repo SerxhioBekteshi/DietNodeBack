@@ -199,19 +199,39 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
+  const matchStage = {
+    $match: {
+      createdAt: { $gte: twelveMonthsAgo },
+    },
+  };
+
+  if (user.role === eRoles.Provider) {
+    matchStage.$match["mealDetails.providerId"] = user.id;
+  } else {
+    matchStage.$match["userId "] = user.id;
+  }
+
+  console.log(matchStage, "ADAWD");
+
   try {
     const result = await Order.aggregate([
-      {
-        $match: {
-          userId: user.id,
-          createdAt: { $gte: twelveMonthsAgo }, // Filter for orders created in the last 12 months
-        },
-      },
+      matchStage,
+      // { $unwind: "$meals" },
+      // {
+      //   $lookup: {
+      //     from: "Meal",
+      //     localField: "meals",
+      //     foreignField: "_id",
+      //     as: "mealDetails",
+      //   },
+      // },
+      // { $unwind: "$mealDetails" },
       {
         $group: {
           _id: {
             year: { $year: "$createdAt" },
             month: { $month: "$createdAt" },
+            // providerId: "$mealDetails.providerId",
           },
           count: { $sum: 1 },
         },
@@ -269,6 +289,8 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
       const dateB = new Date(b._id.year, b._id.month - 1).getTime();
       return dateA - dateB;
     });
+
+    console.log(mergedResult);
 
     return mergedResult;
   } catch (error: any) {
