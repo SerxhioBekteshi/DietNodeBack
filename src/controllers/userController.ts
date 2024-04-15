@@ -16,7 +16,8 @@ import { eRoles } from "../enums";
 import { APIFeatures } from "../utils/apiFeatures";
 import Order from "../models/orderModel";
 import UserQuizResult from "../models/userQuizResultModel";
-import { FilterQuery } from "mongoose";
+import { Collection, FilterQuery } from "mongoose";
+import Meal from "../models/mealModel";
 // import HolidayConfig from "../models/holidayConfig";
 
 const createUser = createOne(User);
@@ -30,23 +31,18 @@ const getUser = catchAsync(async (req: any, res: any, next: any) => {
     }
 
     const ordersByMonth = await getOrdersByLast12Months(user, next);
+    const aclPermissions = await getPermissionForLoggedUser(user, next);
 
     if (user.role === eRoles.Provider) {
-      //show a raport for this orders meals and stuff
+      user["accessPermissions"] = aclPermissions;
+      user["orders"] = ordersByMonth;
     } else if (user.role === eRoles.User) {
-      const numberOfOrders = await Order.find({
-        userId: user.id as FilterQuery<number>,
-      }).countDocuments();
       const quizResults = await UserQuizResult.findOne({
         userId: user.id as FilterQuery<number>,
       });
-      const aclPermissions = await getPermissionForLoggedUser(user, next);
-      user["numberOfOrders"] = numberOfOrders;
-      user["quizResults"] = quizResults;
+      user["quizResults"] = quizResults.quizResult;
       user["accessPermissions"] = aclPermissions;
       user["orders"] = ordersByMonth;
-      // const newUser = { ...user.toObject(), accessPermissions: aclPermissions };
-      // res.status(200).json(newUser);
     }
     res.status(200).json(user);
   } catch (err: any) {
@@ -78,6 +74,13 @@ const getLoggedUser = catchAsync(async (req: any, res: any, next: any) => {
     if (user.role !== eRoles.Admin) {
       const ordersByMonth = await getOrdersByLast12Months(user, next);
       newUser["orders"] = ordersByMonth;
+
+      if (user.role === eRoles.User) {
+        const quizResults = await UserQuizResult.findOne({
+          userId: user.id as FilterQuery<number>,
+        });
+        newUser["quizResults"] = quizResults.quizResult;
+      }
     }
 
     res.status(200).json(newUser);
@@ -199,39 +202,45 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
-  const matchStage = {
-    $match: {
-      createdAt: { $gte: twelveMonthsAgo },
-    },
+  let match: any = {
+    createdAt: { $gte: twelveMonthsAgo },
   };
 
-  if (user.role === eRoles.Provider) {
-    matchStage.$match["mealDetails.providerId"] = user.id;
-  } else {
-    matchStage.$match["userId "] = user.id;
+  if (user.role === eRoles.User) {
+    match = {
+      ...match,
+      userId: user.id,
+    };
+  } else if (user.role === eRoles.Provider) {
+    match = {
+      ...match,
+      "meal.providerId": user.id,
+    };
   }
-
-  console.log(matchStage, "ADAWD");
 
   try {
     const result = await Order.aggregate([
-      matchStage,
-      // { $unwind: "$meals" },
-      // {
-      //   $lookup: {
-      //     from: "Meal",
-      //     localField: "meals",
-      //     foreignField: "_id",
-      //     as: "mealDetails",
-      //   },
-      // },
-      // { $unwind: "$mealDetails" },
+      {
+        $unwind: "$meals",
+      },
+      {
+        $lookup: {
+          from: Meal.collection.name,
+          localField: "meals",
+          foreignField: "id",
+          as: "meal",
+        },
+      },
+      {
+        $unwind: "$meal",
+      },
+      { $match: match },
+
       {
         $group: {
           _id: {
             year: { $year: "$createdAt" },
             month: { $month: "$createdAt" },
-            // providerId: "$mealDetails.providerId",
           },
           count: { $sum: 1 },
         },
@@ -290,13 +299,35 @@ const getOrdersByLast12Months = async (user: any, next: any) => {
       return dateA - dateB;
     });
 
-    console.log(mergedResult);
-
     return mergedResult;
   } catch (error: any) {
     return next(new AppError(error, 500));
   }
 };
+
+const updateProviderSocials = catchAsync(
+  async (req: any, res: any, next: any) => {
+    const user = await User.findOne({ id: req.params.id }).lean();
+
+    if (!user) {
+      return next(new AppError("Could not get the current logged user", 404));
+    }
+
+    const updatedProvider = await User.findOneAndUpdate(
+      { id: req.params.id },
+      { $set: { websites: req.body.websites } },
+      { new: true }
+    );
+
+    if (!updatedProvider) {
+      return next(new AppError("Socials not updated", 400));
+    }
+
+    return res
+      .status(200)
+      .json({ doc: updatedProvider, message: "Update successfully socials" });
+  }
+);
 
 export default {
   createUser,
@@ -312,4 +343,5 @@ export default {
   updateProfileImage,
   resizeUserPhoto,
   updateLoggedUser,
+  updateProviderSocials,
 };

@@ -126,6 +126,24 @@ const userSchema = new Schema<IUser>(
       default: true,
       select: false,
     },
+    websites: {
+      facebook: {
+        type: String,
+        default: null,
+      },
+      instagram: {
+        type: String,
+        default: null,
+      },
+      website: {
+        type: String,
+        default: null,
+      },
+      twitter: {
+        type: String,
+        default: null,
+      },
+    },
   },
   {
     versionKey: false,

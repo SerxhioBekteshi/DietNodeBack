@@ -1,11 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { eRoles } from "../../enums";
 import { IMenu } from "./IMenu";
-export interface IVacationAllocation {
-  allocationDate: Date;
-  vacationDays: number;
-  expirationDate: Date;
-}
 
 export interface ACL {
   action: string;
@@ -48,4 +43,5 @@ export interface IUser {
     reqPassword: string,
     currentPassword: string
   ) => Promise<boolean>;
+  websites: any;
 }

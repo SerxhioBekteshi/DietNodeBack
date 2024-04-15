@@ -3,7 +3,7 @@ import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 import { protect, restrictTo } from "../middlewares/protection";
 import { eRoles } from "../enums";
-import { assignTo } from "../middlewares/assignTo";
+// import { assignTo } from "../middlewares/assignTo";
 // import patchUser from '../middlewares/patchUser';
 
 const router = express.Router();
@@ -27,6 +27,8 @@ router
   .route("/:id")
   .get(protect, userController.getUser)
   .delete(protect, userController.deleteUser);
+
+router.put("/websites/:id", protect, userController.updateProviderSocials);
 
 router.put(
   "/image",
