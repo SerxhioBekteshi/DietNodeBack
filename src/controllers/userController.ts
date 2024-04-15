@@ -30,18 +30,20 @@ const getUser = catchAsync(async (req: any, res: any, next: any) => {
       return next(new AppError("Could not get the current logged user", 404));
     }
 
-    const ordersByMonth = await getOrdersByLast12Months(user, next);
     const aclPermissions = await getPermissionForLoggedUser(user, next);
+    user["accessPermissions"] = aclPermissions;
 
     if (user.role === eRoles.Provider) {
-      user["accessPermissions"] = aclPermissions;
+      const ordersByMonth = await getOrdersByLast12Months(user, next);
+
       user["orders"] = ordersByMonth;
     } else if (user.role === eRoles.User) {
       const quizResults = await UserQuizResult.findOne({
         userId: user.id as FilterQuery<number>,
       });
+      const ordersByMonth = await getOrdersByLast12Months(user, next);
+
       user["quizResults"] = quizResults.quizResult;
-      user["accessPermissions"] = aclPermissions;
       user["orders"] = ordersByMonth;
     }
     res.status(200).json(user);
