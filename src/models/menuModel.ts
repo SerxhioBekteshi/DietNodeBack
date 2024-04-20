@@ -27,6 +27,13 @@ const menuSchema = new Schema<IMenu>({
   shouldDisplay: { type: Boolean, default: true },
 });
 
+menuSchema.pre("remove", async function (next) {
+  const parent = this;
+  await MenuPermission.deleteMany({ menuId: parent.id }).exec();
+  await Permission.deleteMany({ subjectId: parent.id }).exec();
+  next();
+});
+
 AutoIncrement.initialize(mongoose.connection);
 
 menuSchema.plugin(AutoIncrement.plugin, {

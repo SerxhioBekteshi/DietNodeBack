@@ -16,4 +16,6 @@ router
   .put(quizController.updateQuizRow)
   .delete(quizController.deleteQuizRow);
 
+router.put("/quiz-orders/update", quizController.updateQuizOrders);
+
 export default router;

@@ -1,4 +1,5 @@
 // TODO: fix any types
+
 class APIFeatures {
   query: any;
   queryString: any;
@@ -21,13 +22,14 @@ class APIFeatures {
     return this;
   }
 
-  sort() {
+  sort(orderObject?: any) {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
-      // Largest to smallest
-      this.query = this.query.sort("-createdAt");
+      if (orderObject) {
+        this.query = this.query.sort(orderObject);
+      } else this.query = this.query.sort("-createdAt");
     }
     return this;
   }

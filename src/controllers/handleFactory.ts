@@ -36,11 +36,11 @@ const createOne = (Model: any) =>
     res.status(200).json(doc);
   });
 
-const getAll = (Model: any) =>
+const getAll = (Model: any, orderObject?: any) =>
   catchAsync(async (req: any, res: any, next: any) => {
     const features = new APIFeatures(Model.find(), req.query)
       .filter()
-      .sort()
+      .sort(orderObject)
       .limitFiels()
       .pagination();
 

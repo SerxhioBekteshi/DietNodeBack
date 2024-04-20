@@ -5,6 +5,10 @@ import bcrypt from "bcryptjs";
 import authController from "../controllers/authController";
 import AutoIncrement from "mongoose-auto-increment";
 import { ePaymentMethod, eRoles } from "../enums";
+import Meal from "./mealModel";
+import MealRating from "./mealRatingModel";
+import AppNotification from "./notificationModel";
+import UserQuizResult from "./userQuizResultModel";
 
 const userSchema = new Schema<IUser>(
   {
@@ -161,6 +165,19 @@ userSchema.pre("save", async function (next) {
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password") || this.isNew) return next();
   this.passwordChangedAt = (Date.now() - 1000) as any;
+  next();
+});
+
+userSchema.pre("remove", async function (next) {
+  const parent = this;
+  // Remove all child documents with the parent's id
+  await Meal.deleteMany({ providerId: parent.id }).exec();
+  MealRating.deleteMany({ userId: parent.id }).exec();
+  UserQuizResult.remove({ userId: parent.id }).exec();
+  await AppNotification.deleteMany({ sender: parent.id }).exec();
+  await AppNotification.deleteMany({ receiver: parent.id }).exec();
+  //should i remove orders ???
+
   next();
 });
 

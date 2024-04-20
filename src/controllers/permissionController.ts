@@ -35,7 +35,8 @@ const getPermission = catchAsync(async (req: any, res: any, next: any) => {
   const menuItem = await Menu.findOne({
     id: Number(existingPermission.subjectId),
   });
-  if (menuItem.to === "") {
+
+  if (menuItem !== null && menuItem.to === "") {
     existingPermission["subjectId"] = menuItem.label;
   }
   existingPermission["roles"] = listRoles;
@@ -103,15 +104,15 @@ const deletePermission = catchAsync(async (req: any, res: any, next: any) => {
     return next(new AppError("No doc find with that id", 404));
   }
 
-  if (query) {
-    await RolePermission.deleteMany({
-      permissionId: req.params.id,
-    });
+  // if (query) {
+  //   await RolePermission.deleteMany({
+  //     permissionId: req.params.id,
+  //   });
 
-    await MenuPermission.deleteMany({
-      permissionId: req.params.id,
-    });
-  }
+  //   await MenuPermission.deleteMany({
+  //     permissionId: req.params.id,
+  //   });
+  // }
 
   res.status(200).json({ message: "Permision deleted successfully" });
 });
@@ -158,7 +159,6 @@ const createPermission = catchAsync(async (req: any, res: any, next: any) => {
               id: lastMenuItem.id + 1,
               shouldDisplay: false,
               label: req.body.subjectId, //here i can make it splittable by capital or change the front to a certain format
-              menuType: [],
               to: "",
             });
 
@@ -236,28 +236,28 @@ const createRolePermission = async (
       permissionPayload.roles.forEach(async (role: any) => {
         const roleRow = await Role.findOne({ roleName: role });
 
-        const rolePermissionBody = {
-          roleId: roleRow.id,
-          permissionId: permissionRow.id,
-        };
+        // const rolePermissionBody = {
+        //   roleId: roleRow.id,
+        //   permissionId: permissionRow.id,
+        // };
 
-        const checkRelationRole = await RolePermission.findOne({
+        const existingRolePermission = await RolePermission.findOne({
           roleId: roleRow.id,
           permissionId: permissionRow.id,
         });
 
-        if (checkRelationRole) {
-          if (checkRelationRole.isActive === false) {
-            await RolePermission.updateOne(checkRelationRole, {
-              ...rolePermissionBody,
-              isActive: true,
-            });
+        if (existingRolePermission) {
+          if (!existingRolePermission.isActive) {
+            existingRolePermission.isActive = true;
+            await existingRolePermission.save();
           }
         } else {
-          await RolePermission.create({
-            ...rolePermissionBody,
+          const newRolePermission = new RolePermission({
+            roleId: roleRow.id,
+            permissionId: permissionRow.id,
             isActive: true,
           });
+          await newRolePermission.save();
         }
       });
     } else {

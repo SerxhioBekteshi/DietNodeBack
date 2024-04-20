@@ -2,6 +2,7 @@ import mongoose, { Schema, model } from "mongoose";
 import { IOrder } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
 import { eOrderStatus } from "../enums";
+import OrderDetails from "./orderDetailModel";
 
 const OrderSchema = new Schema<IOrder>(
   {
@@ -27,6 +28,13 @@ const OrderSchema = new Schema<IOrder>(
   },
   { timestamps: true }
 );
+
+OrderSchema.pre("remove", async function (next) {
+  const parent = this;
+  await OrderDetails.remove({ orderId: parent.id }).exec();
+  next();
+});
+
 AutoIncrement.initialize(mongoose.connection);
 
 OrderSchema.plugin(AutoIncrement.plugin, {
