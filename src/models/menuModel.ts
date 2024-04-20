@@ -27,10 +27,10 @@ const menuSchema = new Schema<IMenu>({
   shouldDisplay: { type: Boolean, default: true },
 });
 
-menuSchema.pre("remove", async function (next) {
-  const parent = this;
-  await MenuPermission.deleteMany({ menuId: parent.id }).exec();
-  await Permission.deleteMany({ subjectId: parent.id }).exec();
+menuSchema.pre("findOneAndDelete", async function (next) {
+  const doc = await this.model.findOne(this.getFilter());
+  await MenuPermission.deleteMany({ menuId: doc.id }).exec();
+  await Permission.deleteMany({ subjectId: doc.id }).exec();
   next();
 });
 

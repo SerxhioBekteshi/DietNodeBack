@@ -42,14 +42,13 @@ const PermissionsSchema = new Schema<IPermission>(
 );
 AutoIncrement.initialize(mongoose.connection);
 
-PermissionsSchema.pre("remove", async function (next) {
-  const parent = this;
-  console.log("here????");
-  console.log(parent.id);
-
+PermissionsSchema.pre("findOneAndDelete", async function (next) {
+  // const parent = this;
+  // console.log("here????");
+  const doc = await this.model.findOne(this.getFilter());
   // Remove all child documents with the parent's id
-  await RolePermission.deleteMany({ permissionId: parent.id }).exec();
-  await MenuPermission.deleteMany({ permissionId: parent.id }).exec();
+  await RolePermission.deleteMany({ permissionId: doc.id }).exec();
+  await MenuPermission.deleteMany({ permissionId: doc.id }).exec();
 
   next();
 });

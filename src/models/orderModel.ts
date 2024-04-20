@@ -29,9 +29,9 @@ const OrderSchema = new Schema<IOrder>(
   { timestamps: true }
 );
 
-OrderSchema.pre("remove", async function (next) {
-  const parent = this;
-  await OrderDetails.remove({ orderId: parent.id }).exec();
+OrderSchema.pre("findOneAndDelete", async function (next) {
+  const doc = await this.model.findOne(this.getFilter());
+  await OrderDetails.remove({ orderId: doc.id }).exec();
   next();
 });
 

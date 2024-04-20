@@ -168,14 +168,15 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.pre("remove", async function (next) {
-  const parent = this;
+userSchema.pre("findOneAndDelete", async function (next) {
+  const doc = await this.model.findOne(this.getFilter());
+
   // Remove all child documents with the parent's id
-  await Meal.deleteMany({ providerId: parent.id }).exec();
-  MealRating.deleteMany({ userId: parent.id }).exec();
-  UserQuizResult.remove({ userId: parent.id }).exec();
-  await AppNotification.deleteMany({ sender: parent.id }).exec();
-  await AppNotification.deleteMany({ receiver: parent.id }).exec();
+  await Meal.deleteMany({ providerId: doc.id }).exec();
+  await MealRating.deleteMany({ userId: doc.id }).exec();
+  await UserQuizResult.deleteOne({ userId: doc.id }).exec();
+  await AppNotification.deleteMany({ sender: doc.id }).exec();
+  await AppNotification.deleteMany({ receiver: doc.id }).exec();
   //should i remove orders ???
 
   next();
