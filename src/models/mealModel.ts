@@ -3,6 +3,7 @@ import { IMeal } from "../interfaces/database";
 import AutoIncrement from "mongoose-auto-increment";
 import { IIngredients } from "../interfaces/database/IIngredients";
 import { INutritionValues } from "../interfaces/database/INutritionValues";
+import MealRating from "./mealRatingModel";
 
 const MealSchema = new Schema<IMeal>(
   {
@@ -72,6 +73,12 @@ const MealSchema = new Schema<IMeal>(
   // { timestamps: true }
 );
 AutoIncrement.initialize(mongoose.connection);
+
+MealSchema.pre("findOneAndDelete", async function (next) {
+  const doc = await this.model.findOne(this.getFilter());
+  await MealRating.deleteMany({ mealId: doc.id }).exec();
+  next();
+});
 
 MealSchema.plugin(AutoIncrement.plugin, {
   model: "Meal",
