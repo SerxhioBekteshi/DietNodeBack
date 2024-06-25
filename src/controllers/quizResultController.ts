@@ -22,16 +22,20 @@ const createQuizResultRow = async (req: any, res: any) => {
 
 const getQuizResultsForLoggedUser = catchAsync(
   async (req: any, res: any, next: any) => {
-    socketManager.sendAppNotificationToAdmin(
-      "A quiz results request was made",
-      1,
-      req.user.id,
-      "New request",
-      // `/quizResults/${req.user.id}`, ->> kjo nuk supozohet te navigoj??
-      "",
-      eRoles.Admin
-    );
-    res.status(200).json({ message: "Request was made" });
+    // socketManager.sendAppNotificationToAdmin(
+    //   "A quiz results request was made",
+    //   1,
+    //   req.user.id,
+    //   "New request",
+    //   // `/quizResults/${req.user.id}`, ->> kjo nuk supozohet te navigoj??
+    //   "",
+    //   eRoles.Admin
+    // );
+    const doc = await UserQuizResult.findOne({ userId: req.user.id });
+    if (!doc) {
+      return next(new AppError("No quiz result for this user ", 404));
+    }
+    res.status(200).json(doc.quizResult);
   }
 );
 
