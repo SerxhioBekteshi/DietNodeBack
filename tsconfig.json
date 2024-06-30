@@ -10,6 +10,14 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
   }
 }

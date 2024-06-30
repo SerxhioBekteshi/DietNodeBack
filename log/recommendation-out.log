@@ -105,3 +105,29 @@
   [Symbol(shapeMode)]: false,
   [Symbol(kCapture)]: false
 } LOG HERE??????
+2024-06-30 20:24:14 +02:00: Logger {
+  _events: [Object: null prototype] {},
+  _eventsCount: 0,
+  _maxListeners: undefined,
+  _level: 30,
+  streams: [
+    {
+      level: 30,
+      path: 'C:\\Users\\Perdorues\\Desktop\\DietNodeBack\\src/DietNodeBack_DESKTOP-AS2VS3D_C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation.log',
+      type: 'file',
+      raw: false,
+      reemitErrorEvents: true,
+      stream: [WriteStream],
+      closeOnExit: true
+    }
+  ],
+  serializers: { err: [Function (anonymous)] },
+  src: false,
+  fields: {
+    name: 'C__Users_Perdorues_Desktop_DietNodeBack_processes_recommendation',
+    hostname: 'DESKTOP-AS2VS3D',
+    pid: 10372
+  },
+  [Symbol(shapeMode)]: false,
+  [Symbol(kCapture)]: false
+} LOG HERE??????
