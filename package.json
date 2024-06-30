@@ -9,7 +9,11 @@
     "start:inspect": "cross-env NODE_ENV=development nodemon --exec \"node --require ts-node/register --inspect=1234 server.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pretty": "prettier --write \"./**/*.{js,ts,json}\"",
-    "typescript:check": "tsc"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "npx eslint . --fix",
+    "typescript:check": "tsc",
+    "prettier:check": "prettier --check 'src/**/*.{ts,tsx}'",
+    "prettier:fix": "prettier --write 'src/**/*.{ts,tsx}'"
   },
   "author": "WeWeb",
   "license": "ISC",
@@ -31,7 +35,9 @@
     "express-rate-limit": "^6.7.0",
     "helmet": "^6.0.1",
     "html-to-text": "^9.0.5",
+    "husky": "^9.0.11",
     "jsonwebtoken": "^9.0.0",
+    "lint-staged": "^15.2.7",
     "moment": "^2.29.4",
     "mongoose": "^5.1.2",
     "mongoose-auto-increment": "^5.0.1",
